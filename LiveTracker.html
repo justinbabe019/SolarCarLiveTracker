@@ -1,13 +1,16 @@
 <!DOCTYPE html>
+<!--Current prob:
+~Add marker not working https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+-->
 <html>
   <head>
-    <title>Simple Marker</title>
+    <title>Astrum Live Tracker</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVZHQT42ioKRW42uMt3ECCNZVSNwsYbTw&callback=initMap&libraries=&v=weekly" defer></script>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #gmp-map {
+      #map {
         height: 100%;
       }
 
@@ -19,30 +22,94 @@
         padding: 0;
       }
     </style>
+
     <script>
       "use strict";
 
+      let map;
+      let markers= [];
+      let markerDates = [];
+
+      const ausCenter = { lat: -25.363, lng: 131.044 };
+      const startPos={lat: -12.4637, lng: 130.8444};
+      const adlPos={lat: -34.928497, lng: 138.600739};
+
+      let astrumIcon="https://imgur.com/a/W7pXawQ";
+      let wscIcon="https://worldsolarchallenge.org/skin/2023/images/logo.svg";
+
       function initMap() {
-        const myLatLng = {
-          lat: 40.12150192260742,
-          lng: -100.45039367675781
-        };
-        const map = new google.maps.Map(document.getElementById("gmp-map"), {
-          zoom: 4,
-          center: myLatLng,
-          fullscreenControl: false,
-          zoomControl: true,
-          streetViewControl: false
-        });
-        new google.maps.Marker({
-          position: myLatLng,
-          map,
-          title: "My location"
-        });
+         const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 5,
+            center: ausCenter,
+            fullscreenControl: false,
+            zoomControl: true,
+            streetViewControl: false
+         });
+         const marker = new google.maps.Marker({
+            position: startPos,
+            icon: wscIcon,
+            title: "WSC23 Starting Point",
+            map,
+         })
+         markers.push(marker);
+         const astrumMarker = new google.maps.Marker({
+            position: adlPos,
+            icon: astrumIcon,
+            title: "Astrum position",
+            map
+         })
+         markers.push(astrumMarker);
+
+         ///////TESTING/////// 
+         map.addListener("click", (event) => {
+            addMarker(event.latLng);
+         });
+         document
+            .getElementById("show-markers")
+            .addEventListener("click", showMarkers);
+         document
+            .getElementById("hide-markers")
+            .addEventListener("click", hideMarkers);
       }
+
+      function addMarker(position){
+         const marker=new google.maps.Marker({
+            position: position,
+            map,
+         });
+         markers.push(marker);
+      }
+      function setMapOnAll(map) {
+         for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+         }
+      }
+      function showMarkers() {
+         setMapOnAll(map);
+      }
+      function hideMarkers() {
+         setMapOnAll(null);
+      }
+      function reCenter(){
+         initMap();
+      }
+
     </script>
   </head>
-  <body>
-    <div id="gmp-map"></div>
-  </body>
+
+
+   <body>
+      <div id="floating-panel">
+         <input id="hide-markers" type="button" value="Hide Markers" />
+         <input id="show-markers" type="button" value="Show Markers" />
+         <input id="delete-markers" type="button" value="Delete Markers" />
+       </div>
+      <button onclick="reCenter()">Re-Center</button>
+      <button onclick="addMarker()">Add Marker</button>
+      <button onclick="updateLocation()">Update Location</button>
+
+      <div id="map"></div>
+   </body>
+
+
 </html>
