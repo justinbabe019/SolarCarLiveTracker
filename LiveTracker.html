@@ -1,20 +1,48 @@
+<!DOCTYPE html>
 <html>
-      <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA Compatible" contetnt="IE=edge">
-            <meta name="viewport" content="width=device-width, initiate">
-      </head>
-      <style>
+  <head>
+    <title>Simple Marker</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVZHQT42ioKRW42uMt3ECCNZVSNwsYbTw&callback=initMap&libraries=&v=weekly" defer></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #gmp-map {
+        height: 100%;
+      }
 
-      </style>
-      <script>
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script>
+      "use strict";
 
-      </script>
-
-      <body>
-            <div id="map"></div>
-            <button onclick="updateLocation()">Update Location</button>
-            <script src="
-                  "></script>
-      </body>
+      function initMap() {
+        const myLatLng = {
+          lat: 40.12150192260742,
+          lng: -100.45039367675781
+        };
+        const map = new google.maps.Map(document.getElementById("gmp-map"), {
+          zoom: 4,
+          center: myLatLng,
+          fullscreenControl: false,
+          zoomControl: true,
+          streetViewControl: false
+        });
+        new google.maps.Marker({
+          position: myLatLng,
+          map,
+          title: "My location"
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="gmp-map"></div>
+  </body>
 </html>
