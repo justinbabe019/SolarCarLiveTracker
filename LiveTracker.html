@@ -90,10 +90,6 @@
       function hideMarkers() {
          setMapOnAll(null);
       }
-      function deleteMarkers(){
-         hideMarkers();
-         markers=[];
-      }
       function reCenter(){
          initMap();
       }
@@ -106,7 +102,6 @@
       <div id="floating-panel">
          <input id="hide-markers" type="button" value="Hide Markers" />
          <input id="show-markers" type="button" value="Show Markers" />
-         <input id="delete-markers" type="button" value="Delete Markers" />
        </div>
       <button onclick="reCenter()">Re-Center</button>
       <button onclick="addMarker()">Add Marker</button>
