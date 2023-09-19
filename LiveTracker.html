@@ -88,7 +88,9 @@
          setMapOnAll(map);
       }
       function hideMarkers() {
-         setMapOnAll(null);
+         for(let i = 1; i<markers.length -1; ++i){
+            markers[i].setMap(null);
+         }
       }
       function reCenter(){
          initMap();
@@ -100,13 +102,12 @@
 
    <body>
       <div id="floating-panel">
-         <input id="hide-markers" type="button" value="Hide Markers" />
-         <input id="show-markers" type="button" value="Show Markers" />
-       </div>
-      <button onclick="reCenter()">Re-Center</button>
-      <button onclick="addMarker()">Add Marker</button>
-      <button onclick="updateLocation()">Update Location</button>
-
+         <input id="hide-markers" type="button" value="Hide Trace" />
+         <input id="show-markers" type="button" value="Show Trace" />
+         <button onclick="reCenter()">Re-Center</button>
+         <button onclick="addMarker()">Add Marker</button>
+         <button onclick="updateLocation()">Update Location</button>
+      </div>
       <div id="map"></div>
    </body>
 
