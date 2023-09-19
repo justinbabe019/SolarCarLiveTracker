@@ -42,9 +42,9 @@
       function unifyIcon(URL){
          const thing2={
             url: URL,
-            scaledSize: new google.maps.Size(100, 60),
+            scaledSize: new google.maps.Size(80, 50),
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(50, 35),
+            anchor: new google.maps.Point(40, 25),
          }
          return thing2;
       }
@@ -58,21 +58,21 @@
          const startPointMarker = new google.maps.Marker({
             position: startPos,
             icon: unifyIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
-            label: "WSC23 Starting Point",
+            label: "Starting Point",
             map,
          })
          markers.push(startPointMarker);
          const astrumMarker = new google.maps.Marker({
             position: startPos,
             icon: unifyIcon("https://imgur.com/a/W7pXawQ"),
-            label: "Astrum position",
+            title: "Astrum position",
             map,
          })
          traceMarkers.push(astrumMarker);
          const endPointMarker = new google.maps.Marker({
             position: endPos,
             icon: unifyIcon("https://static.vecteezy.com/system/resources/previews/009/342/320/original/racing-flag-clipart-design-illustration-free-png.png"),
-            title: "WSC Ending Point",
+            label: "Ending Point",
             map,
          })
          markers.push(endPointMarker);
@@ -97,7 +97,7 @@
 
          ///////TESTING/////// 
          map.addListener("click", (event) => {
-            addMarker(event.latLng);
+            addMarker(event.latLng, getDateInString()+"-"+getTimeInString());
          });
          
       }
@@ -138,9 +138,17 @@
       }
       function updateLocation(){
          //loc={lat: 0, lng: 0};
-         addMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
+         var today=new Date();
+         var min=today.getMinutes();
+         if(min%5 != 0)alert("Please wait until next available time update!");
+         else addMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
       }
-
+      function checkLogIn(){
+         
+      }
+      function distCal(){
+         //look up google map platform
+      }
     </script>
   </head>
 
@@ -151,6 +159,7 @@
          <input id="show-trace" type="button" value="Show Trace" />
          <button onclick="reCenter()">Re-Center</button>
          <button onclick="updateLocation()">Update Location</button>
+         <button onclick="distCal()">Dist Cal</button>
       </div>
       <div id="map"></div>
    </body>
