@@ -38,7 +38,7 @@
       let wscIcon="https://worldsolarchallenge.org/skin/2023/images/logo.svg";
 
       function initMap() {
-         const map = new google.maps.Map(document.getElementById("map"), {
+         map = new google.maps.Map(document.getElementById("map"), {
             zoom: 5,
             center: ausCenter,
             fullscreenControl: false,
@@ -89,6 +89,10 @@
       }
       function hideMarkers() {
          setMapOnAll(null);
+      }
+      function deleteMarkers(){
+         hideMarkers();
+         markers=[];
       }
       function reCenter(){
          initMap();
