@@ -28,15 +28,55 @@
 
       let map;
       let markers= [];
+      let traceMarkers=[];
       let markerDates = [];
+
+      const markerContent=document.createElement("div");
+      markerContent.className="markerContent";
 
       const ausCenter = { lat: -25.363, lng: 131.044 };
       const startPos={lat: -12.4637, lng: 130.8444};
-      const adlPos={lat: -34.928497, lng: 138.600739};
+      const endPos={lat: -34.928497, lng: 138.600739};
+      const astrumPos=ausCenter;//test
+      
+      function unifyIcon(URL){
+         const thing2={
+            url: URL,
+            scaledSize: new google.maps.Size(100, 60),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(50, 35),
+         }
+         return thing2;
+      }
 
-      let astrumIcon="https://imgur.com/a/W7pXawQ";
-      let wscIcon="https://worldsolarchallenge.org/skin/2023/images/logo.svg";
-
+      function setInitMarkers(map){
+         /*
+         const astrumIcon="https://imgur.com/a/W7pXawQ", 
+            wscIcon="https://worldsolarchallenge.org/skin/2023/images/logo.svg", 
+            endPointIcon="https://static.vecteezy.com/system/resources/previews/009/342/320/original/racing-flag-clipart-design-illustration-free-png.png";
+         */
+         const startPointMarker = new google.maps.Marker({
+            position: startPos,
+            icon: unifyIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            label: "WSC23 Starting Point",
+            map,
+         })
+         markers.push(startPointMarker);
+         const astrumMarker = new google.maps.Marker({
+            position: startPos,
+            icon: unifyIcon("https://imgur.com/a/W7pXawQ"),
+            label: "Astrum position",
+            map,
+         })
+         traceMarkers.push(astrumMarker);
+         const endPointMarker = new google.maps.Marker({
+            position: endPos,
+            icon: unifyIcon("https://static.vecteezy.com/system/resources/previews/009/342/320/original/racing-flag-clipart-design-illustration-free-png.png"),
+            title: "WSC Ending Point",
+            map,
+         })
+         markers.push(endPointMarker);
+      }
       function initMap() {
          map = new google.maps.Map(document.getElementById("map"), {
             zoom: 5,
@@ -45,55 +85,60 @@
             zoomControl: true,
             streetViewControl: false
          });
-         const marker = new google.maps.Marker({
-            position: startPos,
-            icon: wscIcon,
-            title: "WSC23 Starting Point",
-            map,
-         })
-         markers.push(marker);
-         const astrumMarker = new google.maps.Marker({
-            position: adlPos,
-            icon: astrumIcon,
-            title: "Astrum position",
-            map
-         })
-         markers.push(astrumMarker);
+
+         setInitMarkers(map);
+         
+         document
+            .getElementById("show-trace")
+            .addEventListener("click", showTrace);
+         document
+            .getElementById("hide-trace")
+            .addEventListener("click", hideTrace);
 
          ///////TESTING/////// 
          map.addListener("click", (event) => {
             addMarker(event.latLng);
          });
-         document
-            .getElementById("show-markers")
-            .addEventListener("click", showMarkers);
-         document
-            .getElementById("hide-markers")
-            .addEventListener("click", hideMarkers);
+         
       }
 
-      function addMarker(position){
+      function addMarker(position, Label){
          const marker=new google.maps.Marker({
             position: position,
+            label: Label,
             map,
          });
-         markers.push(marker);
+         traceMarkers.push(marker);
       }
-      function setMapOnAll(map) {
-         for (let i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
+      function showTrace() {
+         for (let i = 0; i < traceMarkers.length; i++) {
+            traceMarkers[i].setMap(map);
          }
       }
-      function showMarkers() {
-         setMapOnAll(map);
-      }
-      function hideMarkers() {
-         for(let i = 1; i<markers.length -1; ++i){
-            markers[i].setMap(null);
+      function hideTrace() {
+         for(let i = 0; i<traceMarkers.length -1; ++i){
+            traceMarkers[i].setMap(null);
          }
       }
-      function reCenter(){
-         initMap();
+      function reCenter(){}
+
+      function getDateInString(){
+         var today = new Date();
+         var date = (today.getMonth()+1)+'/'+today.getDate();
+         return date;
+      }   
+      function getTimeInString(){
+         var today = new Date(); 
+         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+         return time;
+      }
+      function getAstrumPos(){
+         var astrumNewPos=ausCenter;
+         return astrumNewPos;
+      }
+      function updateLocation(){
+         //loc={lat: 0, lng: 0};
+         addMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
       }
 
     </script>
@@ -102,10 +147,9 @@
 
    <body>
       <div id="floating-panel">
-         <input id="hide-markers" type="button" value="Hide Trace" />
-         <input id="show-markers" type="button" value="Show Trace" />
+         <input id="hide-trace" type="button" value="Hide Trace" />
+         <input id="show-trace" type="button" value="Show Trace" />
          <button onclick="reCenter()">Re-Center</button>
-         <button onclick="addMarker()">Add Marker</button>
          <button onclick="updateLocation()">Update Location</button>
       </div>
       <div id="map"></div>
