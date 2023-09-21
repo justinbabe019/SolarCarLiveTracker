@@ -31,18 +31,15 @@
       let traceMarkers=[];
       let markerDates = [];
 
-      const markerContent=document.createElement("div");
-      markerContent.className="markerContent";
-
-      const ausCenter = { lat: -25.363, lng: 131.044 };
+      const ausCenter = {lat: -25.363, lng: 131.044 };
       const startPos={lat: -12.4637, lng: 130.8444};
       const endPos={lat: -34.928497, lng: 138.600739};
       const astrumPos=ausCenter;//test
       
-      function unifyIcon(URL){
+      function unifyInitIcon(URL){
          const thing2={
             url: URL,
-            scaledSize: new google.maps.Size(80, 50),
+            scaledSize: new google.maps.Size(80, 42),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(40, 25),
          }
@@ -57,22 +54,25 @@
          */
          const startPointMarker = new google.maps.Marker({
             position: startPos,
-            icon: unifyIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
-            label: "Starting Point",
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "startingPoint",
             map,
          })
          markers.push(startPointMarker);
+         alert("start pushed!");
+
          const astrumMarker = new google.maps.Marker({
             position: startPos,
-            icon: unifyIcon("https://imgur.com/a/W7pXawQ"),
-            title: "Astrum position",
+            icon: unifyInitIcon("https://imgur.com/a/W7pXawQ"),
+            title: "AstrumPosition",
             map,
          })
          traceMarkers.push(astrumMarker);
+
          const endPointMarker = new google.maps.Marker({
             position: endPos,
-            icon: unifyIcon("https://static.vecteezy.com/system/resources/previews/009/342/320/original/racing-flag-clipart-design-illustration-free-png.png"),
-            label: "Ending Point",
+            icon: unifyInitIcon("https://static.vecteezy.com/system/resources/previews/009/342/320/original/racing-flag-clipart-design-illustration-free-png.png"),
+            title: "endingPoint",
             map,
          })
          markers.push(endPointMarker);
@@ -85,9 +85,7 @@
             zoomControl: true,
             streetViewControl: false
          });
-
-         setInitMarkers(map);
-         
+         setInitMarkers(map);        
          document
             .getElementById("show-trace")
             .addEventListener("click", showTrace);
@@ -95,20 +93,109 @@
             .getElementById("hide-trace")
             .addEventListener("click", hideTrace);
 
-         ///////TESTING/////// 
+         ///////BACKDOOR FUNC/////// 
          map.addListener("click", (event) => {
-            addMarker(event.latLng, getDateInString()+"-"+getTimeInString());
+            addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
          });
+         ///////TESTING FUNC///////
+         const contentString =
+         '<div id="content">' +
+         '<div id="siteNotice">' +
+         "</div>" +
+         '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+         '<div id="bodyContent">' +
+         "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
+         "sandstone rock formation in the southern part of the " +
+         "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
+         "south west of the nearest large town, Alice Springs; 450&#160;km " +
+         "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
+         "features of the Uluru - Kata Tjuta National Park. Uluru is " +
+         "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
+         "Aboriginal people of the area. It has many springs, waterholes, " +
+         "rock caves and ancient paintings. Uluru is listed as a World " +
+         "Heritage Site.</p>" +
+         '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
+         "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
+         "(last visited June 22, 2009).</p>" +
+         "</div>" +
+         "</div>";
+         const marker = new google.maps.Marker({
+            position: ausCenter,
+            map,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "ausCenter",
+         });
+
+         const infowindow = new google.maps.InfoWindow({
+            content: contentString,
+            ariaLabel: "starting point",
+         });
+         alert("infowindow created");
+
+         marker.addListener("click", () => {
+            infowindow.open({
+               anchor: marker,
+               map,
+            });
+         });
+         markers.push(marker);
+
+         for(let i=0;i<markers.length;i++){
+            alert(markers[i].position);
+            markers[i].addListener("click", () => {
+            infowindow.open({
+               anchor: markers[i],
+               map,
+            });
+         });
+         }
          
       }
 
-      function addMarker(position, Label){
+      function addTraceMarker(position, Label){
+         const contentString=
+         '<div id="content">' +
+         '<div id="siteNotice">' +
+         "</div>" +
+         '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+         '<div id="bodyContent">' +
+         "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
+         "sandstone rock formation in the southern part of the " +
+         "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
+         "south west of the nearest large town, Alice Springs; 450&#160;km " +
+         "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
+         "features of the Uluru - Kata Tjuta National Park. Uluru is " +
+         "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
+         "Aboriginal people of the area. It has many springs, waterholes, " +
+         "rock caves and ancient paintings. Uluru is listed as a World " +
+         "Heritage Site.</p>" +
+         '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
+         "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
+         "(last visited June 22, 2009).</p>" +
+         "</div>" +
+         "</div>";
+         alert("contentstring done!");
+
+         const infowindow = new google.maps.InfoWindow({
+            content: contentString,
+            //ariaLabel: label,
+         });
+         alert("infowindow created");
          const marker=new google.maps.Marker({
             position: position,
             label: Label,
             map,
          });
+         alert("marker created");
+         marker.addListener("click", () => {
+            infowindow.open({
+               anchor: marker,
+               map,
+            });
+         });
+         alert("marker listener created");
          traceMarkers.push(marker);
+         alert("marker pushed to traceMarkers!");
       }
       function showTrace() {
          for (let i = 0; i < traceMarkers.length; i++) {
@@ -141,10 +228,10 @@
          var today=new Date();
          var min=today.getMinutes();
          if(min%5 != 0)alert("Please wait until next available time update!");
-         else addMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
+         else addTraceMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
       }
       function checkLogIn(){
-         
+
       }
       function distCal(){
          //look up google map platform
