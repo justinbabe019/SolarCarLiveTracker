@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<!--Current prob:
-~Add marker not working https://developers.google.com/maps/documentation/javascript/examples/marker-remove
--->
+
 <html>
   <head>
     <title>Astrum Live Tracker</title>
@@ -30,11 +28,22 @@
       let markers= [];
       let traceMarkers=[];
       let markerDates = [];
+      let infowindows=[];
 
-      const ausCenter = {lat: -25.363, lng: 131.044 };
-      const startPos={lat: -12.4637, lng: 130.8444};
-      const endPos={lat: -34.928497, lng: 138.600739};
+      const ausCenter = {lat: -25.363, lng: 131.044};
       const astrumPos=ausCenter;//test
+
+      const startPos={lat: -12.4637, lng: 130.8444};
+      const katherinePos={lat: -14.4520, lng: 132.2699};
+      const dunmarraPos={lat: -16.679973, lng: 133.412624};
+      const tennantCreekPos={lat: -19.6495, lng: 134.1910};
+      const barrowCreekPos={lat: -21.3799, lng: 133.9756};
+      const aliceSpringsPos={lat: -23.6980, lng:133.8807};
+      const kulgeraPos={lat: -25.8436, lng: 133.2879};
+      const cooberPedyPos={lat: -29.0135, lng: 134.7544};
+      const glendamboPos={lat: -30.9677, lng: 135.7513};
+      const portAugustaPos={lat:-32.4936, lng: 137.7743};
+      const endPos={lat: -34.928497, lng: 138.600739};
       
       function unifyInitIcon(URL){
          const thing2={
@@ -59,9 +68,69 @@
             map,
          })
          markers.push(startPointMarker);
-
-         addTraceMarker(startPos, "Astrum Position");
-
+         const katherineMarker = new google.maps.Marker({
+            position: katherinePos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "katherine",
+            map,
+         })
+         markers.push(katherineMarker);
+         const dunmarraMarker = new google.maps.Marker({
+            position: dunmarraPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "dunmarra",
+            map,
+         })
+         markers.push(dunmarraMarker);
+         const tennantCreekMarker = new google.maps.Marker({
+            position: tennantCreekPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "tennantCreek",
+            map,
+         })
+         markers.push(tennantCreekMarker);
+         const barrowCreekMarker = new google.maps.Marker({
+            position: barrowCreekPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "barrowCreekMarker",
+            map,
+         })
+         markers.push(barrowCreekMarker);
+         const aliceSpringMarker = new google.maps.Marker({
+            position: aliceSpringsPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "aliceSpring",
+            map,
+         })
+         markers.push(aliceSpringMarker);
+         const kulgeraMarker = new google.maps.Marker({
+            position: kulgeraPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "kulgera",
+            map,
+         })
+         markers.push(kulgeraMarker);
+         const cooberPedyMarker = new google.maps.Marker({
+            position: cooberPedyPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "cooberPedy",
+            map,
+         })
+         markers.push(cooberPedyMarker);
+         const glendamboMarker = new google.maps.Marker({
+            position: glendamboPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "cooberPedy",
+            map,
+         })
+         markers.push(glendamboMarker);
+         const portAugustaMarker = new google.maps.Marker({
+            position: portAugustaPos,
+            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
+            title: "portAugusta",
+            map,
+         })
+         markers.push(portAugustaMarker);
          const endPointMarker = new google.maps.Marker({
             position: endPos,
             icon: unifyInitIcon("https://static.vecteezy.com/system/resources/previews/009/342/320/original/racing-flag-clipart-design-illustration-free-png.png"),
@@ -69,85 +138,22 @@
             map,
          })
          markers.push(endPointMarker);
+
+         addTraceMarker(startPos, "Astrum Position");
       }
-      function initMap() {
-         map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 5,
-            center: ausCenter,
-            fullscreenControl: false,
-            zoomControl: true,
-            streetViewControl: false
-         });
-         setInitMarkers(map);        
-         document
-            .getElementById("show-trace")
-            .addEventListener("click", showTrace);
-         document
-            .getElementById("hide-trace")
-            .addEventListener("click", hideTrace);
-
-         ///////BACKDOOR FUNC/////// 
-         map.addListener("click", (event) => {
-            addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
-         });
-         ///////TESTING FUNC///////
-         const contentString =
-         '<div id="content">' +
-         '<div id="siteNotice">' +
-         "</div>" +
-         '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-         '<div id="bodyContent">' +
-         "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
-         "sandstone rock formation in the southern part of the " +
-         "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
-         "south west of the nearest large town, Alice Springs; 450&#160;km " +
-         "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
-         "features of the Uluru - Kata Tjuta National Park. Uluru is " +
-         "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
-         "Aboriginal people of the area. It has many springs, waterholes, " +
-         "rock caves and ancient paintings. Uluru is listed as a World " +
-         "Heritage Site.</p>" +
-         '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-         "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
-         "(last visited June 22, 2009).</p>" +
-         "</div>" +
-         "</div>";
-         const marker = new google.maps.Marker({
-            position: ausCenter,
-            map,
-            icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
-            title: "ausCenter",
-         });
-
-         const infowindow = new google.maps.InfoWindow({
-            content: contentString,
-            ariaLabel: "starting point",
-         });
-         alert("infowindow created");
-
-         marker.addListener("click", () => {
-            infowindow.open({
-               anchor: marker,
-               map,
-            });
-         });
-         markers.push(marker);
-
-         for(let i=0;i<markers.length;i++){
-            markers[i].addListener("click", () => {
-            infowindow.open({
-               anchor: markers[i],
-               map,
-            });
-         });
+      function setInitInfoWindow(){
+         let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
+         for(let i =0; i<contentString.length;++i){
+            const infowondow= new google.maps.InfoWindow({
+               content: contentString[i],
+            });;
+            infowindows.push(infowondow);
          }
-         
       }
 
       function addTraceMarker(position, Label){
-         const contentString="HI";
+         const contentString='<a href="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==">Check out our instagram!</a>';
          /*
-
          '<div id="content">' +
          '<div id="siteNotice">' +
          "</div>" +
@@ -187,14 +193,49 @@
          });
          traceMarkers.push(marker);
       }
-      function showTrace() {
-         for (let i = 0; i < traceMarkers.length; i++) {
-            traceMarkers[i].setMap(map);
+
+      function initMap() {
+         map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 5,
+            center: ausCenter,
+            fullscreenControl: false,
+            zoomControl: true,
+            streetViewControl: false
+         });
+         setInitMarkers(map);        
+         setInitInfoWindow();
+
+         ///////BACKDOOR FUNC/////// 
+         map.addListener("click", (event) => {
+            addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
+         });
+         ///////TESTING FUNC///////
+
+         //match infowindows with markers
+         for(let i=0;i<markers.length;i++){
+            markers[i].addListener("click", () => {
+            infowindows[i].open({
+               anchor: markers[i],
+               map,
+            });
+         });
+         }
+         
+      }
+      
+      function showTrace(array) {
+         for (let i = 0; i < array.length; i++) {
+            array[i].setMap(map);
          }
       }
       function hideTrace() {
          for(let i = 0; i<traceMarkers.length -1; ++i){
             traceMarkers[i].setMap(null);
+         }
+      }
+      function hideInitMarker(){
+         for(let i = 0; i<markers.length; ++i){
+            markers[i].setMap(null);
          }
       }
       function reCenter(){}
@@ -232,8 +273,14 @@
 
    <body>
       <div id="floating-panel">
-         <input id="hide-trace" type="button" value="Hide Trace" />
-         <input id="show-trace" type="button" value="Show Trace" />
+         <!--
+            <input id="hide-trace" type="button" value="Hide Trace" />
+            <input id="show-trace" type="button" value="Show Trace" />
+         -->
+         <button onclick="hideTrace()">Hide Trace</button>
+         <button onclick="showTrace(traceMarkers)">Show Trace</button>
+         <button onclick="hideInitMarker()">Hide Checkpoints</button>
+         <button onclick="showTrace(markers)">Show Checkpoints</button>
          <button onclick="reCenter()">Re-Center</button>
          <button onclick="updateLocation()">Update Location</button>
          <button onclick="distCal()">Dist Cal</button>
