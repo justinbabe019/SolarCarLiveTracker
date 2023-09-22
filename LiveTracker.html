@@ -3,13 +3,15 @@
 <html>
   <head>
     <title>Astrum Live Tracker</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com.apps.googleusercontent.com">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVZHQT42ioKRW42uMt3ECCNZVSNwsYbTw&callback=initMap&libraries=&v=weekly" defer></script>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 800px;
       }
 
       /* Optional: Makes the sample page fill the window. */
@@ -139,7 +141,7 @@
          })
          markers.push(endPointMarker);
 
-         addTraceMarker(startPos, "Astrum Position");
+         addTraceMarker(startPos, "Astrum Current Position");
       }
       function setInitInfoWindow(){
          let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
@@ -255,14 +257,26 @@
          return astrumNewPos;
       }
       function updateLocation(){
+         let loggedIn=false;
+         checkLogIn(loggedIn);
          //loc={lat: 0, lng: 0};
-         var today=new Date();
-         var min=today.getMinutes();
-         if(min%5 != 0)alert("Please wait until next available time update!");
-         else addTraceMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
+         if(loggedIn){
+            var today=new Date();
+            var min=today.getMinutes();
+            if(min%5 != 0)alert("Please wait until next available time update!");
+            else addTraceMarker(getAstrumPos(), getDateInString()+"-"+getTimeInString());
+         }
+         else{
+            alert("You are NOT authorised to update the location. JUST TAKE what is there now:) R U THE DUTCH");
+         }
       }
-      function checkLogIn(){
-
+      function checkLogIn(loggedIn){
+         const contentString=
+         '<div class="g-signin2" data-onsuccess="onSignIn"></div>'
+         const infowindow=new google.maps.InfoWindow({
+            content: contentString,
+         })
+         infowindow.open();
       }
       function distCal(){
          //look up google map platform
@@ -287,6 +301,5 @@
       </div>
       <div id="map"></div>
    </body>
-
 
 </html>
