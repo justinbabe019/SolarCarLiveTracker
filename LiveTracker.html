@@ -4,9 +4,10 @@
   <head>
     <title>Astrum Live Tracker</title>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com.apps.googleusercontent.com">
+    <!--<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">-->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVZHQT42ioKRW42uMt3ECCNZVSNwsYbTw&callback=initMap&libraries=&v=weekly" defer></script>
+    <meta name="google-signin-client_id" content="866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com">
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -204,7 +205,6 @@
       function initMap() {
          hide("updateLocation");
          hide("signOut");
-         alert("done hiding");
          map = new google.maps.Map(document.getElementById("map"), {
             zoom: 5,
             center: ausCenter,
@@ -232,11 +232,9 @@
          }
       }
       function hide(e){
-         alert("just to say hi");
          document.getElementById(e).hidden=true;
          //document.getElementById("updateLocation").style.visibility="hidden";
          //document.getElementById("updateLocation").style.display="none";
-         alert("done hide e");
       }
       function show(e){
          document.getElementById(e).hidden=false;
