@@ -202,6 +202,9 @@
       }
 
       function initMap() {
+         hide("updateLocation");
+         hide("signOut");
+         alert("done hiding");
          map = new google.maps.Map(document.getElementById("map"), {
             zoom: 5,
             center: ausCenter,
@@ -227,9 +230,18 @@
             });
          });
          }
-         
       }
-      
+      function hide(e){
+         alert("just to say hi");
+         document.getElementById(e).hidden=true;
+         //document.getElementById("updateLocation").style.visibility="hidden";
+         //document.getElementById("updateLocation").style.display="none";
+         alert("done hide e");
+      }
+      function show(e){
+         document.getElementById(e).hidden=false;
+         alert("done showing e");
+      }
       function showTrace(array) {
          for (let i = 0; i < array.length; i++) {
             array[i].setMap(map);
@@ -290,16 +302,22 @@
          alert("info window opened");
       }
       function onSignIn(){
-         var profile = googleUser.getBasicProfile();
+         //var profile = googleUser.getBasicProfile();
+         show("updateLocation");
+         hide("g-signin2");
+         /*
          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
          console.log('Name: ' + profile.getName());
          console.log('Image URL: ' + profile.getImageUrl());
          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+         */
       }
       function signOut(){
          var auth2 = gapi.auth2.getAuthInstance();
          auth2.signOut().then(function () {
             console.log('User signed out.');
+            $(".g-signin2").css("display", "block");
+            hide(".updateLocation");
          });
       }
       function distCal(){
@@ -319,11 +337,11 @@
          <button onclick="showTrace(traceMarkers)">Show Trace</button>
          <button onclick="hideInitMarker()">Hide Checkpoints</button>
          <button onclick="showTrace(markers)">Show Checkpoints</button>
-         <button onclick="reCenter()">Re-Center</button>
-         <button onclick="updateLocation()">Update Location</button>
+         <!--<button onclick="reCenter()">Re-Center</button>-->
+         <button id="updateLocation" onclick="updateLocation()">Update Location</button>
          <button onclick="distCal()">Dist Cal</button>
-         <button onclick="signOut()">Sign Out</button>
-         <div class="g-signin2" data-onsuccess="onSignIn"></div>
+         <button id="signOut" onclick="signOut()">Sign Out</button>
+         <div id="g-signin2" class="g-signin2" data-onsuccess="onSignIn"></div>
       </div>
       <div id="map"></div>
    </body>
