@@ -47,6 +47,11 @@
       const portAugustaPos={lat:-32.4936, lng: 137.7743};
       const endPos={lat: -34.928497, lng: 138.600739};
       
+      gapi.load('auth2',function()
+      {
+         gapi.auth2.init();
+      });
+
       function unifyInitIcon(URL){
          const thing2={
             url: URL,
@@ -272,11 +277,30 @@
       }
       function checkLogIn(loggedIn){
          const contentString=
-         '<div class="g-signin2" data-onsuccess="onSignIn"></div>'
+         '<div class="g-signin2" data-onsuccess="onSignIn"></div>';
          const infowindow=new google.maps.InfoWindow({
             content: contentString,
-         })
+         });
          infowindow.open();
+         var profile = googleUser.getBasicProfile();
+         console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+         console.log('Name: ' + profile.getName());
+         console.log('Image URL: ' + profile.getImageUrl());
+         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+         alert("info window opened");
+      }
+      function onSignIn(){
+         var profile = googleUser.getBasicProfile();
+         console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+         console.log('Name: ' + profile.getName());
+         console.log('Image URL: ' + profile.getImageUrl());
+         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      }
+      function signOut(){
+         var auth2 = gapi.auth2.getAuthInstance();
+         auth2.signOut().then(function () {
+            console.log('User signed out.');
+         });
       }
       function distCal(){
          //look up google map platform
@@ -298,6 +322,8 @@
          <button onclick="reCenter()">Re-Center</button>
          <button onclick="updateLocation()">Update Location</button>
          <button onclick="distCal()">Dist Cal</button>
+         <button onclick="signOut()">Sign Out</button>
+         <div class="g-signin2" data-onsuccess="onSignIn"></div>
       </div>
       <div id="map"></div>
    </body>
