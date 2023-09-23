@@ -3,11 +3,13 @@
 <html>
   <head>
     <title>Astrum Live Tracker</title>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <!--<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <meta name="google-signin-client_id" content="866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/api:client.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVZHQT42ioKRW42uMt3ECCNZVSNwsYbTw&callback=initMap&libraries=&v=weekly" defer></script>
-    <meta name="google-signin-client_id" content="866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -23,6 +25,72 @@
         padding: 0;
       }
     </style>
+
+     <style type="text/css">
+      #customBtn {
+        display: inline-block;
+        background: white;
+        color: #444;
+        width: 190px;
+        border-radius: 5px;
+        border: thin solid #888;
+        box-shadow: 1px 1px 1px grey;
+        white-space: nowrap;
+      }
+      #customBtn:hover {
+        cursor: pointer;
+      }
+      span.label {
+        font-family: serif;
+        font-weight: normal;
+      }
+      span.icon {
+        background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+        display: inline-block;
+        vertical-align: middle;
+        width: 42px;
+        height: 42px;
+      }
+      span.buttonText {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 42px;
+        padding-right: 42px;
+        font-size: 14px;
+        font-weight: bold;
+        /* Use the Roboto font that is loaded in the <head> */
+        font-family: 'Roboto', sans-serif;
+      }
+    </style>
+
+   <script>
+      var googleUser = {};
+      var startApp = function() {
+         gapi.load('auth2', function(){
+            // Retrieve the singleton for the GoogleAuth library and set up the client.
+            auth2 = gapi.auth2.init({
+            client_id: '866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com',
+            cookiepolicy: 'single_host_origin',
+            // Request scopes in addition to 'profile' and 'email'
+            //scope: 'additional_scope'
+            });
+            attachSignin(document.getElementById('customBtn'));
+         });
+      };
+
+      function attachSignin(element) {
+         console.log(element.id);
+         auth2.attachClickHandler(element, {},
+            function(googleUser) {
+               document.getElementById('name').innerText = "Signed in: " +
+                  googleUser.getBasicProfile().getName();
+               show("updateLocation");
+               show("signOut");
+            }, function(error) {
+               alert(JSON.stringify(error, undefined, 2));
+            });
+      }
+   </script>
 
     <script>
       "use strict";
@@ -47,7 +115,7 @@
       const glendamboPos={lat: -30.9677, lng: 135.7513};
       const portAugustaPos={lat:-32.4936, lng: 137.7743};
       const endPos={lat: -34.928497, lng: 138.600739};
-      
+
       gapi.load('auth2',function()
       {
          gapi.auth2.init();
@@ -230,6 +298,8 @@
             });
          });
          }
+         //
+         if (auth2.isSignedIn.get()) alert("signed In in initmap");
       }
       function hide(e){
          document.getElementById(e).hidden=true;
@@ -286,11 +356,6 @@
          }
       }
       function checkLogIn(loggedIn){
-         const contentString=
-         '<div class="g-signin2" data-onsuccess="onSignIn"></div>';
-         const infowindow=new google.maps.InfoWindow({
-            content: contentString,
-         });
          infowindow.open();
          var profile = googleUser.getBasicProfile();
          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -299,10 +364,17 @@
          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
          alert("info window opened");
       }
-      function onSignIn(){
-         //var profile = googleUser.getBasicProfile();
+      function onSignIn(googleUser){
+         if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
+         alert("On sign in!");
+         var profile = googleUser.getBasicProfile();
+         alert("U are signed in"+profile.getName());
+         $("#userName").text=profile.getName();
+         $(".g-signin2").hide();
+         show("userName");
          show("updateLocation");
          hide("g-signin2");
+         alert("done hiding n showing");
          /*
          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
          console.log('Name: ' + profile.getName());
@@ -315,6 +387,7 @@
          auth2.signOut().then(function () {
             console.log('User signed out.');
             $(".g-signin2").css("display", "block");
+            hide("signOut")
             hide(".updateLocation");
          });
       }
@@ -339,7 +412,16 @@
          <button id="updateLocation" onclick="updateLocation()">Update Location</button>
          <button onclick="distCal()">Dist Cal</button>
          <button id="signOut" onclick="signOut()">Sign Out</button>
-         <div id="g-signin2" class="g-signin2" data-onsuccess="onSignIn"></div>
+         <div class="g-signin2" data-onsuccess="onSignIn"></div>
+         <div id="gSignInWrapper">
+            <span class="label">Sign in with:</span>
+            <div id="customBtn" class="customGPlusSignIn">
+              <span class="icon"></span>
+              <span class="buttonText">Google</span>
+            </div>
+          </div>
+          <div id="name"></div>
+          <script>startApp();</script>
       </div>
       <div id="map"></div>
    </body>
