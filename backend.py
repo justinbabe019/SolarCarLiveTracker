@@ -20,10 +20,31 @@ def printDetails(ip):
     print(f"Location: {res.city}, {res.region}, {res.country}")
     print(f"Coordinates: (Lat: {res.latitude}, Lng: {res.longitude})")
 
-printDetails(IPAddr)
+#printDetails(IPAddr)
 
+#try to use google maps location sharing instead
+#open google maps
 import webbrowser
+import pyautogui 
+import time
+import pyperclip
+import csv
 webbrowser.open('http://google.com/maps')
+time.sleep(5)
+pyautogui.hotkey('command','l')
+time.sleep(2)
+pyautogui.hotkey('command','l')
+pyautogui.hotkey('command','c')
+webAddr = pyperclip.paste()
+webAddrAt = webAddr.split("@",1)
+myLoc = webAddrAt[1].split(",",2)
+myLoc = [myLoc[0], myLoc[1]]
+with open('location.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerow(myLoc)
+time.sleep(5)
+pyautogui.hotkey('command','r')
+
 
 #Accessing google share location and get latlng?
 #log into google
@@ -46,17 +67,4 @@ with requests.Session() as s:
 '''
 import urllib.request as urllib2
 import json
-'''
-
-# Automatically geolocate the connecting IP
-'''
-f = urllib2.urlopen('http://freegeoip.net/json/')
-json_string = f.read()
-f.close()
-location = json.loads(json_string)
-print(location)
-location_city = location['city']
-location_state = location['region_name']
-location_country = location['country_name']
-location_zip = location['zipcode']
 '''

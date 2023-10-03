@@ -281,7 +281,6 @@ startApp();
       }
 
       function initMap() {
-         hide("updateLocation");
          hide("ins");
          hide("signOut");
          map = new google.maps.Map(document.getElementById("map"), {
@@ -351,7 +350,7 @@ startApp();
          return time;
       }
       function getAstrumPos(){
-         var astrumNewPos=ausCenter;
+         var astrumNewPos=$.csv.toObjects(location.csv);
          return astrumNewPos;
       }
       function updateLocation(){
