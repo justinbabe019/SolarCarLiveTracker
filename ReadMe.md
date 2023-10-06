@@ -10,7 +10,7 @@ open LiveTracker.html, play with the buttons and functions
 - Re-Center: Reset zoom and center of map into default settings 
 # How to use(private):
 1. Have two Google accoutns, one logged in to phone and one to laptop
-2. Share location via Google Maps from your phone account to your computer account
+2. Share location (permanently) via Google Maps from your phone account to your computer account
 3. install all the required python libraries
    - pyautogui
    - git 

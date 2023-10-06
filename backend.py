@@ -42,7 +42,6 @@ def git_push():
 import webbrowser
 import pyautogui 
 import time
-import pyperclip
 import csv
 webbrowser.open('http://google.com/maps')
 while True:
