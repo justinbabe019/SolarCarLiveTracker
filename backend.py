@@ -20,7 +20,22 @@ def printDetails(ip):
     print(f"Location: {res.city}, {res.region}, {res.country}")
     print(f"Coordinates: (Lat: {res.latitude}, Lng: {res.longitude})")
 
-#printDetails(IPAddr)
+#update to github
+'''
+from git import Repo
+PATH = 'https://github.com/justinbabe019/SolarCarLiveTracker.git'
+COMMITMSG = 'location update'
+
+def git_push():
+    try: 
+        repo = Repo(PATH)
+        repo.git.add(update=True)
+        repo.index.commit(COMMITMSG)
+        origin = repo.remote(name='origin')
+        origin.push()
+    except:
+        print('Some error occured while pushing the code')    
+'''
 
 #try to use google maps location sharing instead
 #open google maps
@@ -30,20 +45,24 @@ import time
 import pyperclip
 import csv
 webbrowser.open('http://google.com/maps')
-time.sleep(5)
-pyautogui.hotkey('command','l')
-time.sleep(2)
-pyautogui.hotkey('command','l')
-pyautogui.hotkey('command','c')
-webAddr = pyperclip.paste()
-webAddrAt = webAddr.split("@",1)
-myLoc = webAddrAt[1].split(",",2)
-myLoc = [myLoc[0], myLoc[1]]
-with open('location.csv', 'w') as f:
-    writer = csv.writer(f)
-    writer.writerow(myLoc)
-time.sleep(5)
-pyautogui.hotkey('command','r')
+while True:
+    time.sleep(5)
+    pyautogui.hotkey('command','l')
+    time.sleep(2)
+    pyautogui.hotkey('command','l')
+    pyautogui.hotkey('command','c')
+    webAddr = pyperclip.paste()
+    webAddrAt = webAddr.split("@",1)
+    myLoc = webAddrAt[1].split(",",2)
+    myLoc = [myLoc[0], myLoc[1]]
+    with open('location.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(myLoc)
+    time.sleep(5)
+    pyautogui.hotkey('command','r')
+    #git_push()
+
+
 
 
 #Accessing google share location and get latlng?
