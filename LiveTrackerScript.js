@@ -225,16 +225,16 @@ function getTimeInString(){
    return time;
 }
 function getAstrumPos(){
-   let file="./location.json";
+   let file="./location.txt";
    fetch(file)
       .then((response) => {
          if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
          }
-         alert(response.json());
-         addTraceMarker(response.json());
+         alert(response.text());
+         addTraceMarker(response.text());
          alert("done adding marker");
-         return response.json();
+         return response.text();
       })
       .then((json) => initialize(json))
       .catch((err) => console.error(`Fetch problem: ${err.message}`));
