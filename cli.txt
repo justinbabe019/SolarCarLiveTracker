@@ -1,7 +1,0 @@
-#incstall packages
-pip install pyautogui
-
-while 
-do
-   python3 backend.py
-done
