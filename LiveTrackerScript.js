@@ -1,7 +1,4 @@
 "use strict";
-alert("HI");
-import data from './location.json' assert {type: 'json'};
-alert("done import");
 let map;
 let markers= [];
 let traceMarkers=[];
@@ -159,7 +156,6 @@ function addTraceMarker(position, Label){
 }
 
 function initMap() {
-   alert("hi");
    hide("ins");
    map = new google.maps.Map(document.getElementById("map"), {
       zoom: 5,
@@ -229,10 +225,19 @@ function getTimeInString(){
    return time;
 }
 function getAstrumPos(){
-   alert(data);
-   dataString= '{'+data[0]+','+data[1]+'}';
-   alert(data)
-   addTraceMarker(dataString);
+   let file="locatin.json"
+   fetch(file)
+      .then((response) => {
+         if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+         }
+         addTraceMarker(response.json());
+         alert("done adding marker");
+         return response.json();
+      })
+      .then((json) => initialize(json))
+      .then(response => addTraceMarker(response.json()))
+      .catch((err) => console.error(`Fetch problem: ${err.message}`));
    alert("done adding!");
 }
 function checkLogIn(loggedIn){
