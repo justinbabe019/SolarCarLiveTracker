@@ -15,6 +15,9 @@ open LiveTracker.html, play with the buttons and functions
    - pyautogui
    - git 
    - pythonmonkey
+      - cmake
+      - Poetry
+   - pyperclip
 4. pull the repo from github to local computer
 5. Open compiler window and chrome window next to each other
 6. copy and paste cli.txt to terminal and run or just type python3 backend.py

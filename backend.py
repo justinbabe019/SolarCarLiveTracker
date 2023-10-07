@@ -41,6 +41,7 @@ def git_push():
 #open google maps
 import webbrowser
 import pyautogui 
+import pyperclip
 import time
 import csv
 webbrowser.open('http://google.com/maps')
@@ -63,7 +64,7 @@ while True:
     time.sleep(5)
     from pythonmonkey import require as js_require
     js_lib = js_require('./LiveTrackerScript.js')
-    js_lib.updateLocation()
+    js_lib.getAstrumPos()
 
 
 
