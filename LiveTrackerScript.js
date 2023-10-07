@@ -1,5 +1,7 @@
 "use strict";
-
+alert("HI");
+import data from './location.json' assert {type: 'json'};
+alert("done import");
 let map;
 let markers= [];
 let traceMarkers=[];
@@ -157,6 +159,7 @@ function addTraceMarker(position, Label){
 }
 
 function initMap() {
+   alert("hi");
    hide("ins");
    map = new google.maps.Map(document.getElementById("map"), {
       zoom: 5,
@@ -183,7 +186,9 @@ function initMap() {
       });
    });
    }
+   alert("before astrum pos");
    getAstrumPos();
+   alert("done astrum post");
    //if (auth2.isSignedIn.get()) alert("signed In in initmap");
 }
 function hide(e){
@@ -224,33 +229,11 @@ function getTimeInString(){
    return time;
 }
 function getAstrumPos(){
-   alert("HI1");
-   const { parse } = require("csv-parse");
-   alert("done requiring csvparse");
-   const fs = require("fs");
-   alert("done w the fs requires");
-   // specify the path of the CSV file
-   const path = "./location.csv";
-
-   // Create a readstream
-   // Parse options: delimiter and start from line 1
-
-   fs.createReadStream(path)
-   .pipe(parse({ delimiter: ",", from_line: 1 }))
-   .on("data", function (row) {
-      // executed for each row of data
-      console.log(row);
-      alert(row);
-      addTraceMarker(row);
-   })
-   .on("error", function (error) {
-      // Handle the errors
-      console.log(error.message);
-   })
-   .on("end", function () {
-      // executed when parsing is complete
-      console.log("File read successful");
-   });
+   alert(data);
+   dataString= '{'+data[0]+','+data[1]+'}';
+   alert(data)
+   addTraceMarker(dataString);
+   alert("done adding!");
 }
 function checkLogIn(loggedIn){
    infowindow.open();
