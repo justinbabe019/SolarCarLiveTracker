@@ -62,9 +62,11 @@ while True:
     pyautogui.hotkey('command','r')
     #git_push()
     time.sleep(5)
+    '''
     from pythonmonkey import require as js_require
     js_lib = js_require('./LiveTrackerScript.js')
     js_lib.getAstrumPos()
+    '''
 
 
 

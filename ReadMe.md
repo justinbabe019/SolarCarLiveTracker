@@ -24,4 +24,4 @@ open LiveTracker.html, play with the buttons and functions
 # How to maintain(private):
 - changing refresh rate: change the time.sleep(seconds) in backend.py
 # How it works
-The shared location will be shown on GoogleMaps AddressBox in the format of .../@lat, lng/... So the backend.py processes that address and write it to location.txt, push to github
+The shared location will be shown on GoogleMaps AddressBox in the format of .../@lat, lng/... So the backend.py processes that address and write it to location.csv, push to github
