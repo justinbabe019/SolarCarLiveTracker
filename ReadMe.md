@@ -1,7 +1,7 @@
 # Purpose: 
 provide live location of Astrum
 # How to use(public):
-open LiveTracker.html, play with the buttons and functions
+go to https://ncleong.github.io/SolarCarLiveTracker/, play with the buttons and functions
 # Buttons/functions explained
 - Hide Trace: Any non-newest locations of Astrum will be hidden, so that only the newest/live location of Astrum can be seen
 - Show Trace: Show all the (historical) location markers of Astrum

@@ -225,7 +225,7 @@ function getTimeInString(){
    return time;
 }
 function getAstrumPos(){
-   let file="locatin.json"
+   let file="./locatin.json"
    fetch(file)
       .then((response) => {
          if (!response.ok) {
