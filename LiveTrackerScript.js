@@ -157,6 +157,7 @@ function addTraceMarker(position, Label){
 
 function initMap() {
    hide("ins");
+   addTraceMarker({lat: -12, lng: 130});
    map = new google.maps.Map(document.getElementById("map"), {
       zoom: 5,
       center: ausCenter,
