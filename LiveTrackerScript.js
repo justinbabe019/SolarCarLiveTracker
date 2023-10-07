@@ -157,7 +157,6 @@ function addTraceMarker(position, Label){
 }
 
 function initMap() {
-   getAstrumPos();
    hide("ins");
    map = new google.maps.Map(document.getElementById("map"), {
       zoom: 5,
@@ -184,7 +183,8 @@ function initMap() {
       });
    });
    }
-   if (auth2.isSignedIn.get()) alert("signed In in initmap");
+   getAstrumPos();
+   //if (auth2.isSignedIn.get()) alert("signed In in initmap");
 }
 function hide(e){
    document.getElementById(e).hidden=true;
@@ -224,32 +224,33 @@ function getTimeInString(){
    return time;
 }
 function getAstrumPos(){
-   alert("SAying Hi");
-   // Include the fs module
+   alert("HI1");
+   const { parse } = require("csv-parse");
+   alert("done requiring csvparse");
    const fs = require("fs");
-   // Specify the path of the CSV file
-   const path = "location.csv";
-   // Read the CSV file
-   fs.readFile(path, "utf8", (err, data) => {
-   if (err) {
-      console.error("Error while reading:", err);
-      return;
-   }
-   // Split the data into lines
-   const lines = data.split("\n");
-   // Initialize the output array
-   const output = [];
-   // Loop through each line and split it into fields
-   lines.forEach((line) => {
-      const fields = line.split(",");
-      output.push(fields);
+   alert("done w the fs requires");
+   // specify the path of the CSV file
+   const path = "./location.csv";
+
+   // Create a readstream
+   // Parse options: delimiter and start from line 1
+
+   fs.createReadStream(path)
+   .pipe(parse({ delimiter: ",", from_line: 1 }))
+   .on("data", function (row) {
+      // executed for each row of data
+      console.log(row);
+      alert(row);
+      addTraceMarker(row);
+   })
+   .on("error", function (error) {
+      // Handle the errors
+      console.log(error.message);
+   })
+   .on("end", function () {
+      // executed when parsing is complete
+      console.log("File read successful");
    });
-   // Log the output array
-   //console.log(output);
-   });
-   var astrumNewPos=output;
-   alert(output);
-   addTraceMarker(output);
 }
 function checkLogIn(loggedIn){
    infowindow.open();

@@ -43,7 +43,7 @@ import webbrowser
 import pyautogui 
 import pyperclip
 import time
-import csv
+import json
 webbrowser.open('http://google.com/maps')
 while True:
     time.sleep(5)
@@ -53,11 +53,12 @@ while True:
     pyautogui.hotkey('command','c')
     webAddr = pyperclip.paste()
     webAddrAt = webAddr.split("@",1)
+    print(webAddr)
     myLoc = webAddrAt[1].split(",",2)
     myLoc = [myLoc[0], myLoc[1]]
-    with open('location.csv', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerow(myLoc)
+    print(myLoc)
+    with open("location.json", "w") as outfile:
+        json.dump(myLoc, outfile)
     time.sleep(5)
     pyautogui.hotkey('command','r')
     #git_push()
