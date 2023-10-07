@@ -237,7 +237,6 @@ function getAstrumPos(){
          return response.json();
       })
       .then((json) => initialize(json))
-      .then(response => addTraceMarker(response.json()))
       .catch((err) => console.error(`Fetch problem: ${err.message}`));
    alert("done adding!");
 }
