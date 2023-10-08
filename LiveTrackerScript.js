@@ -133,7 +133,7 @@ function setInitInfoWindow(){
 
 function addTraceMarker(position, Label){
    //const contentString=document.getElementsByTagName('div')[68].innerHTML;
-   const contentString=document.getElementById("instagram-media-0").innerHTML;
+   //const contentString=document.getElementById("instagram-media-0").innerHTML;
    //const contentString=document.getElementsByClassName("instagram-media").innerHTML;
   //'<a href="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==">Check out our instagram!</a>';
 
