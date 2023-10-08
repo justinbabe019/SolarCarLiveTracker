@@ -355,10 +355,11 @@
     }
     function processTxtPara(string){
       string=string.split("\n");
+      let sth=[];
       for(let i=0;i<string.length;++i){
-        string[i]=processTxtRow(string[i]);
+        sth.push(processTxtRow(string[i]));
       }
-      return string;
+      return sth;
     }
     function processTxtRow(string){
       string=string.split(",");
