@@ -232,8 +232,8 @@ function getAstrumPos(){
          if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
          }
-         alert(response.text());
-         alert(response);
+         console.log(response.text());
+         console.log(response);
          addTraceMarker(response);
          alert("done adding marker");
          return response.text();
