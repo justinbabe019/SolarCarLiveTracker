@@ -23,13 +23,16 @@ def printDetails(ip):
 #update to github
 
 from git import Repo
-PATH = 'https://github.com/ncleong/SolarCarLiveTracker.git'
+join = os.path.join
+PATH = r'https://github.com/justinbabe019/SolarCarLiveTracker.git'
 COMMITMSG = 'location update'
 
 def git_push():
     try: 
+        bare_repo = Repo.init(join(rw_dir, 'bare-repo'), bare=True)
+        assert bare_repo.bare
         print("before repo")
-        repo = Repo(PATH)
+        repo = Repo(self.rorepo.working_tree_dir)
         print("REPO STAT: "+ repo.bare)
         #repo = Repo(self.rorepo.working_tree_dir)
         repo.git.add(update=True)
