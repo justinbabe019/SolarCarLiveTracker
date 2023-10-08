@@ -21,7 +21,7 @@ def printDetails(ip):
     print(f"Coordinates: (Lat: {res.latitude}, Lng: {res.longitude})")
 
 #update to github
-'''
+
 from git import Repo
 PATH = 'https://github.com/justinbabe019/SolarCarLiveTracker.git'
 COMMITMSG = 'location update'
@@ -33,9 +33,9 @@ def git_push():
         repo.index.commit(COMMITMSG)
         origin = repo.remote(name='origin')
         origin.push()
+        print("done uploading to github")
     except:
         print('Some error occured while pushing the code')    
-'''
 
 #try to use google maps location sharing instead
 #open google maps
@@ -44,7 +44,10 @@ import pyautogui
 import pyperclip
 import time
 import json
+from datetime import datetime
+now=datetime.now()
 webbrowser.open('http://google.com/maps')
+f = open('location.txt', 'w')
 while True:
     time.sleep(5)
     pyautogui.hotkey('command','l')
@@ -55,41 +58,9 @@ while True:
     webAddrAt = webAddr.split("@",1)
     print(webAddr)
     myLoc = webAddrAt[1].split(",",2)
-    myLoc = [myLoc[0], myLoc[1]]
     print(myLoc)
-    with open("location.json", "w") as outfile:
-        json.dump(myLoc, outfile)
+    f.write(myLoc[0]+","+myLoc[1]+", "+now.strftime("%b%d %H:%M")+'\n') 
     time.sleep(5)
     pyautogui.hotkey('command','r')
-    #git_push()
+    git_push()
     time.sleep(5)
-    '''
-    from pythonmonkey import require as js_require
-    js_lib = js_require('./LiveTrackerScript.js')
-    js_lib.getAstrumPos()
-    '''
-
-
-
-#Accessing google share location and get latlng?
-#log into google
-'''
-from bs4 import BeautifulSoup
-import requests
-form_data={'Email': 'justinbabe019@gmail.com', 'Passwd': 'ilovekabcliforever'}
-post = "https://accounts.google.com/signin/challenge/sl/password"
-
-with requests.Session() as s:
-    soup = BeautifulSoup(s.get("https://mail.google.com").text)
-    for inp in soup.select("#gaia_loginform input[name]"):
-        if inp["name"] not in form_data:
-            form_data[inp["name"]] = inp["value"]
-    s.post(post, form_data)
-    html = s.get("https://mail.google.com/mail/u/0/#inbox").content
-'''
-
-#Device location
-'''
-import urllib.request as urllib2
-import json
-'''
