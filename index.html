@@ -337,7 +337,7 @@
           .catch((err) => console.error(`Fetch problem: ${err.message}`));
         */
       let str=getText("location.txt");
-      alert(str);
+      alert("str= "+str);
       //str=str.split(",");
       addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}", getFullTimeString());
       alert("done adding");
