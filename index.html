@@ -364,7 +364,7 @@
     }
     function processTxtRow(string){
       string=string.split(",");
-      const sth=JSON.parse("{lat: "+string[0]+", lng:" +string[1]+"}");
+      const sth=new google.maps.LatLng(string[0],string[1]);
       alert("STH= "+ sth);
       return sth;
     }
