@@ -248,6 +248,13 @@
       });
       traceMarkers.push(marker);
     }
+    
+    async function getText(file) {
+      let myObject = await fetch(file);
+      let myText = await myObject.text();
+      alert("myText= "+ myText);
+      return myText;
+    }
 
     function initMap() {
       hide("ins");
@@ -376,12 +383,6 @@
     }
     function distCal(){
       //look up google map platform
-    }
-    async function getText(file) {
-      let myObject = await fetch(file);
-      let myText = await myObject.text();
-      alert("myText= "+ myText);
-      return myText;
     }
    </script>
   </head>
