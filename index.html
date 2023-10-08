@@ -333,7 +333,7 @@
           alert("value= "+value);
           const str=processTxtPara(value);
           const timeStr=processTxtParaTime(value);
-          for(const i=0;i<str.length();++i){
+          for(const i=0;i<str.length;++i){
             console.log("STR= " +str[i]);
             addTraceMarker(str[i], timeStr[i]);
           }
@@ -354,7 +354,7 @@
     }
     function processTxtPara(string){
       string=string.split("\n");
-      for(const i=0;i<string.length();++i){
+      for(const i=0;i<string.length;++i){
         string[i]=processTxtRow(string[i]);
       }
       return string;
@@ -366,7 +366,7 @@
     }
     function processTxtParaTime(stirng){
       string=string.split("\n");
-      for(const i=0;i<string.length();++i){
+      for(const i=0;i<string.length;++i){
         const sth= string[i].split(",");
         string[i]=sth[2];
       }
