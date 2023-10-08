@@ -251,7 +251,7 @@
 
     function initMap() {
       hide("ins");
-      addTraceMarker({lat: -12, lng: 130},  getDateInString()+"-"+getTimeInString());
+      addTraceMarker({lat: -12, lng: 130},  getFullTimeString());
       map = new google.maps.Map(document.getElementById("map"), {
           zoom: 5,
           center: ausCenter,
@@ -319,6 +319,7 @@
       return time;
     }
     function getAstrumPos(){
+      /*
       let file="./location.txt";
       fetch(file)
           .then((response) => {
@@ -329,12 +330,18 @@
             console.log("string1: " + str);
             str=str.split(",");
             console.log("Stromg2: "+str);
-            addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}");
+            addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}", getFullTimeString());
             alert("done adding marker");
             return response.text();
           })
           .catch((err) => console.error(`Fetch problem: ${err.message}`));
-      alert("done adding!");
+        */
+      let str=getText("location.txt");
+      addTraceMarker("{}")
+      str=str.split(",");
+      console.log("Stromg2: "+str);
+      addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}", getFullTimeString());
+      alert("done adding");
     }
     function checkLogIn(loggedIn){
       infowindow.open();
@@ -344,6 +351,9 @@
       console.log('Image URL: ' + profile.getImageUrl());
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
       alert("info window opened");
+    }
+    function getFullTimeString(){
+      return getDateInString()+"-"+getTimeInString();
     }
     function onSignIn(googleUser){
       if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
@@ -367,6 +377,11 @@
     }
     function distCal(){
       //look up google map platform
+    }
+    async function getText(file) {
+      let myObject = await fetch(file);
+      let myText = await myObject.text();
+      return myText;
     }
    </script>
   </head>
