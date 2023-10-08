@@ -348,8 +348,7 @@
       getText("location.txt").then(
         function(value){
           alert("value= "+value);
-          value=value.split(",");
-          let str="{lat: "+ value[0] + ", lng: "+ value[1]+"}";
+          processTxtRow(value);
           alert("str= "+str);
           addTraceMarker(str, getFullTimeString());
         },
@@ -366,6 +365,11 @@
       console.log('Image URL: ' + profile.getImageUrl());
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
       alert("info window opened");
+    }
+    function processTxtRow(string){
+      string=string.split(",");
+      const sth={lat: string[0], lng:string[1]};
+      return sth;
     }
     function getFullTimeString(){
       return getDateInString()+"-"+getTimeInString();
