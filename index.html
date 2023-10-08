@@ -328,29 +328,14 @@
       return time;
     }
     function getAstrumPos(){
-      /*
-      let file="./location.txt";
-      fetch(file)
-          .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
-            }
-            let str=response.text();
-            console.log("string1: " + str);
-            str=str.split(",");
-            console.log("Stromg2: "+str);
-            addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}", getFullTimeString());
-            alert("done adding marker");
-            return response.text();
-          })
-          .catch((err) => console.error(`Fetch problem: ${err.message}`));
-        */
       getText("location.txt").then(
         function(value){
           alert("value= "+value);
-          processTxtRow(value);
-          alert("str= "+str);
-          addTraceMarker(str, getFullTimeString());
+          const str=processTxtPara(value);
+          for(const i=0;i<str.length();++i){
+            alert("STR= " +str[i]);
+            addTraceMarker(str[i], getFullTimeString());
+          }
         },
         function(error){alert("sth wrong w txt file!~")}
       );
@@ -365,6 +350,13 @@
       console.log('Image URL: ' + profile.getImageUrl());
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
       alert("info window opened");
+    }
+    function processTxtPara(string){
+      string=string.split("\n");
+      for(const i=0;i<string.length();++i){
+        string[i]=processTxtRow(string[i]);
+      }
+      return string;
     }
     function processTxtRow(string){
       string=string.split(",");
