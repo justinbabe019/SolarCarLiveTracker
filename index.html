@@ -216,10 +216,11 @@
       addTraceMarker(startPos, "Astrum Current Position");
     }
     function setInitInfoWindow(){
+      const insString=document.getElementById("ins").innerHTML;
       let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
           const infowondow= new google.maps.InfoWindow({
-            content: contentString[i]+document.getElementById("ins").innerHTML,
+            content: contentString[i]+insString,
           });;
           infowindows.push(infowondow);
       }
