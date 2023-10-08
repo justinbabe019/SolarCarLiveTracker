@@ -259,7 +259,7 @@
 
     function initMap() {
       hide("ins");
-      addTraceMarker({lat: -12, lng: 130},  getFullTimeString());
+      addTraceMarker(ausCenter,  getFullTimeString());
       map = new google.maps.Map(document.getElementById("map"), {
           zoom: 5,
           center: ausCenter,
