@@ -348,11 +348,11 @@
           alert("value= "+value);
           value=value.split(",");
           let str="{lat: "+ value[0] + ", lng: "+ value[1]+"}";
+          alert("str= "+str);
           addTraceMarker(str, getFullTimeString());
         },
         function(error){alert("sth wrong w txt file!~")}
       );
-      alert("str= "+str);
       //str=str.split(",");
       alert("done adding");
     }
