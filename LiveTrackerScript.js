@@ -231,9 +231,11 @@ function getAstrumPos(){
          if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
          }
-         console.log(response.text());
-         console.log(response);
-         addTraceMarker(response);
+         let str=response.text();
+         console.log("string1: " + str);
+         str=str.split(",");
+         console.log("Stromg2: "+str);
+         addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}");
          alert("done adding marker");
          return response.text();
       })
