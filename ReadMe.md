@@ -12,6 +12,7 @@ go to https://ncleong.github.io/SolarCarLiveTracker/, play with the buttons and 
 1. Have two Google accoutns, one logged in to phone and one to laptop
 2. Share location (permanently) via Google Maps from your phone account to your computer account
 3. install all the required python libraries
+   - geocoder
    - pyautogui
    - git 
    - pythonmonkey

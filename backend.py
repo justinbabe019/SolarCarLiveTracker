@@ -23,13 +23,17 @@ def printDetails(ip):
 #update to github
 
 from git import Repo
-PATH = 'https://github.com/justinbabe019/SolarCarLiveTracker.git'
+PATH = 'https://github.com/ncleong/SolarCarLiveTracker.git'
 COMMITMSG = 'location update'
 
 def git_push():
     try: 
+        print("before repo")
         repo = Repo(PATH)
+        print("REPO STAT: "+ repo.bare)
+        #repo = Repo(self.rorepo.working_tree_dir)
         repo.git.add(update=True)
+
         repo.index.commit(COMMITMSG)
         origin = repo.remote(name='origin')
         origin.push()
@@ -45,7 +49,6 @@ import pyperclip
 import time
 import json
 from datetime import datetime
-now=datetime.now()
 webbrowser.open('http://google.com/maps')
 f = open('location.txt', 'w')
 while True:
@@ -59,6 +62,7 @@ while True:
     print(webAddr)
     myLoc = webAddrAt[1].split(",",2)
     print(myLoc)
+    now=datetime.now()
     f.write(myLoc[0]+","+myLoc[1]+", "+now.strftime("%b%d %H:%M")+'\n') 
     time.sleep(5)
     pyautogui.hotkey('command','r')
