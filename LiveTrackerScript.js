@@ -183,7 +183,6 @@ function initMap() {
       });
    });
    }
-   alert("before astrum pos");
    getAstrumPos();
    alert("done astrum post");
    //if (auth2.isSignedIn.get()) alert("signed In in initmap");
