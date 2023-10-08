@@ -335,7 +335,7 @@
           const timeStr=processTxtParaTime(value);
           for(const i=0;i<str.length();++i){
             alert("STR= " +str[i]);
-            addTraceMarker(str[i], getFullTimeString());
+            addTraceMarker(str[i], timeStr[i]);
           }
         },
         function(error){alert("sth wrong w txt file!~")}
