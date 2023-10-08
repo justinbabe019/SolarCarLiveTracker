@@ -237,7 +237,6 @@ function getAstrumPos(){
          alert("done adding marker");
          return response.text();
       })
-      .then((json) => initialize(json))
       .catch((err) => console.error(`Fetch problem: ${err.message}`));
    alert("done adding!");
 }
