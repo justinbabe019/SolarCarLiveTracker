@@ -248,7 +248,7 @@
       });
       traceMarkers.push(marker);
     }
-    
+
     async function getText(file) {
       let myObject = await fetch(file);
       let myText = await myObject.text();
@@ -343,10 +343,17 @@
           })
           .catch((err) => console.error(`Fetch problem: ${err.message}`));
         */
-      let str=getText("location.txt");
+      getText("location.txt").then(
+        function(value){
+          alert("value= "+value);
+          value=value.split(",");
+          let str="{lat: "+ value[0] + ", lng: "+ value[1]+"}";
+          addTraceMarker(str, getFullTimeString());
+        },
+        function(error){alert("sth wrong w txt file!~")}
+      );
       alert("str= "+str);
       //str=str.split(",");
-      addTraceMarker("{lat: "+ str[0] + ", lng: "+ str[1]+"}", getFullTimeString());
       alert("done adding");
     }
     function checkLogIn(loggedIn){
