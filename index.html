@@ -332,6 +332,7 @@
         function(value){
           alert("value= "+value);
           const str=processTxtPara(value);
+          const timeStr=processTxtParaTime(value);
           for(const i=0;i<str.length();++i){
             alert("STR= " +str[i]);
             addTraceMarker(str[i], getFullTimeString());
@@ -362,6 +363,14 @@
       string=string.split(",");
       const sth={lat: string[0], lng:string[1]};
       return sth;
+    }
+    function processTxtParaTime(stirng){
+      string=string.split("\n");
+      for(const i=0;i<string.length();++i){
+        const sth= string[i].split(",");
+        string[i]=sth[2];
+      }
+      return string;
     }
     function getFullTimeString(){
       return getDateInString()+"-"+getTimeInString();
