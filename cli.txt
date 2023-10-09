@@ -1,6 +1,7 @@
 #incstall packages
 pip install pyautogui
 
+python3 backend0init.py
 while :
 do
    echo"printing"
