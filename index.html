@@ -301,8 +301,8 @@
       const origin1 = { lat: 55.93, lng: -3.118 };
       const destinationB = { lat: 50.087, lng: 14.421 };
       const request = {
-      origins: [origin1, origin2],
-      destinations: [destinationA, destinationB],
+      origins: [origin1],
+      destinations: [destinationB],
       travelMode: google.maps.TravelMode.DRIVING,
       unitSystem: google.maps.UnitSystem.METRIC,
       avoidHighways: false,
@@ -435,7 +435,7 @@
     function processTxtPara(string){
       string=string.split("\n");
       let sth=[];
-      for(let i=0;i<string.length;++i){
+      for(let i=0;i<string.length-1;++i){
         sth.push(processTxtRow(string[i]));
         console.log("STH[i]= "+sth[i]);
       }
