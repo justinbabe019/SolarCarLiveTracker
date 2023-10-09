@@ -310,11 +310,13 @@
   };
 
   // put request on page
+  /*
   document.getElementById("request").innerText = JSON.stringify(
     request,
     null,
     2,
-  );
+  );*/
+  
   // get distance matrix response
   service.getDistanceMatrix(request).then((response) => {
     // put response
