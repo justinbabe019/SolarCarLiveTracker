@@ -23,22 +23,28 @@ def printDetails(ip):
 #update to github
 
 from git import Repo
-join = os.path.join
-PATH = r'https://github.com/justinbabe019/SolarCarLiveTracker.git'
+import os
+PATH = "https://github.com/justinbabe019/SolarCarLiveTracker.git"
+PATH2 = 'git@github.com:ncleong/SolarCarLiveTracker.git'
 COMMITMSG = 'location update'
 
 def git_push():
     try: 
-        bare_repo = Repo.init(join(rw_dir, 'bare-repo'), bare=True)
-        assert bare_repo.bare
         print("before repo")
-        repo = Repo(self.rorepo.working_tree_dir)
-        print("REPO STAT: "+ repo.bare)
+        repo = Repo(url=PATH2)
         #repo = Repo(self.rorepo.working_tree_dir)
+        print("REPO SET")
+        #grab repo w latest data from origin
+        origin = repo.remote("origin")
+        assert origin.exists()
+        #origin.fetch()
+        print("REPO STAT: "+ repo.bare)
         repo.git.add(update=True)
-
+        #commit
+        repo.index.add("./location.txt")
+        repo.git.push("--set-upstream", origin, repo.head.ref)
+        "https://{}/pull/new/{}".format(PATH, "main")
         repo.index.commit(COMMITMSG)
-        origin = repo.remote(name='origin')
         origin.push()
         print("done uploading to github")
     except:

@@ -14,7 +14,7 @@ go to https://ncleong.github.io/SolarCarLiveTracker/, play with the buttons and 
 3. install all the required python libraries
    - geocoder
    - pyautogui
-   - git 
+   - GitPython
    - pyperclip
 4. pull the repo from github to local computer
 5. Open compiler window and chrome window next to each other
@@ -23,4 +23,4 @@ go to https://ncleong.github.io/SolarCarLiveTracker/, play with the buttons and 
 - changing refresh rate: change the time.sleep(seconds) in backend.py
 # How it works
 The shared location will be shown on GoogleMaps AddressBox in the format of .../@lat, lng/... So the backend.py processes that address and write it to location.csv, push to github. 
-> Keep your computer terminal running with chrome in parallel!!!!!!
+> Keep your computer terminal running with chrome in parallel!!!!!!DO NOT MOVE OR CLICK!
