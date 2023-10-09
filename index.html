@@ -399,7 +399,7 @@
     }
     function zoomCurrentMarker(){
       map.setZoom(8);
-      map.setCenter(traceMarkers[0].LatLng);
+      map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
     }
     function getDateInString(){
       var today = new Date();
