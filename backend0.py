@@ -57,7 +57,7 @@ import pyperclip
 import time
 import json
 from datetime import datetime
-f = open('location.txt', 'w')
+f = open('location.txt', 'a')
 time.sleep(5)
 pyautogui.hotkey('command','l')
 time.sleep(2)

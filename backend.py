@@ -59,7 +59,7 @@ import time
 import json
 from datetime import datetime
 webbrowser.open('http://google.com/maps')
-f = open('location.txt', 'w')
+f = open('location.txt', 'a')
 while True:
     time.sleep(5)
     pyautogui.hotkey('command','l')
