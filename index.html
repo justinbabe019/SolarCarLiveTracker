@@ -318,12 +318,13 @@
   // get distance matrix response
   service.getDistanceMatrix(request).then((response) => {
     // put response
+    /*
     document.getElementById("response").innerText = JSON.stringify(
       response,
       null,
       2,
     );
-
+    */
     // show on map
     const originList = response.originAddresses;
     const destinationList = response.destinationAddresses;
