@@ -228,7 +228,6 @@
 
     function addTraceMarker(position, Label){
       //const contentString=document.getElementsByTagName('div')[68].innerHTML;
-      alert("position= "+position);
       const contentString=document.getElementById("ins").innerHTML;
       //const contentString=document.getElementsByClassName("instagram-media").innerHTML;
       //'<a href="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==">Check out our instagram!</a>';
@@ -254,7 +253,6 @@
     async function getText(file) {
       let myObject = await fetch(file);
       let myText = await myObject.text();
-      alert("myText= "+ myText);
       return myText;
     }
 
@@ -288,7 +286,7 @@
       });
       }
       getAstrumPos();
-      alert("done astrum post");
+
 
       const geocoder = new google.maps.Geocoder();
       const service = new google.maps.DistanceMatrixService();
@@ -408,7 +406,6 @@
     function getAstrumPos(){
       getText("location.txt").then(
         function(value){
-          alert("value= "+value);
           const str=processTxtPara(value);
           const timeStr=processTxtParaTime(value);
           for(let i=0;i<str.length;++i){
@@ -420,7 +417,6 @@
         function(error){alert("sth wrong w txt file!~")}
       );
       //str=str.split(",");
-      alert("done adding");
     }
     function checkLogIn(loggedIn){
       infowindow.open();
@@ -443,7 +439,6 @@
     function processTxtRow(string){
       string=string.split(",");
       const sth=new google.maps.LatLng(string[0],string[1]);
-      alert("STH= "+ sth);
       return sth;
     }
     function processTxtParaTime(string){
