@@ -294,7 +294,7 @@
       }
       getAstrumPos();
 
-      for(let i=0;i<traceMarkers.length;i++)console.log(traceMarkers[i].position);
+      for(let i=0;i<traceMarkers.length;i++)console.log(traceMarkers[i].getPosition());
 
       const service = new google.maps.DistanceMatrixService();
       // build request
@@ -316,7 +316,7 @@
     null,
     2,
   );*/
-  
+
   // get distance matrix response
   service.getDistanceMatrix(request).then((response) => {
     // put response
