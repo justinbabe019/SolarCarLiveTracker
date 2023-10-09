@@ -90,7 +90,7 @@
         margin: 0;
         padding: 0;
       }
-      button{
+      .myButtons{
         background-color: #00274C;
         color: white;
         border: none;
@@ -487,12 +487,12 @@
    <body>
       <script src="https://apis.google.com/js/platform.js" async defer></script>
       <div id="floating-panel">
-         <button onclick="hideTrace()">Hide Trace</button>
-         <button onclick="showTrace(traceMarkers)">Show Trace</button>
-         <button onclick="hideInitMarker()">Hide Checkpoints</button>
-         <button onclick="showTrace(markers)">Show Checkpoints</button>
-         <button onclick="reCenter()">Re-Center</button>
-         <button onclick="zoomCurrentMarker()">Zoom to current marker</button>
+         <button class="myButtons" onclick="hideTrace()">Hide Trace</button>
+         <button class="myButtons" onclick="showTrace(traceMarkers)">Show Trace</button>
+         <button class="myButtons" onclick="hideInitMarker()">Hide Checkpoints</button>
+         <button class="myButtons" onclick="showTrace(markers)">Show Checkpoints</button>
+         <button class="myButtons" onclick="reCenter()">Re-Center</button>
+         <button class="myButtons" onclick="zoomCurrentMarker()">Zoom to current marker</button>
          <script src="https://accounts.google.com/gsi/client" async defer></script>
           <div id="g_id_onload"
               data-client_id="866896161838-06ntn1butf2aanvto43332mc81ojhvs6"
