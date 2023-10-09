@@ -52,13 +52,11 @@ def git_push():
 
 #try to use google maps location sharing instead
 #open google maps
-import webbrowser
 import pyautogui 
 import pyperclip
 import time
 import json
 from datetime import datetime
-webbrowser.open('http://google.com/maps')
 f = open('location.txt', 'w')
 time.sleep(5)
 pyautogui.hotkey('command','l')
