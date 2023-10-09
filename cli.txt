@@ -1,13 +1,10 @@
-#incstall packages
-pip install pyautogui
-
 python3 backend0init.py
 while :
 do
-   echo"printing"
+   echo "printing"
    python3 backend0.py
    git add .
    git commit -m "testing from terminal"
    git push
-   sleep 10s
+   sleep 15s
 done
