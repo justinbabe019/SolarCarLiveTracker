@@ -294,8 +294,6 @@
       }
       getAstrumPos();
 
-      for(let i=0;i<traceMarkers.length;i++)console.log(traceMarkers[i].getPosition());
-
       const service = new google.maps.DistanceMatrixService();
       // build request
       const origin1 = { lat: 55.93, lng: -3.118 };
@@ -331,7 +329,7 @@
     const originList = response.originAddresses;
     const destinationList = response.destinationAddresses;
 
-    deleteMarkers(markersArray);
+    //deleteMarkers(markersArray);
 
     const showGeocodedAddressOnMap = (asDestination) => {
       const handler = ({ results }) => {
@@ -398,7 +396,7 @@
       map.setCenter(ausCenter);
     }
     function zoomCurrentMarker(){
-      map.setZoom(8);
+      map.setZoom(10);
       map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
     }
     function getDateInString(){
