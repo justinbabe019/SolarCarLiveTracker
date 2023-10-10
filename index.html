@@ -210,7 +210,7 @@
       const glendamboMarker = new google.maps.Marker({
           position: glendamboPos,
           icon: unifyInitIcon("https://worldsolarchallenge.org/skin/2023/images/logo.svg"),
-          title: "cooberPedy",
+          title: "glendambo",
           map,
       })
       markers.push(glendamboMarker);
@@ -305,7 +305,7 @@
       const service = new google.maps.DistanceMatrixService();
       // build request
       const origin = traceMarkers[traceMarkers.length-1].getPosition();
-      const destination = aliceSpringsPos;
+      const destination = getClosestCPPos();
       const request = {
         origins: [origin],
         destinations: [destination],
@@ -343,7 +343,6 @@
         const originList = response.originAddresses;
         const destinationList = response.destinationAddresses;
       });
-      getClosestCPLat();
     }
     /*
     function callback(response, status) {
@@ -368,9 +367,21 @@
       traceMarkers[traceMarkers.length-1].infowindow.contentString=str;
       alert("changed");
     }
-    function getClosestCPLat(){
+    function getClosestCPPos(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
-      alert(curLng);
+      if(curLng>startPos.lat)alert("Too North!");
+      else if(curLng <= startPos.lat && curLng>katherinePos.lat)return katherinePos;
+      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat)return dunmarraPos;
+      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat)return tennantCreekPos;
+      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat)return barrowCreekPos;
+      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat)return aliceSpringsPos;
+      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat)return kulgeraPos;
+      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat)return cooberPedyPos;
+      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat)return glendamboPos;
+      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat)return portAugustaPos;
+      else if(curLng <= endpos.lat)return endPos;
+      else
+        alert("Too South!");
     }
     function getPosOfNum(num){
       const str=processTxtPara("location.txt");
