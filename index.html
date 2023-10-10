@@ -229,8 +229,6 @@
           map,
       })
       markers.push(endPointMarker);
-
-      addTraceMarker(startPos, "Astrum Current Position");
     }
     function setInitInfoWindow(){
       const insString=document.getElementById("ins").innerHTML;
@@ -302,8 +300,8 @@
           });
       });
       }
+      addTraceMarker(startPos, "Astrum Current Position");
       getAstrumPos();
-
       const service = new google.maps.DistanceMatrixService();
       // build request
       const origin = traceMarkers[traceMarkers.length-1].getPosition();
