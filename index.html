@@ -112,6 +112,7 @@
     let traceMarkers=[];
     let markerDates = [];
     let infowindows=[];
+    let traceinfowindows=[];
 
     const ausCenter = {lat: -25.363, lng: 131.044};
 
@@ -264,6 +265,7 @@
           });
       });
       traceMarkers.push(marker);
+      traceinfowindows.push(infowindow);
     }
 
     async function getText(file) {
@@ -366,7 +368,7 @@
     }*/
     function changeNewestMarkerInfoWindow(str){
       console.log(str);
-      infowindows[traceMarkers.length-1].setContent(str);
+      traceinfowindows[traceMarkers.length-1].setContent(str);
       alert("changed");
     }
     function getClosestCPPos(){
