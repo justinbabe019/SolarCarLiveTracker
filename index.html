@@ -336,34 +336,6 @@
         // show on map
         const originList = response.originAddresses;
         const destinationList = response.destinationAddresses;
-
-        //deleteMarkers(markersArray);
-
-        const showGeocodedAddressOnMap = (asDestination) => {
-          const handler = ({ results }) => {
-            map.fitBounds(bounds.extend(results[0].geometry.location));
-            markersArray.push(
-              new google.maps.Marker({
-                map,
-                position: results[0].geometry.location,
-                label: asDestination ? "D" : "O",
-              }),
-            );
-          };
-          return handler;
-        };
-
-        for (let i = 0; i < originList.length; i++) {
-          const results = response.rows[i].elements;
-          geocoder
-            .geocode({ address: originList[i] })
-            .then(showGeocodedAddressOnMap(false));
-          for (let j = 0; j < results.length; j++) {
-            geocoder
-              .geocode({ address: destinationList[j] })
-              .then(showGeocodedAddressOnMap(true));
-          }
-        }
       });
     }
     function getClosestCPNum(loc){
