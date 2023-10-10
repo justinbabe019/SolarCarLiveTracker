@@ -343,6 +343,7 @@
         const originList = response.originAddresses;
         const destinationList = response.destinationAddresses;
       });
+      getClosestCPNum();
     }
     /*
     function callback(response, status) {
@@ -363,9 +364,9 @@
         }
       }
     }*/
-    function getClosestCPNum(loc){
-      
-      loc.lng
+    function getClosestCPNum(){
+      const curLng=traceMarkers[traceMarkers.length-1].getPosition().lng;
+      alert(curLng);
     }
     function getPosOfNum(num){
       const str=processTxtPara("location.txt");
