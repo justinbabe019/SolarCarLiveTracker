@@ -364,7 +364,11 @@
         }
       }
     }*/
-    function getClosestCPNum(){
+    function changeNewestMarkerInfoWindow(str){
+      traceMarkers[traceMarkers.length-1].infowindow.contentString=str;
+      alert("changed");
+    }
+    function getClosestCPLng(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lng;
       alert(curLng);
     }
