@@ -323,6 +323,7 @@
 
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
+        console.log("TEST:\n"+response[0].elements.distance.text);
         console.log(response);
         // put response
         /*
