@@ -316,7 +316,6 @@
       };
 
       // put request on page
-      console.log(request);
       /*
       document.getElementById("request").innerText = JSON.stringify(
         request,
@@ -326,7 +325,6 @@
 
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
-        console.log(response);
         var dist=response.rows[0].elements[0].distance.text;
         console.log(dist);
         traceinfowindows[traceMarkers.length-1].setContent(
@@ -371,7 +369,6 @@
     function changeNewestMarkerInfoWindow(str){
       console.log(str);
       traceinfowindows[traceMarkers.length-1].setContent(str);
-      alert("changed");
     }
     function getClosestCPPos(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
