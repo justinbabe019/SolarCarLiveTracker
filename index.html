@@ -366,7 +366,7 @@
     }*/
     function changeNewestMarkerInfoWindow(str){
       console.log(str);
-      infowindows[traceMarkers.length-1].content=str;
+      infowindows[traceMarkers.length-1].setContent(str);
       alert("changed");
     }
     function getClosestCPPos(){
