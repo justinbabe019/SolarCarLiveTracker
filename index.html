@@ -323,17 +323,8 @@
 
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
-        console.log("TEST:\n"+response[0].elements.distance.text);
+        console.log("TEST:\n"+response[0].element.distance.text);
         console.log(response);
-        // put response
-        /*
-        document.getElementById("response").innerText = JSON.stringify(
-          response,
-          null,
-          2,
-        );
-        */
-        // show on map
         const originList = response.originAddresses;
         const destinationList = response.destinationAddresses;
       });
