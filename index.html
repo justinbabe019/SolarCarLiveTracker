@@ -371,16 +371,16 @@
     function getClosestCPPos(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
       if(curLng>startPos.lat)alert("Too North!");
-      else if(curLng <= startPos.lat && curLng>katherinePos.lat){console.log("katherine");return "katherine";}
-      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){console.log("dunmarra");return "dunmarra";}
-      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){console.log("tennantCreek");return "tennantCreek";}
-      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){console.log("barrowCreek");return "barrowCreek";}
-      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){console.log("alice springs");return "aliceSprings";}
-      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){console.log("kulgera");return "kulgera";}
-      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){console.log("coober pedy");return "cooberPedy";}
-      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){console.log("glendambo");return "glendambo";}
-      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){console.log("port augusta");return "portAugusta";}
-      else if(curLng <= endpos.lat){console.log("end point!");return "endPos";}
+      else if(curLng <= startPos.lat && curLng>katherinePos.lat){return "katherine";}
+      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){return "dunmarra";}
+      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){return "tennantCreek";}
+      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){return "barrowCreek";}
+      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){return "aliceSprings";}
+      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){return "kulgera";}
+      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){return "cooberPedy";}
+      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){return "glendambo";}
+      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){return "portAugusta";}
+      else if(curLng <= endpos.lat){return "endPos";}
       else
         alert("Too South!");
     }
