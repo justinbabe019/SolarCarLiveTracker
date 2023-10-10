@@ -296,7 +296,7 @@
 
       const service = new google.maps.DistanceMatrixService();
       // build request
-      const origin1 = { lat: 55.93, lng: -3.118 };
+      const origin = traceMarkers[traceMarkers.length-1].getPosition();
       const destinationB = { lat: 50.087, lng: 14.421 };
       const request = {
       origins: [origin1],
@@ -308,6 +308,7 @@
   };
 
   // put request on page
+  console.log(response);
   /*
   document.getElementById("request").innerText = JSON.stringify(
     request,
@@ -317,6 +318,7 @@
 
   // get distance matrix response
   service.getDistanceMatrix(request).then((response) => {
+    console.log(response);
     // put response
     /*
     document.getElementById("response").innerText = JSON.stringify(
@@ -415,8 +417,6 @@
           const str=processTxtPara(value);
           const timeStr=processTxtParaTime(value);
           for(let i=0;i<str.length;++i){
-            console.log("STR= " +str[i]);
-            console.log("timestring= "+ timeStr[i]);
             addTraceMarker(str[i], timeStr[i]);
           }
         },
