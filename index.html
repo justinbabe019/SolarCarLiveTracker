@@ -302,10 +302,10 @@
       const service = new google.maps.DistanceMatrixService();
       // build request
       const origin = traceMarkers[traceMarkers.length-1].getPosition();
-      const destinationB = { lat: 50.087, lng: 14.421 };
+      const destination = aliceSpringsPos;
       const request = {
-      origins: [origin1],
-      destinations: [destinationB],
+      origins: [origin],
+      destinations: [destination],
       travelMode: google.maps.TravelMode.DRIVING,
       unitSystem: google.maps.UnitSystem.METRIC,
       avoidHighways: false,
