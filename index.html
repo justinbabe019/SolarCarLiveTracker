@@ -330,8 +330,8 @@
         var dist=response.rows[0].elements[0].distance.text;
         console.log(dist);
         traceinfowindows[traceMarkers.length-1].setContent(
-          getClosestCPPos()+'\n' + "Distance left: "+dist + '\n'
-          +"ETA: "+ dist/80);
+          getClosestCPPos()+"\n" + "Distance left: "+dist + "\n"
+          +"ETA: "+ dist.split("km")/80);
         for(var i=0; i<origins.length;++i){
           var results=response.rows[i].elements;
           for (var j = 0; j < results.length; j++) {
