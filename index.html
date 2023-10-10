@@ -370,16 +370,16 @@
     function getClosestCPPos(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
       if(curLng>startPos.lat)alert("Too North!");
-      else if(curLng <= startPos.lat && curLng>katherinePos.lat)return katherinePos;
-      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat)return dunmarraPos;
-      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat)return tennantCreekPos;
-      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat)return barrowCreekPos;
-      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat)return aliceSpringsPos;
-      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat)return kulgeraPos;
-      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat)return cooberPedyPos;
-      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat)return glendamboPos;
-      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat)return portAugustaPos;
-      else if(curLng <= endpos.lat)return endPos;
+      else if(curLng <= startPos.lat && curLng>katherinePos.lat){console.log("katherine");return katherinePos;}
+      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){console.log("dunmarra");return dunmarraPos;}
+      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){console.log("tennantCreek");return tennantCreekPos;}
+      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){console.log("barrowCreek");return barrowCreekPos;}
+      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){console.log("alice springs");return aliceSpringsPos;}
+      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){console.log("kulgera");return kulgeraPos;}
+      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){console.log("coober pedy");return cooberPedyPos;}
+      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){console.log("glendambo");return glendamboPos;}
+      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){console.log("port augusta");return portAugustaPos;}
+      else if(curLng <= endpos.lat){console.log("end point!");return endPos;}
       else
         alert("Too South!");
     }
