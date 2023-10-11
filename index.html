@@ -329,7 +329,7 @@
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
         var dist=response.rows[0].elements[0].distance.text;
-        console.log(dist);
+        alert("DIST: " + dist);
         changeNewestMarkerInfoWindow(
           getClosestCPPos() + ", Distance left: "+dist +
           ", ETA: "+ getNumberFromString(dist)/80 + " hours");
