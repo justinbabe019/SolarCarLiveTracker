@@ -90,13 +90,17 @@
         margin: 0;
         padding: 0;
       }
+      #floating-panel{
+         margin: auto;
+      }
       .myButtons{
         background-color: #00274C;
+        font-size: larger;
         color: white;
         border: none;
         border-radius: 12px;
         padding: 4px;
-        margin-left: 4px;
+        margin-left: 26px;
         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
       }
       .myButtons:hover {
@@ -351,10 +355,30 @@
       });
       //changeNewestMarkerInfoWindow(getClosestCPPos());
     }
+    /*
+    function callback(response, status) {
+      if (status == 'OK') {
+        var origins = response.originAddresses;
+        var destinations = response.destinationAddresses;
 
+        for (var i = 0; i < origins.length; i++) {
+          var results = response.rows[i].elements;
+          for (var j = 0; j < results.length; j++) {
+            var element = results[j];
+            var distance = element.distance.text;
+            var duration = element.duration.text;
+            var from = origins[i];
+            var to = destinations[j];
+            alert("distance= "+distance);
+          }
+        }
+      }
+    }*/
     function changeNewestMarkerInfoWindow(str){
+      alert("before change!");
       console.log(str);
       traceinfowindows[traceMarkers.length-1].setContent(str);
+      alert("Changed infowin");
     }
     function getClosestCPPos(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
@@ -373,7 +397,7 @@
         alert("Too South!");
     }
     function getPosOfNum(num){
-      const str=processTxtPara("location.txt");
+      const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
       if(num=-1)num=str.length;
       return str[num];
     }
@@ -418,7 +442,7 @@
       return time;
     }
     function getAstrumPos(){
-      getText("location.txt").then(
+      getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
         function(value){
           const str=processTxtPara(value);
           const timeStr=processTxtParaTime(value);
@@ -499,11 +523,6 @@
          <button class="myButtons" onclick="showTrace(markers)">Show Checkpoints</button>
          <button class="myButtons" onclick="reCenter()">Re-Center</button>
          <button class="myButtons" onclick="zoomCurrentMarker()">Zoom to current marker</button>
-         <script src="https://accounts.google.com/gsi/client" async defer></script>
-          <div id="g_id_onload"
-              data-client_id="866896161838-06ntn1butf2aanvto43332mc81ojhvs6"
-              data-callback="handleCredentialResponse">
-          </div>
          <!--
     <div class="g_id_signin" data-type="standard"></div>
          <div class="g-signin2" data-onsuccess="onSignIn"></div>
