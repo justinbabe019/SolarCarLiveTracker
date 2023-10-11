@@ -328,6 +328,7 @@
 
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
+        console.log("GEtting dist");
         var dist=response.rows[0].elements[0].distance.text;
         alert("DIST: " + dist);
         changeNewestMarkerInfoWindow(
@@ -427,6 +428,7 @@
         },
         function(error){alert("sth wrong w txt file!~")}
       );
+      console.log("done adding astrum poss");
       //str=str.split(",");
     }
     function checkLogIn(loggedIn){

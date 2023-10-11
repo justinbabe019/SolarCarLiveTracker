@@ -140,6 +140,23 @@
       gapi.auth2.init();
     });
 
+    async function getAstrumPos(){
+      getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
+         function(value){
+            const str=processTxtPara(value);
+            const timeStr=processTxtParaTime(value);
+            console.log("STRLNG= "+str.length);
+            for(let i=0;i<str.length;++i){
+               addTraceMarker(str[i], timeStr[i]);
+            }
+            console.log("DONE ASTRUM POS");
+            return("DONE");
+        },
+        function(error){alert("sth wrong w txt file!~")}
+      );
+      //str=str.split(",");
+    }
+
     function unifyInitIcon(URL){
       const thing2={
           url: URL,
@@ -272,6 +289,7 @@
       });
       traceMarkers.push(marker);
       traceinfowindows.push(infowindow);
+      console.log("done adding marker" + traceMarkers.length);
     }
 
     async function getText(file) {
@@ -279,6 +297,10 @@
       let myText = await myObject.text();
       return myText;
     }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+   }
 
     function initMap() {
       hide("ins");
@@ -308,30 +330,31 @@
           });
       });
       }
-      getAstrumPos();
+      doDist();
+      //changeNewestMarkerInfoWindow(getClosestCPPos());
+    }
+    async function doDist(){
+      await getAstrumPos();
+      await sleep(600);
       const service = new google.maps.DistanceMatrixService();
       // build request
+      console.log("****");
+      console.log("length=" + traceMarkers.length);
       const origin = traceMarkers[traceMarkers.length-1].getPosition();
       const destination = getClosestCPPos();
       const request = {
-        origins: [origin],
-        destinations: [destination],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false,
+      origins: [origin],
+      destinations: [destination],
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+      avoidHighways: false,
+      avoidTolls: false,
       };
-
-      // put request on page
-      /*
-      document.getElementById("request").innerText = JSON.stringify(
-        request,
-        null,
-        2,
-      );*/
 
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
+         console.log("getting dist");
+         console.log(response);
          var dist=response.rows[0].elements[0].distance.text;
          alert("DIST= "+ dist);
          changeNewestMarkerInfoWindow(
@@ -352,33 +375,14 @@
          const originList = response.originAddresses;
          const destinationList = response.destinationAddresses;
       });
-      //changeNewestMarkerInfoWindow(getClosestCPPos());
     }
-    /*
-    function callback(response, status) {
-      if (status == 'OK') {
-        var origins = response.originAddresses;
-        var destinations = response.destinationAddresses;
-
-        for (var i = 0; i < origins.length; i++) {
-          var results = response.rows[i].elements;
-          for (var j = 0; j < results.length; j++) {
-            var element = results[j];
-            var distance = element.distance.text;
-            var duration = element.duration.text;
-            var from = origins[i];
-            var to = destinations[j];
-            alert("distance= "+distance);
-          }
-        }
-      }
-    }*/
     function changeNewestMarkerInfoWindow(str){
       alert("before change!");
       console.log(str);
       traceinfowindows[traceMarkers.length-1].setContent(str);
       alert("Changed infowin");
     }
+
     function getClosestCPPos(){
       const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
       if(curLng>startPos.lat)alert("Too North!");
@@ -395,6 +399,7 @@
       else
         alert("Too South!");
     }
+
     function getPosOfNum(num){
       const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
       if(num=-1)num=str.length;
@@ -440,19 +445,7 @@
       var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       return time;
     }
-    function getAstrumPos(){
-      getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
-        function(value){
-          const str=processTxtPara(value);
-          const timeStr=processTxtParaTime(value);
-          for(let i=0;i<str.length;++i){
-            addTraceMarker(str[i], timeStr[i]);
-          }
-        },
-        function(error){alert("sth wrong w txt file!~")}
-      );
-      //str=str.split(",");
-    }
+
     function checkLogIn(loggedIn){
       infowindow.open();
       var profile = googleUser.getBasicProfile();
