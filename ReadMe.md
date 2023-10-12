@@ -9,6 +9,7 @@ go to https://ncleong.github.io/AstrumLiveTracker/, play with the buttons and fu
 - Show Checkpoints: all the control stop markers will be shown
 - Re-Center: Reset zoom and center of map into default settings 
 - Zoom to current marker: zoom bigger onto the newset Astrum location
+- Click on the most recent marker/location, Distance to the closest CS, and ETA will be shown (based on dist/80)
 # How to use(private):
 1. Have two Google accoutns, one logged in to phone and one to laptop
 2. Share location (permanently) via Google Maps from your phone account to your computer account
