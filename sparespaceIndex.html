@@ -149,11 +149,9 @@
       function(value){
          const str=processTxtPara(value);
          const timeStr=processTxtParaTime(value);
-         console.log("STRLNG= "+str.length);
          for(let i=0;i<str.length;++i){
             addTraceMarker(str[i], timeStr[i]);
          }
-         console.log("DONE ASTRUM POS");
          return("DONE");
       },
       function(error){alert("sth wrong w txt file!~")}
@@ -293,7 +291,6 @@
    });
    traceMarkers.push(marker);
    traceinfowindows.push(infowindow);
-   console.log("done adding marker" + traceMarkers.length);
    }
 
    async function getText(file) {
@@ -303,8 +300,19 @@
    }
 
    function sleep(ms) {
-   return new Promise(resolve => setTimeout(resolve, ms));
-}
+      return new Promise(resolve => setTimeout(resolve, ms));
+   }
+
+   function processDist(str){
+      let str2="";
+      for(let i=0;i<str.length;++i){
+         if(48<=str.codePointAt(i)&& str.codePointAt(i)<=57)str2+=str[i];
+         else 
+            break;
+      }
+      str2+=" km";
+      return str2;
+   }
 
    function initMap() {
    hide("ins");
@@ -324,13 +332,6 @@
          addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
    });*/
    ///////TESTING FUNC///////
-   function processDist(str){
-      let str2;
-      for(let i=0;i<str.length;++i){
-         if(0<=str.codePointAt[i]<=9)str2+=str[i];
-      }
-      return str2+" km";
-   }
    //match infowindows with markers
    for(let i=0;i<markers.length;i++){
          markers[i].addListener("click", () => {
@@ -341,15 +342,12 @@
    });
    }
    doDist();
-   //changeNewestMarkerInfoWindow(getClosestCPPos());
    }
    async function doDist(){
    await getAstrumPos();
    await sleep(1500);
    const service = new google.maps.DistanceMatrixService();
    // build request
-   console.log("****");
-   console.log("length=" + traceMarkers.length);
    const origin = traceMarkers[traceMarkers.length-1].getPosition();
    const destination = getClosestCPPos();
    const request = {
@@ -382,7 +380,6 @@
    });
    }
    function changeNewestMarkerInfoWindow(str){
-      console.log(str);
       traceinfowindows[traceMarkers.length-1].setContent("<p style='color: black'>"+str+"</p>");
    }
 

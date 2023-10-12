@@ -141,11 +141,9 @@
          function(value){
             const str=processTxtPara(value);
             const timeStr=processTxtParaTime(value);
-            console.log("STRLNG= "+str.length);
             for(let i=0;i<str.length;++i){
                addTraceMarker(str[i], timeStr[i]);
             }
-            console.log("DONE ASTRUM POS");
             return("DONE");
          },
          function(error){alert("sth wrong w txt file!~")}
@@ -285,7 +283,6 @@
       });
       traceMarkers.push(marker);
       traceinfowindows.push(infowindow);
-      console.log("done adding marker" + traceMarkers.length);
    }
 
    async function getText(file) {
@@ -329,13 +326,23 @@
       doDist();
       //changeNewestMarkerInfoWindow(getClosestCPPos());
    }
+
+   function processDist(str){
+      let str2="";
+      for(let i=0;i<str.length;++i){
+         if(48<=str.codePointAt(i)&& str.codePointAt(i)<=57)str2+=str[i];
+         else 
+            break;
+      }
+      str2+=" km";
+      return str2;
+   }
+
    async function doDist(){
       await getAstrumPos();
       await sleep(1500);
       const service = new google.maps.DistanceMatrixService();
       // build request
-      console.log("****");
-      console.log("length=" + traceMarkers.length);
       const origin = traceMarkers[traceMarkers.length-1].getPosition();
       const destination = getClosestCPPos();
       const request = {
@@ -349,10 +356,7 @@
 
    // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
-         console.log("getting dist");
-         console.log(response);
-         var dist=response.rows[0].elements[0].distance.text;
-         alert("DIST= "+ dist);
+         var dist=processDist(response.rows[0].elements[0].distance.text);
          changeNewestMarkerInfoWindow(
             getClosestCPPos() + ", Distance left: "+dist +
             ", ETA: "+ getNumberFromString(dist)/80 + " hours");
@@ -364,8 +368,6 @@
                var duration = element.duration.text;
                var from = origins[i];
                var to = destinations[j];
-               alert("DIST= "+distance);
-               console.log("HIDist= "+ distance);
             }
          }
          const originList = response.originAddresses;
@@ -373,10 +375,7 @@
       });
    }
    function changeNewestMarkerInfoWindow(str){
-      alert("before change!");
-      console.log(str);
       traceinfowindows[traceMarkers.length-1].setContent(str);
-      alert("Changed infowin");
    }
 
    function getClosestCPPos(){
