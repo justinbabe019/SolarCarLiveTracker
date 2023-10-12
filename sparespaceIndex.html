@@ -89,9 +89,13 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        color: black;
       }
       #floating-panel{
          margin: auto;
+      }
+      .traceInfo{
+         color: black;
       }
       .myButtons{
         background-color: #00274C;
@@ -320,7 +324,13 @@
          addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
    });*/
    ///////TESTING FUNC///////
-
+   function processDist(str){
+      let str2;
+      for(let i=0;i<str.length;++i){
+         if(0<=str.codePointAt[i]<=9)str2+=str[i];
+      }
+      return str2+" km";
+   }
    //match infowindows with markers
    for(let i=0;i<markers.length;i++){
          markers[i].addListener("click", () => {
@@ -335,7 +345,7 @@
    }
    async function doDist(){
    await getAstrumPos();
-   await sleep(600);
+   await sleep(1500);
    const service = new google.maps.DistanceMatrixService();
    // build request
    console.log("****");
@@ -353,10 +363,7 @@
 
    // get distance matrix response
    service.getDistanceMatrix(request).then((response) => {
-      console.log("getting dist");
-      console.log(response);
-      var dist=response.rows[0].elements[0].distance.text;
-      alert("DIST= "+ dist);
+      var dist=processDist(response.rows[0].elements[0].distance.text);
       changeNewestMarkerInfoWindow(
          getClosestCPPos() + ", Distance left: "+dist +
          ", ETA: "+ getNumberFromString(dist)/80 + " hours");
@@ -368,8 +375,6 @@
             var duration = element.duration.text;
             var from = origins[i];
             var to = destinations[j];
-            alert("DIST= "+distance);
-            console.log("HIDist= "+ distance);
          }
       }
       const originList = response.originAddresses;
@@ -377,10 +382,8 @@
    });
    }
    function changeNewestMarkerInfoWindow(str){
-   alert("before change!");
-   console.log(str);
-   traceinfowindows[traceMarkers.length-1].setContent(str);
-   alert("Changed infowin");
+      console.log(str);
+      traceinfowindows[traceMarkers.length-1].setContent("<p style='color: black'>"+str+"</p>");
    }
 
    function getClosestCPPos(){
@@ -401,84 +404,96 @@
    }
 
    function getPosOfNum(num){
-   const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
-   if(num=-1)num=str.length;
-   return str[num];
+      const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
+      if(num=-1)num=str.length;
+      return str[num];
    }
+
    function hide(e){
-   document.getElementById(e).hidden=true;
+      document.getElementById(e).hidden=true;
    }
+
    function show(e){
-   document.getElementById(e).hidden=false;
-   alert("done showing e");
+      document.getElementById(e).hidden=false;
+      alert("done showing e");
    }
+
    function showTrace(array) {
-   for (let i = 0; i < array.length; i++) {
-         array[i].setMap(map);
-   }
+      for (let i = 0; i < array.length; i++) {
+            array[i].setMap(map);
+      }
    }
    function hideTrace() {
-   for(let i = 0; i<traceMarkers.length -1; ++i){
-         traceMarkers[i].setMap(null);
+      for(let i = 0; i<traceMarkers.length -1; ++i){
+            traceMarkers[i].setMap(null);
+      }
    }
-   }
+
    function hideInitMarker(){
-   for(let i = 0; i<markers.length; ++i){
-         markers[i].setMap(null);
+      for(let i = 0; i<markers.length; ++i){
+            markers[i].setMap(null);
+      }
    }
-   }
+
    function reCenter(){
-   map.setZoom(5);
-   map.setCenter(ausCenter);
+      map.setZoom(5);
+      map.setCenter(ausCenter);
    }
+
    function zoomCurrentMarker(){
-   map.setZoom(12);
-   map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
+      map.setZoom(12);
+      map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
    }
+
    function getDateInString(){
-   var today = new Date();
-   var date = (today.getMonth()+1)+'/'+today.getDate();
-   return date;
+      var today = new Date();
+      var date = (today.getMonth()+1)+'/'+today.getDate();
+      return date;
    }   
+
    function getTimeInString(){
-   var today = new Date(); 
-   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-   return time;
+      var today = new Date(); 
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      return time;
    }
 
    function checkLogIn(loggedIn){
-   infowindow.open();
-   var profile = googleUser.getBasicProfile();
-   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-   console.log('Name: ' + profile.getName());
-   console.log('Image URL: ' + profile.getImageUrl());
-   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-   alert("info window opened");
+      infowindow.open();
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      alert("info window opened");
    }
    function processTxtPara(string){
-   string=string.split("\n");
-   let sth=[];
-   for(let i=0;i<string.length-1;++i){
-      sth.push(processTxtRow(string[i]));
+      string=string.split("\n");
+      let sth=[];
+      for(let i=0;i<string.length-1;++i){
+         sth.push(processTxtRow(string[i]));
+      }
+      return sth;
    }
-   return sth;
-   }
+
    function processTxtRow(string){
-   string=string.split(",");
-   const sth=new google.maps.LatLng(string[0],string[1]);
-   return sth;
+      string=string.split(",");
+      const sth=new google.maps.LatLng(string[0],string[1]);
+      return sth;
    }
+
    function processTxtParaTime(string){
-   string=string.split("\n");
-   for(let i=0;i<string.length;++i){
-      const sth= string[i].split(",");
-      string[i]=sth[2];
+      string=string.split("\n");
+      for(let i=0;i<string.length;++i){
+         const sth= string[i].split(",");
+         string[i]=sth[2];
+      }
+      return string;
    }
-   return string;
-   }
+
    function getFullTimeString(){
-   return getDateInString()+"-"+getTimeInString();
+      return getDateInString()+"-"+getTimeInString();
    }
+
    function onSignIn(googleUser){
    if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
    alert("On sign in!");
