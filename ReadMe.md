@@ -10,6 +10,9 @@ go to https://ncleong.github.io/AstrumLiveTracker/, play with the buttons and fu
 - Re-Center: Reset zoom and center of map into default settings 
 - Zoom to current marker: zoom bigger onto the newset Astrum location
 - Click on the most recent marker/location, Distance to the closest CS, and ETA will be shown (based on dist/80)
+- Click on any other markers that's not the latest, you can see embed instagram post or story
+   - checkpoints posts will be updated daily, same as media's frequency of posting
+   - instagram stories will be posted to the marker that has the closest time to that story's time of posting
 # How to use(private):
 1. Have two Google accoutns, one logged in to phone and one to laptop
 2. Share location (permanently) via Google Maps from your phone account to your computer account
