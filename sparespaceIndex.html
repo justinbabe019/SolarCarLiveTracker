@@ -119,6 +119,8 @@
    let infowindows=[];
    let traceinfowindows=[];
 
+   const route_kml_url = 'https://telemetry.worldsolarchallenge.org/wscearth/route.kml';
+
    const ausCenter = {lat: -25.363, lng: 131.044};
 
    const startPos={lat: -12.4637, lng: 130.8444};
@@ -135,21 +137,6 @@
 
    const origins=[];
    const destinations = [];
-
-   const loop = (function() { 
-        let timer = 0; 
-        function start(timeout = 5000) { 
-            clearInterval(timer); 
-            timer = setInterval(async () => { 
-               data = await api.getPositions(); 
-               updateMarkers(); 
-            }, timeout); 
-            } 
-            function stop() { 
-               clearInterval(timer); 
-            } 
-            return { start, stop, } 
-    })(); 
 
    gapi.load('auth2',function()
    {
@@ -328,47 +315,51 @@
    }
 
    function initMap() {
-   map = new google.maps.Map(document.getElementById("map"), {
-         zoom: 5,
-         center: ausCenter,
-         fullscreenControl: false,
-         zoomControl: true,
-         streetViewControl: false
-   });
-   setInitMarkers(map);        
-   setInitInfoWindow();
+      map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 5,
+            center: ausCenter,
+            fullscreenControl: false,
+            zoomControl: true,
+            streetViewControl: false
+      });
+      setInitMarkers(map);        
+      setInitInfoWindow();
 
-   ///////BACKDOOR FUNC/////// 
-   /*
-   map.addListener("click", (event) => {
-         addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
-   });*/
-   ///////TESTING FUNC///////
-   //match infowindows with markers
-   for(let i=0;i<markers.length;i++){
-         markers[i].addListener("click", () => {
-         infowindows[i].open({
-         anchor: markers[i],
-         map,
-         });
-   });
+      ///////BACKDOOR FUNC/////// 
+      /*
+      map.addListener("click", (event) => {
+            addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
+      });*/
+      ///////TESTING FUNC///////
+      //match infowindows with markers
+      for(let i=0;i<markers.length;i++){
+            markers[i].addListener("click", () => {
+            infowindows[i].open({
+            anchor: markers[i],
+            map,
+            });
+      });
+      }
+      while (true){
+         const t=5000;//time for each refresh
+         doDist(t);
+      }
+      
    }
-   doDist();
-   }
-   async function doDist(){
-   await getAstrumPos();
-   await sleep(1500);
-   const service = new google.maps.DistanceMatrixService();
-   // build request
-   const origin = traceMarkers[traceMarkers.length-1].getPosition();
-   const destination = getClosestCPPos();
-   const request = {
-   origins: [origin],
-   destinations: [destination],
-   travelMode: google.maps.TravelMode.DRIVING,
-   unitSystem: google.maps.UnitSystem.METRIC,
-   avoidHighways: false,
-   avoidTolls: false,
+   async function doDist(t){
+      await getAstrumPos();
+      await sleep(t);
+      const service = new google.maps.DistanceMatrixService();
+      // build request
+      const origin = traceMarkers[traceMarkers.length-1].getPosition();
+      const destination = getClosestCPPos();
+      const request = {
+      origins: [origin],
+      destinations: [destination],
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+      avoidHighways: false,
+      avoidTolls: false,
    };
 
    // get distance matrix response
