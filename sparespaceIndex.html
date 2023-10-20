@@ -109,6 +109,13 @@
         transition: 0.1s;
         cursor: pointer;
       }
+      /* Use a media query to add a breakpoint at 800px: */
+      @media screen and (max-width: 1000px) {
+         .myButtons {
+            margin-bottom: 6px;            
+            font-size: 4dvw; /* The width is 100%, when the viewport is 800px or smaller */
+         }
+      }
 
    </style>
    <script>
@@ -438,8 +445,12 @@
    }
 
    function zoomCurrentMarker(){
-      map.setZoom(12);
-      map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
+      if(traceMarkers.length>0){
+         map.setZoom(12);
+         map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
+      }
+      else
+         alert("No Location Yet!");
    }
 
    function getDateInString(){
