@@ -136,6 +136,21 @@
    const origins=[];
    const destinations = [];
 
+   const loop = (function() { 
+        let timer = 0; 
+        function start(timeout = 5000) { 
+            clearInterval(timer); 
+            timer = setInterval(async () => { 
+               data = await api.getPositions(); 
+               updateMarkers(); 
+            }, timeout); 
+            } 
+            function stop() { 
+               clearInterval(timer); 
+            } 
+            return { start, stop, } 
+    })(); 
+
    gapi.load('auth2',function()
    {
    gapi.auth2.init();
