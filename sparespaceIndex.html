@@ -96,7 +96,7 @@
       }
       .myButtons{
         background-color: #00274C;
-        font-size: larger;
+        font-size: 1vw;
         color: white;
         border: none;
         border-radius: 12px;
@@ -109,6 +109,7 @@
         transition: 0.1s;
         cursor: pointer;
       }
+
    </style>
    <script>
    "use strict";
@@ -262,8 +263,8 @@
    let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
    for(let i =0; i<contentString.length;++i){
          const infowondow= new google.maps.InfoWindow({
-         content: insString,
-         });;
+            content: contentString[i]+'\n'+insString,
+         });
          infowindows.push(infowondow);
    }
    }
@@ -314,7 +315,7 @@
       return str2;
    }
 
-   function initMap() {
+   async function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
             zoom: 5,
             center: ausCenter,
@@ -322,8 +323,8 @@
             zoomControl: true,
             streetViewControl: false
       });
-      setInitMarkers(map);        
-      setInitInfoWindow();
+      await setInitMarkers(map);        
+      await setInitInfoWindow();
 
       ///////BACKDOOR FUNC/////// 
       /*
@@ -338,13 +339,9 @@
             anchor: markers[i],
             map,
             });
-      });
+       });
       }
-      while (true){
-         const t=5000;//time for each refresh
-         doDist(t);
-      }
-      
+      doDist(t);
    }
    async function doDist(t){
       await getAstrumPos();
