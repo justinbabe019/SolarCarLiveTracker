@@ -204,6 +204,7 @@
                      addTraceMarker(str[i], timeStr[i]);
                }
             }
+            astrumMarker.setPosition(traceMarkers[traceMarkers.length-1]);
             console.log("done adding");
             return("DONE");
          },
@@ -540,7 +541,7 @@
    }
 
    function zoomCurrentMarker(){
-      map.setCenter(astrumMarker.getPosition());
+      map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
       map.setZoom(13);
    }
 
