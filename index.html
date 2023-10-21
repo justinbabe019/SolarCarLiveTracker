@@ -538,8 +538,8 @@
    }
 
    function zoomCurrentMarker(){
-      map.setCenter(astrumMarker.getPosition());
-      map.setZoom(13);
+      map.setCenter(traceMarkers[traceMarkers.length-1]);
+      map.setZoom(15);
    }
 
    function getDateInString(){
