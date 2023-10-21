@@ -162,11 +162,12 @@
       function frame(){
          console.log("framing");
          if(elem.getPosition().lat<=curPos.lat){
+            console.log(elem.getPosition()+" <= "+ curPos.lat);
             clearInterval(id);
             var newPos=allTraceData[allTraceData.length-1];
             console.log("idk= "+newPos);
-            astrumMarker.setPosition(processTxtRow(allTraceData[allTraceData.length-1]));
-            console.log("done moving to "+astrumMarker.getPosition());
+            astrumMarker.setPosition(newPos);
+            console.log("done moving to "+curPos.lat);
          }
          else if(cur<=allTraceData.length-1){
             //lat
