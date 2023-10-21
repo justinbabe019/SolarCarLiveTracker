@@ -1,7 +1,8 @@
 # Purpose: 
 provide live location of Astrum
 # How to use(public):
-go to https://ncleong.github.io/AstrumLiveTracker/, play with the buttons and functions
+- GitHub version: <https://ncleong.github.io/AstrumLiveTracker/> (only tracker), play with the buttons and functions
+- media version: <https://umsolar.com> (include other contents)
 # Buttons/functions explained
 - Hide Trace: Any non-newest locations of Astrum will be hidden, so that only the newest/live location of Astrum can be seen
 - Show Trace: Show all the (historical) location markers of Astrum
