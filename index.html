@@ -119,15 +119,15 @@
 
    </style>
    <script>
-   "use strict";
+  "use strict";
    let map;
+   let data;
    let allTraceData=[];
    let markers= [];
    let traceMarkers=[];
    let markerDates = [];
    let infowindows=[];
    let traceinfowindows=[];
-   let data;
    let astrumMarker;
    let astrumInfoWindow;
    const route_kml_url = 'https://telemetry.worldsolarchallenge.org/wscearth/route.kml';
@@ -152,28 +152,36 @@
    gapi.load('auth2',function(){gapi.auth2.init();});
 
    //animates the newest marker every t milliseconds
-   
-   function animate(t){
+   async function animate(t){
+      while(allTraceData.length<1){await sleep(100);}
+      console.log("start animate");
       var elem = astrumMarker;
-      var cur=traceMarkers.length-1;
-      var curLat=traceMarkers[cur].getPosition().lat;
-      var curLng=traceMarkers[cur].getPosition().lng;
+      var cur=allTraceData.length-1;
+      var curPos=processTxtRow(allTraceData[cur]);
+      console.log("curpos= "+curPos + " cur="+cur+" str="+allTraceData[cur]);
       clearInterval(id);
       var id=setInterval(frame, t);
       function frame(){
-         if(traceMarkers[cur+1]&&elem.getPosition()==traceMarkers[cur+1]){
+         console.log("framing");
+         if(elem.getPosition().lat<=curPos.lat){
+            console.log(elem.getPosition()+" <= "+ curPos.lat);
             clearInterval(id);
-            cur++;
+            var newPos=allTraceData[allTraceData.length-1];
+            console.log("idk= "+newPos);
+            astrumMarker.setPosition(newPos);
+            console.log("done moving to "+curPos.lat);
          }
-         else if(cur<=traceMarkers.length){
+         else if(cur<=allTraceData.length-1){
             //lat
-            if(traceMarkers[traceMarkers.length-1].getPosition.lat > curLat)curLat+=0.00001;
-            else if(traceMarkers[traceMarkers.length-1].getPosition.lat < curLat)curLat-=0.0001;
+            if(allTraceData[traceMarkers.length-1].getPosition.lat > curLat)curPos.lat+=0.001;
+            else if(allTraceData[traceMarkers.length-1].getPosition.lat < curLat)curPos.lat-=0.001;
+            console.log("updated lat");
             //lng
-            if(traceMarkers[traceMarkers.length-1].getPosition.lat > curLat)curLng+=0.00001;
-            else if(traceMarkers[traceMarkers.length-1].getPosition.lat < curLat)curLat-=0.0001;
+            if(allTraceData[traceMarkers.length-1].getPosition.lat > curLat)curPos.lng+=0.001;
+            else if(allTraceData[traceMarkers.length-1].getPosition.lat < curLat)curLng-=0.001;
+            console.log("updated lng");
             //set position
-            elem.setPosition({lat: curLat, lng: curLng});
+            elem.setPosition(curPos);
             console.log("moving: "+ elem.getPosition());
          }
       }
@@ -182,22 +190,21 @@
    //Gets position by fetching github .txt file
    async function getAstrumPos(){
       //getText("./location.txt").then(
-      getText("./location.txt").then(
+      getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
          function(value){
             const str=processTxtPara(value);
             const timeStr=processTxtParaTime(value);
             for(let i=0;i<str.length;++i){
-               console.log("got some value in txt");
                allTraceData.push(str[i]+"; "+timeStr[i]);
                var sth=timeStr[i].split(":");
                sth=sth[2];
-               if(Number(sth%20==0)){
+               if(Number(sth%3==0)){
                   if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
                   else
                      addTraceMarker(str[i], timeStr[i]);
                }
             }
-            console.log("done adding");
+            astrumMarker.setPosition(traceMarkers[traceMarkers.length-1]);
             return("DONE");
          },
          function(error){
@@ -212,10 +219,9 @@
 
    //Creates the initial control stops markers
    function setInitMarkers(map){
-
       astrumMarker = new google.maps.Marker({
          position: startPos,
-         icon: unifyInitIcon("./assets/wsc-animation-astrum-2.png"),
+         icon: unifyInitIcon("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/assets/wsc-animation-astrum-2.png"),
          title: "Astrum",
          map,
       })
@@ -342,7 +348,6 @@
    async function getText(file) {
       let myObject = await fetch(file);
       let myText = await myObject.text();
-      console.log("MyText= "+myText);
       return myText;
    }
    //helper function
@@ -412,23 +417,18 @@
       });
       getAstrumPos().then(
          function(value){
-            doDist().then(
-            function(value){
-               //animate(20);//refreshes each animated frame per 20 sec
-            });
+            doDist(astrumMarker.getPosition(), getClosestCPPos());
+            //animate(20);//refreshes each animated frame per 20 ms
          }
       )
-      
    }
 
    //updates newest loc, calculatets distance and ETA
-   async function doDist(){
+   async function doDist(origin, destination){
       while(traceMarkers.length==0){await sleep(100);}
       const service = new google.maps.DistanceMatrixService();
       // build request
       console.log(traceMarkers.length);
-      const origin = astrumMarker.getPosition();
-      const destination = getClosestCPPos();
       const request = {
          origins: [origin],
          destinations: [destination],
@@ -440,8 +440,7 @@
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
          if(response.rows[0].elements[0].status=='NOT_FOUND'){
-            dsata="dist not found! potentially incorrect location";
-            changeNewestMarkerInfoWindow(data);
+            changeNewestMarkerInfoWindow("dist not found! potentially incorrect location");
          }
          else{
             dist=processDist(response.rows[0].elements[0].distance.text);
@@ -468,6 +467,7 @@
       astrumInfoWindow.setContent("<p style='color: black'>"+str+"</p>");
       console.log("Content changed");
    }
+   
    function getClosestCPName(){
       const curLat=astrumMarker.getPosition().lat();
       if(curLat>startPos.lat)alert("Too North!");
@@ -484,6 +484,7 @@
       else
          alert("Too South!");
    }
+
    function getClosestCPPos(){
       switch(getClosestCPName()){
          case("Katherine"): return katherinePos; break;
@@ -497,7 +498,7 @@
          case("Port Augusta"): return portAugustaPos; break;
          case("Adelaide"): return endPos; break;
       }
-}
+   }
 
    function getPosOfNum(num){
       const str=processTxtPara("./location.txt");
@@ -538,7 +539,7 @@
    }
 
    function zoomCurrentMarker(){
-      map.setCenter(traceMarkers[traceMarkers.length-1]);
+      map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
       map.setZoom(15);
    }
 
@@ -619,9 +620,7 @@
    function removeTraceMarkers(num){
    traceMarkers=traceMarkers.splice(0,num);
    }
-   function showData(){
-      alert(data);
-   }
+
    //helper function, straightline dist in btwn markers
    function haversine_distance(mk1, mk2) {
       var R = 3958.8; // Radius of the Earth in miles
@@ -633,7 +632,9 @@
       var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
       return d;
     }
-
+   function showData(){
+      alert(data);
+   }
    function getDistFromUser(){
       if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
