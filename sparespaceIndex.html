@@ -121,6 +121,7 @@
    <script>
    "use strict";
    let map;
+   let allTraceData=[];
    let markers= [];
    let traceMarkers=[];
    let markerDates = [];
@@ -142,7 +143,7 @@
    const glendamboPos={lat: -30.9677, lng: 135.7513};
    const portAugustaPos={lat:-32.4936, lng: 137.7743};
    const endPos={lat: -34.928497, lng: 138.600739};
-
+   
    const origins=[];
    const destinations = [];
 
@@ -178,18 +179,21 @@
 
    //Gets position by fetching github .txt file
    async function getAstrumPos(){
-   getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
-      function(value){
-         const str=processTxtPara(value);
-         const timeStr=processTxtParaTime(value);
-         for(let i=0;i<str.length;++i){
-            addTraceMarker(str[i], timeStr[i]);
-         }
-         return("DONE");
-      },
-      function(error){alert("sth wrong w txt file!~")}
-   );
-   //str=str.split(",");
+      console.log("in get astrum pos");
+      getText("./location.txt").then(
+      //getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
+         function(value){
+            const str=processTxtPara(value);
+            const timeStr=processTxtParaTime(value);
+            for(let i=0;i<str.length;++i){
+               allTraceData.push(str+"; "+timeStr);
+               if(Number(timeStr[i]%20==0))addTraceMarker(str[i], timeStr[i]);
+            }
+            return("DONE");
+         },
+         function(error){alert("sth wrong w txt file!~")}
+      );
+      //str=str.split(",");
    }
 
    //Creates the initial control stops markers
@@ -320,6 +324,7 @@
       });
       traceMarkers.push(marker);
       traceinfowindows.push(infowindow);
+      console.log("Done adding trace marker");
    }
    //**HELPER FUNCTIONS**//
    //helper function
@@ -387,7 +392,7 @@
       await sleep(1000);
       await getAstrumPos();
       await doDist(2000);
-      animate(1000);
+      animate(20);//refreshes each animated frame per 20 sec
    }
 
    //updates newest loc, calculatets distance and ETA
@@ -433,24 +438,25 @@
    }
 
    function getClosestCPPos(){
-   const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat;
-   if(curLng>startPos.lat)alert("Too North!");
-   else if(curLng <= startPos.lat && curLng>katherinePos.lat){return "Katherine";}
-   else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){return "Dunmarra";}
-   else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){return "Tennant Creek";}
-   else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){return "Barrow Creek";}
-   else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){return "Alice Springs";}
-   else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){return "Kulgera";}
-   else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){return "Coober Pedy";}
-   else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){return "Glendambo";}
-   else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){return "Port Augusta";}
-   else if(curLng <= endpos.lat){return "Adelaide";}
-   else
-      alert("Too South!");
+      const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat;
+      if(curLng>startPos.lat)alert("Too North!");
+      else if(curLng <= startPos.lat && curLng>katherinePos.lat){return "Katherine";}
+      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){return "Dunmarra";}
+      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){return "Tennant Creek";}
+      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){return "Barrow Creek";}
+      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){return "Alice Springs";}
+      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){return "Kulgera";}
+      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){return "Coober Pedy";}
+      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){return "Glendambo";}
+      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){return "Port Augusta";}
+      else if(curLng <= endpos.lat){return "Adelaide";}
+      else
+         alert("Too South!");
    }
 
    function getPosOfNum(num){
-      const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
+      const str=processTxtPara("./location.txt");
+      //const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
       if(num=-1)num=str.length;
       return str[num];
    }
@@ -488,7 +494,7 @@
 
    function zoomCurrentMarker(){
       map.setCenter(astrumMarker.getPosition());
-      map.setZoom(12);
+      map.setZoom(13);
    }
 
    function getDateInString(){
@@ -512,11 +518,13 @@
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
       alert("info window opened");
    }
+
    function processTxtPara(string){
       string=string.split("\n");
       let sth=[];
       for(let i=0;i<string.length-1;++i){
-         sth.push(processTxtRow(string[i]));
+         let str=processTxtRow(string[i]);
+         if(str!="")sth.push(str);
       }
       return sth;
    }
@@ -535,7 +543,13 @@
       }
       return string;
    }
-
+   function processTxtRowTime(string){
+      for(let i=0;i<string.length;++i){
+         const sth= string[i].split(",");
+         string[i]=sth[2];
+      }
+      return string;
+   }
    function getFullTimeString(){
       return getDateInString()+"-"+getTimeInString();
    }
