@@ -154,23 +154,22 @@
    
    function animate(t){
       var elem = astrumMarker;
-      var cur=traceMarkers.length-1;
-      var curLat=traceMarkers[cur].getPosition().lat;
-      var curLng=traceMarkers[cur].getPosition().lng;
+      var cur=allTraceData.length-1;
+      var curPos=processTxtRow(allTraceData[cur]);
       clearInterval(id);
       var id=setInterval(frame, t);
       function frame(){
-         if(traceMarkers[cur+1]&&elem.getPosition()==traceMarkers[cur+1]){
+         if(cur<=0 || astrum.getPosition().lat<=curPos.lat){
             clearInterval(id);
-            cur++;
+            astrumMarker.setPosition(processTxtRow(allTraceData[allTraceData.length-1]));
          }
-         else if(cur<=traceMarkers.length){
+         else if(cur<=allTraceData.length-1){
             //lat
-            if(traceMarkers[traceMarkers.length-1].getPosition.lat > curLat)curLat+=0.00001;
-            else if(traceMarkers[traceMarkers.length-1].getPosition.lat < curLat)curLat-=0.0001;
+            if(allTraceData[traceMarkers.length-1].getPosition.lat > curLat)curPos.lat+=0.001;
+            else if(allTraceData[traceMarkers.length-1].getPosition.lat < curLat)curPos.lat-=0.001;
             //lng
-            if(traceMarkers[traceMarkers.length-1].getPosition.lat > curLat)curLng+=0.00001;
-            else if(traceMarkers[traceMarkers.length-1].getPosition.lat < curLat)curLat-=0.0001;
+            if(allTraceData[traceMarkers.length-1].getPosition.lat > curLat)curPos.lng+=0.001;
+            else if(allTraceData[traceMarkers.length-1].getPosition.lat < curLat)curLng-=0.001;
             //set position
             elem.setPosition({lat: curLat, lng: curLng});
             console.log("moving: "+ elem.getPosition());
