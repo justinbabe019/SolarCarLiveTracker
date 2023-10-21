@@ -157,6 +157,7 @@
       var elem = astrumMarker;
       var cur=allTraceData.length-1;
       var curPos=processTxtRow(allTraceData[cur]);
+      console.log("curpos= "+curPos + " cur="+cur+" str="+allTraceData[cur]);
       clearInterval(id);
       var id=setInterval(frame, t);
       function frame(){
@@ -418,10 +419,9 @@
       getAstrumPos().then(
          function(value){
             doDist(astrumMarker.getPosition(), getClosestCPPos());
-            animate(20);//refreshes each animated frame per 20 ms
+            //animate(20);//refreshes each animated frame per 20 ms
          }
       )
-      alert("Before animate");
    }
 
    //updates newest loc, calculatets distance and ETA
