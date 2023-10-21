@@ -211,7 +211,6 @@
 
    //Creates the initial control stops markers
    function setInitMarkers(map){
-
       astrumMarker = new google.maps.Marker({
          position: startPos,
          icon: unifyInitIcon("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/assets/wsc-animation-astrum-2.png"),
@@ -413,7 +412,7 @@
          function(value){
             doDist().then(
             function(value){
-               //animate(20);//refreshes each animated frame per 20 sec
+               animate(20);//refreshes each animated frame per 20 ms
             });
          }
       )
