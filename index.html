@@ -3,7 +3,6 @@
 <html>
   <head>
     <title>Astrum Live Tracker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./assets/astrum-car-logo-blue.ico">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
     <!--<meta name="google-signin-client_id" content="866896161838-06ntn1butf2aanvto43332mc81ojhvs6.apps.googleusercontent.com">-->
@@ -80,10 +79,10 @@
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+      
       #map {
-        height: 100%;
+        height: 800px;
       }
-
       /* Optional: Makes the sample page fill the window. */
       html,
       body {
@@ -91,13 +90,18 @@
         margin: 0;
         padding: 0;
       }
+
+      .traceInfo{
+         color: black;
+      }
       .myButtons{
         background-color: #00274C;
+        font-size: 1vw;
         color: white;
         border: none;
         border-radius: 12px;
         padding: 4px;
-        margin-left: 4px;
+        margin-left: 28px;
         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
       }
       .myButtons:hover {
@@ -105,15 +109,28 @@
         transition: 0.1s;
         cursor: pointer;
       }
+      /* Use a media query to add a breakpoint at 800px: */
+      @media screen and (max-width: 1000px) {
+         .myButtons {
+            margin-bottom: 6px;            
+            font-size: 4dvw; /* The width is 100%, when the viewport is 800px or smaller */
+         }
+      }
+
    </style>
    <script>
-    "use strict";
+   "use strict";
    let map;
+   let allTraceData=[];
    let markers= [];
    let traceMarkers=[];
    let markerDates = [];
    let infowindows=[];
    let traceinfowindows=[];
+   let data;
+   let astrumMarker;
+   let astrumInfoWindow;
+   const route_kml_url = 'https://telemetry.worldsolarchallenge.org/wscearth/route.kml';
 
    const ausCenter = {lat: -25.363, lng: 131.044};
 
@@ -128,41 +145,80 @@
    const glendamboPos={lat: -30.9677, lng: 135.7513};
    const portAugustaPos={lat:-32.4936, lng: 137.7743};
    const endPos={lat: -34.928497, lng: 138.600739};
-
+   
    const origins=[];
    const destinations = [];
 
-   gapi.load('auth2',function()
-   {
-   gapi.auth2.init();
-   });
+   gapi.load('auth2',function(){gapi.auth2.init();});
 
+   //animates the newest marker every t milliseconds
+   
+   function animate(t){
+      var elem = astrumMarker;
+      var cur=traceMarkers.length-1;
+      var curLat=traceMarkers[cur].getPosition().lat;
+      var curLng=traceMarkers[cur].getPosition().lng;
+      clearInterval(id);
+      var id=setInterval(frame, t);
+      function frame(){
+         if(traceMarkers[cur+1]&&elem.getPosition()==traceMarkers[cur+1]){
+            clearInterval(id);
+            cur++;
+         }
+         else if(cur<=traceMarkers.length){
+            //lat
+            if(traceMarkers[traceMarkers.length-1].getPosition.lat > curLat)curLat+=0.00001;
+            else if(traceMarkers[traceMarkers.length-1].getPosition.lat < curLat)curLat-=0.0001;
+            //lng
+            if(traceMarkers[traceMarkers.length-1].getPosition.lat > curLat)curLng+=0.00001;
+            else if(traceMarkers[traceMarkers.length-1].getPosition.lat < curLat)curLat-=0.0001;
+            //set position
+            elem.setPosition({lat: curLat, lng: curLng});
+            console.log("moving: "+ elem.getPosition());
+         }
+      }
+   }
+
+   //Gets position by fetching github .txt file
    async function getAstrumPos(){
+      //getText("./location.txt").then(
       getText("./location.txt").then(
          function(value){
             const str=processTxtPara(value);
             const timeStr=processTxtParaTime(value);
             for(let i=0;i<str.length;++i){
-               addTraceMarker(str[i], timeStr[i]);
+               console.log("got some value in txt");
+               allTraceData.push(str[i]+"; "+timeStr[i]);
+               var sth=timeStr[i].split(":");
+               sth=sth[2];
+               if(Number(sth%20==0)){
+                  if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
+                  else
+                     addTraceMarker(str[i], timeStr[i]);
+               }
             }
+            console.log("done adding");
             return("DONE");
          },
-         function(error){alert("sth wrong w txt file!~")}
+         function(error){
+            return error;
+            alert("sth wrong w txt file!~");
+
+         }
       );
+      return("DONE");
       //str=str.split(",");
    }
 
-   function unifyInitIcon(URL){
-      const thing2={
-            url: URL,
-            scaledSize: new google.maps.Size(80, 42),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(40, 25),
-      }
-      return thing2;
-   }
-
+   //Creates the initial control stops markers
    function setInitMarkers(map){
+
+      astrumMarker = new google.maps.Marker({
+         position: startPos,
+         icon: unifyInitIcon("./assets/wsc-animation-astrum-2.png"),
+         title: "Astrum",
+         map,
+      })
       /*
       const astrumIcon="https://imgur.com/a/W7pXawQ", 
             wscIcon="https://worldsolarchallenge.org/skin/2023/images/logo.svg", 
@@ -245,28 +301,23 @@
             map,
       })
       markers.push(endPointMarker);
-      }
-      function getNumberFromString(str){
-      str=str.split(" ");
-      return str[0];
    }
+   
+   //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
       const insString=document.getElementById("ins").innerHTML;
       let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
-            const infowondow= new google.maps.InfoWindow({
-            content: insString,
-            });;
-            infowindows.push(infowondow);
+         const infowondow= new google.maps.InfoWindow({
+            content: contentString[i]+'\n'+insString,
+         });
+         infowindows.push(infowondow);
       }
    }
-
+   //Creastes trace markers to the traceMarkers[]
    function addTraceMarker(position, Label){
       //const contentString=document.getElementsByTagName('div')[68].innerHTML;
       const contentString=document.getElementById("ins").innerHTML;
-      //const contentString=document.getElementsByClassName("instagram-media").innerHTML;
-      //'<a href="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==">Check out our instagram!</a>';
-
       const infowindow = new google.maps.InfoWindow({
             content: contentString,
             //ariaLabel: label,
@@ -284,50 +335,26 @@
       });
       traceMarkers.push(marker);
       traceinfowindows.push(infowindow);
+      console.log("Done adding trace marker");
    }
-
+   //**HELPER FUNCTIONS**//
+   //helper function
    async function getText(file) {
       let myObject = await fetch(file);
       let myText = await myObject.text();
+      console.log("MyText= "+myText);
       return myText;
    }
-
+   //helper function
    function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
    }
-
-   function initMap() {
-      hide("ins");
-      map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 5,
-            center: ausCenter,
-            fullscreenControl: false,
-            zoomControl: true,
-            streetViewControl: false
-      });
-      setInitMarkers(map);        
-      setInitInfoWindow();
-
-      ///////BACKDOOR FUNC/////// 
-      /*
-      map.addListener("click", (event) => {
-            addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
-      });*/
-      ///////TESTING FUNC///////
-
-      //match infowindows with markers
-      for(let i=0;i<markers.length;i++){
-         markers[i].addListener("click", () => {
-            infowindows[i].open({
-            anchor: markers[i],
-            map,
-         });
-         });
-      }
-      doDist();
-      //changeNewestMarkerInfoWindow(getClosestCPPos());
+   //helper function
+   function getNumberFromString(str){
+      str=str.split(" ");
+      return str[0];
    }
-
+   //processes a distance string into correct format (eg KM)
    function processDist(str){
       let str2="";
       for(let i=0;i<str.length;++i){
@@ -338,13 +365,69 @@
       str2+=" km";
       return str2;
    }
+   //helper function to make the icons in same size
+   function unifyInitIcon(URL){
+      const thing2={
+            url: URL,
+            scaledSize: new google.maps.Size(80, 42),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(40, 25),
+      }
+      return thing2;
+   }
+   async function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 5,
+            center: ausCenter,
+            fullscreenControl: false,
+            zoomControl: true,
+            streetViewControl: false
+      });
+      await setInitMarkers(map);        
+      await setInitInfoWindow();
 
+      ///////BACKDOOR FUNC/////// 
+      /*
+      map.addListener("click", (event) => {
+            addTraceMarker(event.latLng, getDateInString()+"-"+getTimeInString());
+      });*/
+      ///////TESTING FUNC///////
+      //match infowindows with markers
+      for(let i=0;i<markers.length;i++){
+         markers[i].addListener("click", () => {
+         infowindows[i].open({
+         anchor: markers[i],
+         map,
+         });
+       });
+      }
+      astrumInfoWindow= new google.maps.InfoWindow({
+         content: "Default",
+      });
+      astrumMarker.addListener("click",()=>{
+         astrumInfoWindow.open({
+            anchor: astrumMarker,
+            map,
+         });
+      });
+      getAstrumPos().then(
+         function(value){
+            doDist().then(
+            function(value){
+               //animate(20);//refreshes each animated frame per 20 sec
+            });
+         }
+      )
+      
+   }
+
+   //updates newest loc, calculatets distance and ETA
    async function doDist(){
-      await getAstrumPos();
-      await sleep(1500);
+      while(traceMarkers.length==0){await sleep(100);}
       const service = new google.maps.DistanceMatrixService();
       // build request
-      const origin = traceMarkers[traceMarkers.length-1].getPosition();
+      console.log(traceMarkers.length);
+      const origin = astrumMarker.getPosition();
       const destination = getClosestCPPos();
       const request = {
          origins: [origin],
@@ -353,51 +436,59 @@
          unitSystem: google.maps.UnitSystem.METRIC,
          avoidHighways: false,
          avoidTolls: false,
-      };
-
-   // get distance matrix response
+      }
+      // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
-         var dist=processDist(response.rows[0].elements[0].distance.text);
-         changeNewestMarkerInfoWindow(
-            getClosestCPPos() + ", Distance left: "+dist +
-            ", ETA: "+ getNumberFromString(dist)/80 + " hours");
-         for(var i=0; i<origins.length;++i){
-            var results=response.rows[i].elements;
-            for (var j = 0; j < results.length; j++) {
-               var element = results[j];
-               var distance = element.distance.text;
-               var duration = element.duration.text;
-               var from = origins[i];
-               var to = destinations[j];
-            }
+         if(response.rows[0].elements[0].status=='NOT_FOUND'){
+            dsata="dist not found! potentially incorrect location";
+            changeNewestMarkerInfoWindow(data);
          }
-         const originList = response.originAddresses;
-         const destinationList = response.destinationAddresses;
+         else{
+            dist=processDist(response.rows[0].elements[0].distance.text);
+            data=getClosestCPPos() + ", Distance left: "+dist +
+               ", ETA: "+ getNumberFromString(dist)/80 + " hours";
+            changeNewestMarkerInfoWindow(data);
+            for(var i=0; i<origins.length;++i){
+               var results=response.rows[i].elements;
+               for (var j = 0; j < results.length; j++) {
+                  var element = results[j];
+                  var distance = element.distance.text;
+                  var duration = element.duration.text;
+                  var from = origins[i];
+                  var to = destinations[j];
+               }
+            }
+            const originList = response.originAddresses;
+            const destinationList = response.destinationAddresses;
+         } 
       });
    }
+
    function changeNewestMarkerInfoWindow(str){
-      traceinfowindows[traceMarkers.length-1].setContent(str);
+      astrumInfoWindow.setContent("<p style='color: black'>"+str+"</p>");
+      console.log("Content changed");
    }
 
    function getClosestCPPos(){
-      const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat();
-      if(curLng>startPos.lat)alert("Too North!");
-      else if(curLng <= startPos.lat && curLng>katherinePos.lat){return "Katherine";}
-      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){return "Dunmarra";}
-      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){return "Tennant Creek";}
-      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){return "Barrow Creek";}
-      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){return "Alice Springs";}
-      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){return "Kulgera";}
-      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){return "Coober Pedy";}
-      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){return "Glendambo";}
-      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){return "Port Augusta";}
-      else if(curLng <= endpos.lat){return "Adelaide";}
+      const curLat=astrumMarker.getPosition().lat();
+      if(curLat>startPos.lat)alert("Too North!");
+      else if(curLat <= startPos.lat && curLat>katherinePos.lat){return "Katherine";}
+      else if(curLat <= katherinePos.lat && curLat>dunmarraPos.lat){return "Dunmarra";}
+      else if(curLat <= dunmarraPos.lat && curLat>tennantCreekPos.lat){return "Tennant Creek";}
+      else if(curLat <= tennantCreekPos.lat && curLat>barrowCreekPos.lat){return "Barrow Creek";}
+      else if(curLat <= barrowCreekPos.lat && curLat>aliceSpringsPos.lat){return "Alice Springs";}
+      else if(curLat <= aliceSpringsPos.lat && curLat>kulgeraPos.lat){return "Kulgera";}
+      else if(curLat <= kulgeraPos.lat && curLat>cooberPedyPos.lat){return "Coober Pedy";}
+      else if(curLat <= cooberPedyPos.lat && curLat>glendamboPos.lat){return "Glendambo";}
+      else if(curLat <= glendamboPos.lat && curLat>portAugustaPos.lat){return "Port Augusta";}
+      else if(curLat <= endPos.lat){return "Adelaide";}
       else
          alert("Too South!");
    }
 
    function getPosOfNum(num){
       const str=processTxtPara("./location.txt");
+      //const str=processTxtPara("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt");
       if(num=-1)num=str.length;
       return str[num];
    }
@@ -413,19 +504,18 @@
 
    function showTrace(array) {
       for (let i = 0; i < array.length; i++) {
-         array[i].setMap(map);
+            array[i].setMap(map);
       }
    }
-
    function hideTrace() {
       for(let i = 0; i<traceMarkers.length -1; ++i){
-         traceMarkers[i].setMap(null);
+            traceMarkers[i].setMap(null);
       }
    }
 
    function hideInitMarker(){
       for(let i = 0; i<markers.length; ++i){
-         markers[i].setMap(null);
+            markers[i].setMap(null);
       }
    }
 
@@ -435,8 +525,8 @@
    }
 
    function zoomCurrentMarker(){
-      map.setZoom(14);
-      map.setCenter(traceMarkers[traceMarkers.length-1].getPosition());
+      map.setCenter(astrumMarker.getPosition());
+      map.setZoom(13);
    }
 
    function getDateInString(){
@@ -460,21 +550,32 @@
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
       alert("info window opened");
    }
+
    function processTxtPara(string){
       string=string.split("\n");
       let sth=[];
       for(let i=0;i<string.length;++i){
-         sth.push(processTxtRow(string[i]));
+         let str=processTxtRow(string[i]);
+         if(str!="")sth.push(str);
       }
       return sth;
    }
+
    function processTxtRow(string){
       string=string.split(",");
       const sth=new google.maps.LatLng(string[0],string[1]);
       return sth;
    }
+
    function processTxtParaTime(string){
       string=string.split("\n");
+      for(let i=0;i<string.length;++i){
+         const sth= string[i].split(",");
+         string[i]=sth[2];
+      }
+      return string;
+   }
+   function processTxtRowTime(string){
       for(let i=0;i<string.length;++i){
          const sth= string[i].split(",");
          string[i]=sth[2];
@@ -484,25 +585,29 @@
    function getFullTimeString(){
       return getDateInString()+"-"+getTimeInString();
    }
+
    function onSignIn(googleUser){
-      if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
-      alert("On sign in!");
-      var profile = googleUser.getBasicProfile();
-      alert("U are signed in"+profile.getName());
-      $("#userName").text=profile.getName();
-      $(".g-signin2").hide();
-      show("userName");
-      hide("g-signin2");
-      alert("done hiding n showing");
-      /*
-      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-      console.log('Name: ' + profile.getName());
-      console.log('Image URL: ' + profile.getImageUrl());
-      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      */
+   if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
+   alert("On sign in!");
+   var profile = googleUser.getBasicProfile();
+   alert("U are signed in"+profile.getName());
+   $("#userName").text=profile.getName();
+   $(".g-signin2").hide();
+   show("userName");
+   hide("g-signin2");
+   alert("done hiding n showing");
+   /*
+   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+   console.log('Name: ' + profile.getName());
+   console.log('Image URL: ' + profile.getImageUrl());
+   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+   */
    }
    function removeTraceMarkers(num){
-      traceMarkers=traceMarkers.splice(0,num);
+   traceMarkers=traceMarkers.splice(0,num);
+   }
+   function showData(){
+      alert(data);
    }
    </script>
   </head>
@@ -511,17 +616,13 @@
    <body>
       <script src="https://apis.google.com/js/platform.js" async defer></script>
       <div id="floating-panel">
-         <button class="myButtons" onclick="hideTrace()">Hide Trace</button>
-         <button class="myButtons" onclick="showTrace(traceMarkers)">Show Trace</button>
-         <button class="myButtons" onclick="hideInitMarker()">Hide Checkpoints</button>
-         <button class="myButtons" onclick="showTrace(markers)">Show Checkpoints</button>
+         <button class="myButtons" onclick="hideTrace()">Show Only Newest Location</button>
+         <button class="myButtons" onclick="showTrace(traceMarkers)">Show All Locations</button>
+         <button class="myButtons" onclick="hideInitMarker()">Hide Control Stops</button>
+         <button class="myButtons" onclick="showTrace(markers)">Show Control Stops</button>
          <button class="myButtons" onclick="reCenter()">Re-Center</button>
          <button class="myButtons" onclick="zoomCurrentMarker()">Zoom to current marker</button>
-         <script src="https://accounts.google.com/gsi/client" async defer></script>
-          <div id="g_id_onload"
-              data-client_id="866896161838-06ntn1butf2aanvto43332mc81ojhvs6"
-              data-callback="handleCredentialResponse">
-          </div>
+         <button class="myButtons" onclick="showData()">Show data</button>
          <!--
     <div class="g_id_signin" data-type="standard"></div>
          <div class="g-signin2" data-onsuccess="onSignIn"></div>
@@ -537,7 +638,7 @@
           -->
       </div>
       <div id="map"></div>
-      <div id="ins">
+      <div id="ins" hidden="hidden">
          <blockquote id="instagram-media-0" class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">在 Instagram 查看這則貼文</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/Cus0WYCunUy/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">University of Michigan Solar Car Team（@umsolarcarteam）分享的貼文</a></p></div></blockquote> <script async src="https://www.instagram.com/embed.js"></script>
       </div>
       <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
