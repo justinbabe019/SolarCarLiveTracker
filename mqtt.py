@@ -1,9 +1,6 @@
 from datetime import datetime
 f = open('location.txt', 'a')
 
-#writing
-now=datetime.now()
-
 #reading from mqtt
 from paho.mqtt import client as mqtt_client
 import ssl
@@ -36,6 +33,8 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
+        #writing
+        now=datetime.now()
         #print(f"Received `{msg.payload.decode()}` from topic `{msg.topic}`")
         if msg.topic == latTopic :
             str = msg.payload.decode()
