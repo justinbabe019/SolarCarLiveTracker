@@ -445,7 +445,7 @@
          }
          else{
             dist=processDist(response.rows[0].elements[0].distance.text);
-            data=getClosestCPPos() + ", Distance left: "+dist +
+            data=getClosestCPName() + ", Distance left: "+dist +
                ", ETA: "+ getNumberFromString(dist)/80 + " hours";
             changeNewestMarkerInfoWindow(data);
             for(var i=0; i<origins.length;++i){
@@ -468,8 +468,7 @@
       astrumInfoWindow.setContent("<p style='color: black'>"+str+"</p>");
       console.log("Content changed");
    }
-
-   function getClosestCPPos(){
+   function getClosestCPName(){
       const curLat=astrumMarker.getPosition().lat();
       if(curLat>startPos.lat)alert("Too North!");
       else if(curLat <= startPos.lat && curLat>katherinePos.lat){return "Katherine";}
@@ -485,6 +484,20 @@
       else
          alert("Too South!");
    }
+   function getClosestCPPos(){
+      switch(getClosestCPName()){
+         case("Katherine"): closestPos=katherinePos; break;
+         case("Dunmarra"): closestPos=dunmarraPos; break;
+         case("Tennant Creek"): closestPos=tennantCreekPos; break;
+         case("Barrow Creek"): closestPos=barrowCreekPos; break;
+         case("Alice Springs"): closestPos=aliceSpringsPos; break;
+         case("Kulgera"): closestPos=kulgeraPos; break;
+         case("Coober Pedy"): closestPos=cooberPedyPos; break;
+         case("Glendambo"): closestPos=glendamboPos; break;
+         case("Port Augusta"): closestPos=portAugustaPos; break;
+         case("Adelaide"): closestPos=endPos; break;
+      }
+}
 
    function getPosOfNum(num){
       const str=processTxtPara("./location.txt");
@@ -640,7 +653,7 @@
             alert("your browser does not support GeoLocation!");
         },
       );
-    } else {
+   } else {
       // Browser doesn't support Geolocation
       alert("your browser does not support GeoLocation!");
     }
