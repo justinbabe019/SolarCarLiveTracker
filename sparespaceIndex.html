@@ -150,28 +150,44 @@
 
    gapi.load('auth2',function(){gapi.auth2.init();});
 
+   navigator.geolocation.getCurrentPosition(
+      function (position) {
+         position.coords.latitude, position.coords.longitude;
+      },
+      function errorCallback(error) {
+        console.log(error);
+      }
+   );
+
    //animates the newest marker every t milliseconds
-   
-   function animate(t){
+   async function animate(t){
+      while(allTraceData.length<1){await sleep(100);}
+      console.log("start animate");
       var elem = astrumMarker;
       var cur=allTraceData.length-1;
       var curPos=processTxtRow(allTraceData[cur]);
       clearInterval(id);
       var id=setInterval(frame, t);
       function frame(){
-         if(cur<=0 || astrum.getPosition().lat<=curPos.lat){
+         console.log("framing");
+         if(elem.getPosition().lat<=curPos.lat){
             clearInterval(id);
+            var newPos=allTraceData[allTraceData.length-1];
+            console.log("idk= "+newPos);
             astrumMarker.setPosition(processTxtRow(allTraceData[allTraceData.length-1]));
+            console.log("done moving to "+astrumMarker.getPosition());
          }
          else if(cur<=allTraceData.length-1){
             //lat
             if(allTraceData[traceMarkers.length-1].getPosition.lat > curLat)curPos.lat+=0.001;
             else if(allTraceData[traceMarkers.length-1].getPosition.lat < curLat)curPos.lat-=0.001;
+            console.log("updated lat");
             //lng
             if(allTraceData[traceMarkers.length-1].getPosition.lat > curLat)curPos.lng+=0.001;
             else if(allTraceData[traceMarkers.length-1].getPosition.lat < curLat)curLng-=0.001;
+            console.log("updated lng");
             //set position
-            elem.setPosition({lat: curLat, lng: curLng});
+            elem.setPosition(curPos);
             console.log("moving: "+ elem.getPosition());
          }
       }
@@ -409,13 +425,11 @@
       });
       getAstrumPos().then(
          function(value){
-            doDist().then(
-            function(value){
-               animate(20);//refreshes each animated frame per 20 ms
-            });
+            doDist();
+            animate(20);//refreshes each animated frame per 20 ms
          }
       )
-      
+      alert("Before animate");
    }
 
    //updates newest loc, calculatets distance and ETA
