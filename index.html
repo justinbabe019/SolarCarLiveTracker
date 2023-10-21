@@ -463,7 +463,7 @@
    function processTxtPara(string){
       string=string.split("\n");
       let sth=[];
-      for(let i=0;i<string.length-1;++i){
+      for(let i=0;i<string.length;++i){
          sth.push(processTxtRow(string[i]));
       }
       return sth;

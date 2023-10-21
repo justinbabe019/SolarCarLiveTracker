@@ -180,19 +180,31 @@
    //Gets position by fetching github .txt file
    async function getAstrumPos(){
       console.log("in get astrum pos");
-      getText("./location.txt").then(
-      //getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
+      //getText("./location.txt").then(
+      getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
          function(value){
+            console.log("value= "+value);
             const str=processTxtPara(value);
+            console.log("str= "+str);
             const timeStr=processTxtParaTime(value);
+            console.log("timestr= "+timeStr);
             for(let i=0;i<str.length;++i){
-               allTraceData.push(str+"; "+timeStr);
-               if(Number(timeStr[i]%20==0))addTraceMarker(str[i], timeStr[i]);
+               console.log("got some value in txt");
+               allTraceData.push(str[i]+"; "+timeStr[i]);
+               var sth=timeStr[i].split(":");
+               sth=sth[2];
+               if(Number(sth%20==0))addTraceMarker(str[i], timeStr[i]);
             }
+            console.log("done adding");
             return("DONE");
          },
-         function(error){alert("sth wrong w txt file!~")}
+         function(error){
+            return error;
+            alert("sth wrong w txt file!~");
+
+         }
       );
+      return("DONE");
       //str=str.split(",");
    }
 
@@ -331,6 +343,7 @@
    async function getText(file) {
       let myObject = await fetch(file);
       let myText = await myObject.text();
+      console.log("MyText= "+myText);
       return myText;
    }
    //helper function
@@ -389,67 +402,71 @@
             });
        });
       }
-      await sleep(1000);
-      await getAstrumPos();
-      await doDist(2000);
-      animate(20);//refreshes each animated frame per 20 sec
+      getAstrumPos().then(
+         function(value){
+            doDist().then(
+            function(value){
+               //animate(20);//refreshes each animated frame per 20 sec
+            });
+         }
+      )
+      
    }
 
    //updates newest loc, calculatets distance and ETA
-   async function doDist(t){
-      await sleep(t);
+   async function doDist(){
+      while(traceMarkers.length==0){await sleep(100);}
       const service = new google.maps.DistanceMatrixService();
       // build request
       console.log(traceMarkers.length);
       const origin = astrumMarker.getPosition();
       const destination = getClosestCPPos();
       const request = {
-      origins: [origin],
-      destinations: [destination],
-      travelMode: google.maps.TravelMode.DRIVING,
-      unitSystem: google.maps.UnitSystem.METRIC,
-      avoidHighways: false,
-      avoidTolls: false,
-   };
-
-   // get distance matrix response
-   service.getDistanceMatrix(request).then((response) => {
-      var dist=processDist(response.rows[0].elements[0].distance.text);
-      changeNewestMarkerInfoWindow(
-         getClosestCPPos() + ", Distance left: "+dist +
-         ", ETA: "+ getNumberFromString(dist)/80 + " hours");
-      for(var i=0; i<origins.length;++i){
-         var results=response.rows[i].elements;
-         for (var j = 0; j < results.length; j++) {
-            var element = results[j];
-            var distance = element.distance.text;
-            var duration = element.duration.text;
-            var from = origins[i];
-            var to = destinations[j];
-         }
+         origins: [origin],
+         destinations: [destination],
+         travelMode: google.maps.TravelMode.DRIVING,
+         unitSystem: google.maps.UnitSystem.METRIC,
+         avoidHighways: false,
+         avoidTolls: false,
       }
+      // get distance matrix response
+      service.getDistanceMatrix(request).then((response) => {
+         var dist=processDist(response.rows[0].elements[0].distance.text);
+         changeNewestMarkerInfoWindow(
+            getClosestCPPos() + ", Distance left: "+dist +
+            ", ETA: "+ getNumberFromString(dist)/80 + " hours");
+         for(var i=0; i<origins.length;++i){
+            var results=response.rows[i].elements;
+            for (var j = 0; j < results.length; j++) {
+               var element = results[j];
+               var distance = element.distance.text;
+               var duration = element.duration.text;
+               var from = origins[i];
+               var to = destinations[j];
+            }
+         }
       const originList = response.originAddresses;
       const destinationList = response.destinationAddresses;
    });
-   }
+};
 
    function changeNewestMarkerInfoWindow(str){
       astrumMarker.setContent("<p style='color: black'>"+str+"</p>");
    }
 
    function getClosestCPPos(){
-      const curLng=traceMarkers[traceMarkers.length-1].getPosition().lat;
-      if(curLng>startPos.lat)alert("Too North!");
-      else if(curLng <= startPos.lat && curLng>katherinePos.lat){return "Katherine";}
-      else if(curLng <= katherinePos.lat && curLng>dunmarraPos.lat){return "Dunmarra";}
-      else if(curLng <= dunmarraPos.lat && curLng>tennantCreekPos.lat){return "Tennant Creek";}
-      else if(curLng <= tennantCreekPos.lat && curLng>barrowCreekPos.lat){return "Barrow Creek";}
-      else if(curLng <= barrowCreekPos.lat && curLng>aliceSpringsPos.lat){return "Alice Springs";}
-      else if(curLng <= aliceSpringsPos.lat && curLng>kulgeraPos.lat){return "Kulgera";}
-      else if(curLng <= kulgeraPos.lat && curLng>cooberPedyPos.lat){return "Coober Pedy";}
-      else if(curLng <= cooberPedyPos.lat && curLng>glendamboPos.lat){return "Glendambo";}
-      else if(curLng <= glendamboPos.lat && curLng>portAugustaPos.lat){return "Port Augusta";}
-      else if(curLng <= endpos.lat){return "Adelaide";}
+      const curLat=astrumMarker.getPosition().lat;
+      if(curLat>startPos.lat)alert("Too North!");
+      else if(curLat <= startPos.lat && curLat>katherinePos.lat){return "Katherine";}
+      else if(curLat <= katherinePos.lat && curLat>dunmarraPos.lat){return "Dunmarra";}
+      else if(curLat <= dunmarraPos.lat && curLat>tennantCreekPos.lat){return "Tennant Creek";}
+      else if(curLat <= tennantCreekPos.lat && curLat>barrowCreekPos.lat){return "Barrow Creek";}
+      else if(curLat <= barrowCreekPos.lat && curLat>aliceSpringsPos.lat){return "Alice Springs";}
+      else if(curLat <= aliceSpringsPos.lat && curLat>kulgeraPos.lat){return "Kulgera";}
+      else if(curLat <= kulgeraPos.lat && curLat>cooberPedyPos.lat){return "Coober Pedy";}
+      else if(curLat <= cooberPedyPos.lat && curLat>glendamboPos.lat){return "Glendambo";}
+      else if(curLat <= glendamboPos.lat && curLat>portAugustaPos.lat){return "Port Augusta";}
+      else if(curLat <= endPos.lat){return "Adelaide";}
       else
          alert("Too South!");
    }
@@ -522,7 +539,7 @@
    function processTxtPara(string){
       string=string.split("\n");
       let sth=[];
-      for(let i=0;i<string.length-1;++i){
+      for(let i=0;i<string.length;++i){
          let str=processTxtRow(string[i]);
          if(str!="")sth.push(str);
       }
