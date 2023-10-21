@@ -179,21 +179,21 @@
 
    //Gets position by fetching github .txt file
    async function getAstrumPos(){
-      console.log("in get astrum pos");
       //getText("./location.txt").then(
       getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
          function(value){
-            console.log("value= "+value);
             const str=processTxtPara(value);
-            console.log("str= "+str);
             const timeStr=processTxtParaTime(value);
-            console.log("timestr= "+timeStr);
             for(let i=0;i<str.length;++i){
                console.log("got some value in txt");
                allTraceData.push(str[i]+"; "+timeStr[i]);
                var sth=timeStr[i].split(":");
                sth=sth[2];
-               if(Number(sth%20==0))addTraceMarker(str[i], timeStr[i]);
+               if(Number(sth%20==0)){
+                  if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
+                  else
+                     addTraceMarker(str[i], timeStr[i]);
+               }
             }
             console.log("done adding");
             return("DONE");
@@ -431,6 +431,7 @@
       }
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
+         console.log(response);
          var dist=processDist(response.rows[0].elements[0].distance.text);
          changeNewestMarkerInfoWindow(
             getClosestCPPos() + ", Distance left: "+dist +
@@ -452,10 +453,11 @@
 
    function changeNewestMarkerInfoWindow(str){
       astrumMarker.setContent("<p style='color: black'>"+str+"</p>");
+      console.log("Content changed");
    }
 
    function getClosestCPPos(){
-      const curLat=astrumMarker.getPosition().lat;
+      const curLat=astrumMarker.getPosition().lat();
       if(curLat>startPos.lat)alert("Too North!");
       else if(curLat <= startPos.lat && curLat>katherinePos.lat){return "Katherine";}
       else if(curLat <= katherinePos.lat && curLat>dunmarraPos.lat){return "Dunmarra";}
