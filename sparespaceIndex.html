@@ -121,6 +121,8 @@
    <script>
    "use strict";
    let map;
+   let data;
+   let setspeed = 90;
    let allTraceData=[];
    let markers= [];
    let traceMarkers=[];
@@ -417,13 +419,20 @@
       });
       getAstrumPos().then(
          function(value){
-            
+            doDoist2(traceMarkers[traceMarkers.length-1], getClosestCPPos());
             doDist(astrumMarker.getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }
       )
    }
-
+   function doDoist2(mk1, mk2){
+      var dist = haversine_distance(mk1, mk2);
+      data = "Next control stop: "+ getClosestCPName() + '\n';
+      data+=  "Distance left: " + haversine_distance(mk1, mk2); + '\n';
+      data += "ETA to next control stop: "+ dist/setSpeed;
+      data += "Distance from Darwin: " + haversine_distance(mk1, markers[0]) + '\n';
+   }
+   
    //updates newest loc, calculatets distance and ETA
    async function doDist(origin, destination){
       const service = new google.maps.DistanceMatrixService();
@@ -445,9 +454,9 @@
          }
          else{
             var dist=processDist(response.rows[0].elements[0].distance.text);
-            changeNewestMarkerInfoWindow(
-               getClosestCPName() + ", Distance left: "+dist +
-               ", ETA: "+ getNumberFromString(dist)/90 + " hours");
+            data = getClosestCPName() + ", Distance left: "+dist +
+               ", ETA: "+ getNumberFromString(dist)/90 + " hours";
+            changeNewestMarkerInfoWindow(data);
             for(var i=0; i<origins.length;++i){
                var results=response.rows[i].elements;
                for (var j = 0; j < results.length; j++) {
@@ -634,6 +643,10 @@
       var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
       return d;
    }
+   
+   function showData(){
+
+   }
    </script>
   </head>
 
@@ -646,7 +659,8 @@
          <button class="myButtons" onclick="hideInitMarker()">Hide Control Stops</button>
          <button class="myButtons" onclick="showTrace(markers)">Show Control Stops</button>
          <button class="myButtons" onclick="reCenter()">Re-Center</button>
-         <button class="myButtons" onclick="zoomCurrentMarker()">Zoom to current marker</button>
+         <button class="myButtons" onclick="zoomCurrentMarker()">Zoom to current marker</button>  
+         <button class="myButtons" onclick="showData()">Show data</button>
          <!--
     <div class="g_id_signin" data-type="standard"></div>
          <div class="g-signin2" data-onsuccess="onSignIn"></div>
