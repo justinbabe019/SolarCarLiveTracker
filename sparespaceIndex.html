@@ -203,12 +203,14 @@
                   var day=hr[0];
                   hr=hr[1];
                   if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
-                  if(Number(sth[2]%60==0 && sth[1]%2==0)){
+                  if(Number(sth[2]%5==0 /*&&sth[1]%2==0*/)){
                      addTraceMarker(str[i], timeStr[i]);
                   }
+                  /*
                   else if(day>="Oct22" || hr>=16){
-                     addTraceMarker(str[i], timeStr[i]);
-                  }
+                     console.log("day= "+day+" hr="+hr);
+                     if(sth[1]%5==0)addTraceMarker(str[i], timeStr[i]);
+                  }*/
                }
             }
             astrumMarker.setPosition(traceMarkers[traceMarkers.length-1]);
@@ -423,6 +425,7 @@
       getAstrumPos().then(
          async function(value){
             while(traceMarkers.length<1){await sleep(1000);}
+            hideTrace();
             await doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //doDist(traceMArkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
@@ -437,6 +440,7 @@
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
       data += "Distance from Darwin: " + haversine_distance(mk1, sth) + '\n';
+      data += "Last updated: "+traceMarkers[traceMarkers.length-1].getLabel();
    }
    
    //updates newest loc, calculatets distance and ETA
