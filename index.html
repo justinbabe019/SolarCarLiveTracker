@@ -419,7 +419,7 @@
       });
       getAstrumPos().then(
          async function(value){
-            while(traceMarkers.length<1)await sleep(1000);
+            while(traceMarkers.length<1)await sleep(2000);
             await doDist(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }
