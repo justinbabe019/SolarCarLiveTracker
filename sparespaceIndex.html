@@ -432,7 +432,6 @@
       data+=  "Distance left: " + haversine_distance(mk1, mk2); + '\n';
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
       data += "Distance from Darwin: " + haversine_distance(mk1, startPos) + '\n';
-      alert(data);
    }
    
    //updates newest loc, calculatets distance and ETA
@@ -647,7 +646,7 @@
    }
    
    function showData(){
-
+      alert(data);
    }
    </script>
   </head>
