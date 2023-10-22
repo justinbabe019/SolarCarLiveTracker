@@ -417,7 +417,7 @@
       });
       getAstrumPos().then(
          function(value){
-            doDist(traceMarkers[traceMarkers.length-1], getClosestCPPos());
+            doDist(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }
       )
