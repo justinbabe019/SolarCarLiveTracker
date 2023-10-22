@@ -197,10 +197,9 @@
                allTraceData.push(str[i]+"; "+timeStr[i]);
                var sth=timeStr[i].split(":");
                sth=sth[2];
-               if(Number(sth%3==0)){
-                  if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
-                  else
-                     addTraceMarker(str[i], timeStr[i]);
+               if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
+               if(Number(sth%5==0)){
+                  addTraceMarker(str[i], timeStr[i]);
                }
             }
             astrumMarker.setPosition(traceMarkers[traceMarkers.length-1]);
