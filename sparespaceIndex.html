@@ -432,6 +432,7 @@
       data = "Next control stop: "+ getClosestCPName() + '\n';
       data+=  "Distance left: " + haversine_distance(mk1, mk2); + '\n';
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
+      var sth = new google.maps.LatLng(startPos);
       data += "Distance from Darwin: " + haversine_distance(mk1, startPos) + '\n';
    }
    
