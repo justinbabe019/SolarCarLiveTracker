@@ -645,9 +645,11 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude,
          };
-
+         infowindow = new google.maps.InfoWindow;
          infoWindow.setPosition(pos);
-         infoWindow.setContent("Your location is "+ Pos + ';\n straight line dist to blue is: '+ haversine_distance(position, astrumMarker.getPosition()));
+         infoWindow.setContent("Your location is "+ Pos + 
+            ';\n straight line dist to blue is: '+ haversine_distance(position, astrumMarker.getPosition()
+            +));
          infoWindow.open(map);
          zoomCurrentMarker();
          var line = new google.maps.Polyline({path: [position, astrumMarker], map: map})
