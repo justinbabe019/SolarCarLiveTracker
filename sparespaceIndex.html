@@ -122,7 +122,7 @@
    "use strict";
    let map;
    let data;
-   let setspeed = 96;
+   let setSpeed = 96;
    let allTraceData=[];
    let markers= [];
    let traceMarkers=[];
@@ -427,6 +427,7 @@
       )
    }
    function doDist2(mk1, mk2){
+      console.log("mk1= "+mk1+" mk2= "+mk2);
       var dist = haversine_distance(mk1, mk2);
       data = "Next control stop: "+ getClosestCPName() + '\n';
       data+=  "Distance left: " + haversine_distance(mk1, mk2); + '\n';
@@ -497,17 +498,42 @@
    }
 
    function getClosestCPPos(){
+      console.log(getClosestCPName());
       switch(getClosestCPName()){
-         case("Katherine"): return katherinePos; break;
-         case("Dunmarra"): return dunmarraPos; break;
-         case("Tennant Creek"): return tennantCreekPos; break;
-         case("Barrow Creek"): return barrowCreekPos; break;
-         case("Alice Springs"): return aliceSpringsPos; break;
-         case("Kulgera"): return kulgeraPos; break;
-         case("Coober Pedy"): return cooberPedyPos; break;
-         case("Glendambo"): return glendamboPos; break;
-         case("Port Augusta"): return portAugustaPos; break;
-         case("Adelaide"): return endPos; break;
+         case("Katherine"): 
+            var sth = new google.maps.LatLng(katherinePos.lat, katherinePos.lng); 
+            console.log(sth);
+            return sth;
+            break;
+         case("Dunmarra"):
+            return dunmarraPos; 
+            break;
+         case("Tennant Creek"): 
+            return tennantCreekPos; 
+            break;
+         case("Barrow Creek"): 
+            return barrowCreekPos; 
+            break;
+         case("Alice Springs"): 
+            return aliceSpringsPos; 
+            break;
+         case("Kulgera"): 
+            return kulgeraPos;
+            break;
+         case("Coober Pedy"): 
+            return cooberPedyPos; 
+            break;
+         case("Glendambo"): 
+            return glendamboPos; 
+            break;
+         case("Port Augusta"): 
+            return portAugustaPos; 
+            break;
+         case("Adelaide"): 
+            return endPos; 
+            break;
+         default:
+            return startPos;
       }
    }
 
