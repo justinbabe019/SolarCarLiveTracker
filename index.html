@@ -125,6 +125,8 @@
    let setSpeed=90;
    let allTracePos=[];
    let allTraceTime=[];
+   
+   const month = ["Jan","Feb","Mar","Apl","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
    let markers= [];
    let traceMarkers=[];
@@ -448,7 +450,7 @@
       var h=d.getHours();
       var m = d.getMinutes() + Math.floor(dist/setSpeed*60);
       if(m>60){h+=Math.floor(m/60);m%=60;}
-      data += "ETA to next control stop: "+ d.getMonth()+d.getDate() + " " +h+":"+m+'\n';
+      data += "ETA to next control stop: "+ month[d.getMonth()] +d.getDate() + " " +h+":"+m+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
       data += "Distance from Darwin: " + haversine_distance(mk1, sth) + '\n';
       data += "Last updated: "+traceMarkers[traceMarkers.length-1].getLabel();
