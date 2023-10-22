@@ -725,7 +725,7 @@
          infowindow.setPosition(pos);
          var sthh = new google.maps.LatLng(pos.lat, pos.lng);
          infowindow.setContent("Your location is here;\n"+ 
-            haversine_distance(sthh, traceMarkers[traceMarkers.length-1].getPosition()));
+            "Dist= "+haversine_distance(sthh, traceMarkers[traceMarkers.length-1].getPosition()));
          map.setCenter(pos);
          infowindow.open(map);
          var line = new google.maps.Polyline({path: [position, astrumMarker], map: map})
