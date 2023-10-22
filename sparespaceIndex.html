@@ -124,6 +124,9 @@
    let data;
    let setSpeed = 90;
    let allTraceData=[];
+   let allTracePos=[];
+   let allTraceTime=[];
+
    let markers= [];
    let traceMarkers=[];
    let markerDates = [];
@@ -197,7 +200,9 @@
             const timeStr=processTxtParaTime(value);
             for(let i=0;i<str.length;++i){
                if(str[i] && timeStr[i]){
-                  allTraceData.push(str[i]+"; "+timeStr[i]);
+                  allTracePos.push(str[i]);
+                  allTraceTime.push(timeStr[i]);
+                  //allTraceData.push(str[i]+"; "+timeStr[i]);
                   var sth=timeStr[i].split(":");
                   var hr=sth[0].split(" ");
                   var day=hr[0];
@@ -426,12 +431,13 @@
          async function(value){
             while(traceMarkers.length<1){await sleep(1000);}
             hideTrace();
-            var counter=allTraceData.length-1;
-            while(allTraceData[counter].length<37){
+            var counter=allTracePos.length-1;
+            while(allTracePos[counter].length+allTraceTime[counter]<33){
                counter--;
             }
-            var datStr=processTxtRow(allTraceData[allTraceData.length-1])
-            doDist2(new google.maps.LatLng(datStr), getClosestCPPos());
+            console.log("processed= "+allTracePos[counter] + " time= "+allTraceTime[counter]);
+            addTraceMarker(allTracePos[counter], allTraceTime[counter]);
+            doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             
             
             //   await doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
