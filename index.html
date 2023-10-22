@@ -733,9 +733,10 @@
          var infowindow = new google.maps.InfoWindow();
          infowindow.setPosition(pos);
          var sthh = new google.maps.LatLng(pos.lat, pos.lng);
-         infowindow.setContent("Your location is here;"+'\n'+ 
-            "Dist from blue= "+haversine_distance(sthh, allTracePos[allTracePos.length]-1)+
-            '\n' + "Last updated: "+allTraceTime[allTraceTime.length-1]);
+         var str= "Your location is here;"+'\n';
+         str+="Dist from blue= "+haversine_distance(sthh, allTracePos[allTracePos.length]-1)+'\n';
+         str+="Last updated: "+allTraceTime[allTraceTime.length-1];
+         infowindow.setContent(str);
          map.setCenter(pos);
          infowindow.open(map);
          var line = new google.maps.Polyline({path: [position, astrumMarker], map: map})
