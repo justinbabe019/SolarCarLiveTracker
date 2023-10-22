@@ -122,7 +122,7 @@
    "use strict";
    let map;
    let data;
-   let setSpeed = 96;
+   let setSpeed = 90;
    let allTraceData=[];
    let markers= [];
    let traceMarkers=[];
@@ -419,7 +419,7 @@
       });
       getAstrumPos().then(
          async function(value){
-            while(traceMarkers.length<1){await sleep(100);}
+            while(traceMarkers.length<1){await sleep(500);}
             doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //doDist(traceMArkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
@@ -427,13 +427,12 @@
       )
    }
    function doDist2(mk1, mk2){
-      console.log("mk1= "+mk1+" mk2= "+mk2);
       var dist = haversine_distance(mk1, mk2);
       data = "Next control stop: "+ getClosestCPName() + '\n';
-      data+=  "Distance left: " + haversine_distance(mk1, mk2); + '\n';
+      data+=  "Distance left: " + haversine_distance(mk1, mk2) + '\n';
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
-      var sth = new google.maps.LatLng(startPos);
-      data += "Distance from Darwin: " + haversine_distance(mk1, startPos) + '\n';
+      var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
+      data += "Distance from Darwin: " + haversine_distance(mk1, sth) + '\n';
    }
    
    //updates newest loc, calculatets distance and ETA
