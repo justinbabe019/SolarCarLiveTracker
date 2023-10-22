@@ -724,10 +724,8 @@
          var infowindow = new google.maps.InfoWindow();
          infowindow.setPosition(pos);
          var sthh = new google.maps.LatLng(position.lat, position.lng);
-         infowindow.setContent("Your location is "+ pos + 
-            ';\n straight line dist to blue is: '+ haversine_distance(
-               sthh, 
-               traceMarkers[traceMarkers.length-1].getPosition()));
+         infowindow.setContent("Your location is here;\n"+ 
+            haversine_distance(sthh, traceMarkers[traceMarkers.length-1].getPosition()));
          map.setCenter(pos);
          infowindow.open(map);
          var line = new google.maps.Polyline({path: [position, astrumMarker], map: map})
