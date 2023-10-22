@@ -508,7 +508,7 @@
    }
    
    function getClosestCPName(){
-      const curLat=astrumMarker.getPosition().lat();
+      const curLat=traceMarkers[traceMarkers.length-1].getPosition().lat();
       if(curLat>startPos.lat)alert("Too North!");
       else if(curLat <= startPos.lat && curLat>katherinePos.lat){return "Katherine";}
       else if(curLat <= katherinePos.lat && curLat>dunmarraPos.lat){return "Dunmarra";}
