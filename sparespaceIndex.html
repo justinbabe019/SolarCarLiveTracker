@@ -199,10 +199,15 @@
                if(str[i] && timeStr[i]){
                   allTraceData.push(str[i]+"; "+timeStr[i]);
                   var sth=timeStr[i].split(":");
+                  var hr=sth[0].split(" ");
+                  var day=hr[0];
+                  hr=hr[1];
+                  if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
                   if(Number(sth[2]%60==0 && sth[1]%2==0)){
-                     if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
-                     else
-                        addTraceMarker(str[i], timeStr[i]);
+                     addTraceMarker(str[i], timeStr[i]);
+                  }
+                  else if(day>="Oct22" || hr>=16){
+                     addTraceMarker(str[i], timeStr[i]);
                   }
                }
             }
@@ -342,7 +347,6 @@
       });
       traceMarkers.push(marker);
       traceinfowindows.push(infowindow);
-      console.log("Done adding trace marker");
    }
    //**HELPER FUNCTIONS**//
    //helper function
