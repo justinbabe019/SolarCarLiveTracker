@@ -728,8 +728,8 @@
             ';\n straight line dist to blue is: '+ haversine_distance(
                sthh, 
                traceMarkers[traceMarkers.length-1].getPosition()));
+         map.setCenter(pos);
          infowindow.open(map);
-         zoomCurrentMarker();
          var line = new google.maps.Polyline({path: [position, astrumMarker], map: map})
         },
         () => {
