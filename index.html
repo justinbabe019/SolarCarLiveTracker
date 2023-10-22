@@ -721,7 +721,7 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude,
          };
-         var infowindow = new google.maps.InfoWindow();
+         var infoWindow = new google.maps.InfoWindow();
          infoWindow.setPosition(pos);
          infoWindow.setContent("Your location is "+ Pos + 
             ';\n straight line dist to blue is: '+ haversine_distance(position, astrumMarker.getPosition()));
