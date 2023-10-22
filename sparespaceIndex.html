@@ -507,25 +507,39 @@
             return sth;
             break;
          case("Dunmarra"):
-            return dunmarraPos; 
+            var sth = new google.maps.LatLng(dunmarraPos.lat, dunmarraPos.lng); 
+            console.log(sth);
+            return sth; 
             break;
          case("Tennant Creek"): 
-            return tennantCreekPos; 
+         var sth = new google.maps.LatLng(tennantCreekPos.lat, tennantCreekPos.lng); 
+            console.log(sth);
+            return sth;
             break;
          case("Barrow Creek"): 
-            return barrowCreekPos; 
+            var sth = new google.maps.LatLng(barrowCreekMarker.lat, barrowCreekPos.lng); 
+            console.log(sth);
+            return sth;
             break;
          case("Alice Springs"): 
-            return aliceSpringsPos; 
+            var sth = new google.maps.LatLng(aliceSpringsPos.lat, aliceSpringsPos.lng); 
+            console.log(sth);
+            return sth;
             break;
          case("Kulgera"): 
-            return kulgeraPos;
+            var sth = new google.maps.LatLng(kulgeraPos.lat, kulgeraPos.lng); 
+            console.log(sth);
+            return sth;
             break;
          case("Coober Pedy"): 
-            return cooberPedyPos; 
+            var sth = new google.maps.LatLng(cooberPedyPos.lat, cooberPedyPos.lng); 
+            console.log(sth);
+            return sth;
             break;
          case("Glendambo"): 
-            return glendamboPos; 
+            var sth = new google.maps.LatLng(glendamboPos.lat, glendamboPos.lng); 
+            console.log(sth);
+            return sth;
             break;
          case("Port Augusta"): 
             return portAugustaPos; 
@@ -662,6 +676,7 @@
 
    //helper function, straightline dist in btwn markers
    function haversine_distance(mk1, mk2) {
+      console.log(mk1, mk2);
       var R = 3958.8; // Radius of the Earth in miles
       var rlat1 = mk1.lat() * (Math.PI/180); // Convert degrees to radians
       var rlat2 = mk2.lat() * (Math.PI/180); // Convert degrees to radians
