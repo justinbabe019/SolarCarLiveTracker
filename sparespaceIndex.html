@@ -194,6 +194,7 @@
             const str=processTxtPara(value);
             const timeStr=processTxtParaTime(value);
             for(let i=0;i<str.length;++i){
+               if(!str[i] || ! timeStr[i])break;
                allTraceData.push(str[i]+"; "+timeStr[i]);
                var sth=timeStr[i].split(":");
                sth=sth[2];
