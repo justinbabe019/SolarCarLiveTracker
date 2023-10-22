@@ -445,7 +445,7 @@
             changeNewestMarkerInfoWindow("dist not found! potentially incorrect location");
          }
          else{
-            dist=processDist(response.rows[0].elements[0].distance.text);
+            var dist=processDist(response.rows[0].elements[0].distance.text);
             data=getClosestCPName() + ", Distance left: "+dist +
                ", ETA: "+ getNumberFromString(dist)/80 + " hours";
             changeNewestMarkerInfoWindow(data);
@@ -466,7 +466,7 @@
    }
 
    function changeNewestMarkerInfoWindow(str){
-      astrumInfoWindow.setContent("<p style='color: black'>"+str+"</p>");
+      traceinfowindows[traceMarkers.length-1].setContent("<p style='color: black'>"+str+"</p>");
       console.log("Content changed");
    }
    
