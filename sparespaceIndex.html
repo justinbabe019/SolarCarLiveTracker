@@ -419,7 +419,7 @@
       });
       getAstrumPos().then(
          async function(value){
-            while(traceMarkers.length<1){await sleep(500);}
+            while(traceMarkers.length<1){await sleep(1000);}
             doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //doDist(traceMArkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
@@ -428,7 +428,8 @@
    }
    function doDist2(mk1, mk2){
       var dist = haversine_distance(mk1, mk2);
-      data = "Next control stop: "+ getClosestCPName() + '\n';
+      mk2 = getClosestCPName();
+      data = "Next control stop: "+ mk2 + '\n';
       data+=  "Distance left: " + haversine_distance(mk1, mk2) + '\n';
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
