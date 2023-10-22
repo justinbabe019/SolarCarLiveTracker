@@ -212,7 +212,6 @@
          function(error){
             return error;
             alert("sth wrong w txt file!~");
-
          }
       );
       return("DONE");
@@ -420,7 +419,7 @@
       getAstrumPos().then(
          async function(value){
             while(traceMarkers.length<1){await sleep(1000);}
-            doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
+            await doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //doDist(traceMArkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }

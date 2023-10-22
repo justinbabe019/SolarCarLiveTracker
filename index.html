@@ -420,11 +420,22 @@
       getAstrumPos().then(
          async function(value){
             while(traceMarkers.length<1)await sleep(2000);
-            await doDist(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
+            await doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
+            //await doDist(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }
       )
    }
+   function doDist2(mk1, mk2){
+      var dist = haversine_distance(mk1, mk2);
+      mk2 = getClosestCPName();
+      data = "Next control stop: "+ mk2 + '\n';
+      data+=  "Distance left: " + haversine_distance(mk1, mk2) + '\n';
+      data += "ETA to next control stop: "+ dist/setSpeed+'\n';
+      var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
+      data += "Distance from Darwin: " + haversine_distance(mk1, sth) + '\n';
+   }
+
    function doDistStr(origin, destination){
       const service = new google.maps.DistanceMatrixService();
       // build request
