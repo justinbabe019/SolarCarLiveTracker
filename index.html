@@ -726,7 +726,7 @@
          var sthh = new google.maps.LatLng(position.lat, position.lng);
          infowindow.setContent("Your location is "+ pos + 
             ';\n straight line dist to blue is: '+ haversine_distance(
-               sth, 
+               sthh, 
                traceMarkers[traceMarkers.length-1].getPosition()));
          infowindow.open(map);
          zoomCurrentMarker();
