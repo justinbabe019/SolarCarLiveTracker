@@ -724,7 +724,7 @@
          var infowindow = new google.maps.InfoWindow();
          infowindow.setPosition(pos);
          var sthh = new google.maps.LatLng(pos.lat, pos.lng);
-         infowindow.setContent("Your location is here;\n"+ 
+         infowindow.setContent("Your location is here;"+'\n'+ 
             "Dist= "+haversine_distance(sthh, traceMarkers[traceMarkers.length-1].getPosition()));
          map.setCenter(pos);
          infowindow.open(map);
