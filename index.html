@@ -435,6 +435,7 @@
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
       data += "Distance from Darwin: " + haversine_distance(mk1, sth) + '\n';
+      data += "Last updated: "+traceMarkers[traceMarkers.length-1].getLabel();
    }
 
    function doDistStr(origin, destination){
@@ -711,7 +712,6 @@
     }
    function showData(){
       alert(data);
-      
    }
    function getDistFromUser(){
       if (navigator.geolocation) {
