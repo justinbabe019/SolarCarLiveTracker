@@ -723,7 +723,7 @@
          };
          var infowindow = new google.maps.InfoWindow();
          infowindow.setPosition(pos);
-         var sthh = new google.maps.LatLng(position.lat, position.lng);
+         var sthh = new google.maps.LatLng(pos.lat, pos.lng);
          infowindow.setContent("Your location is here;\n"+ 
             haversine_distance(sthh, traceMarkers[traceMarkers.length-1].getPosition()));
          map.setCenter(pos);
