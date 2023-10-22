@@ -419,21 +419,19 @@
       });
       getAstrumPos().then(
          async function(value){
-            while(traceMarkers.length<1){
-               await sleep(100);
-            }
-            doDoist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
+            while(traceMarkers.length<1){await sleep(100);}
+            doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //doDist(traceMArkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }
       )
    }
-   function doDoist2(mk1, mk2){
+   function doDist2(mk1, mk2){
       var dist = haversine_distance(mk1, mk2);
       data = "Next control stop: "+ getClosestCPName() + '\n';
       data+=  "Distance left: " + haversine_distance(mk1, mk2); + '\n';
-      data += "ETA to next control stop: "+ dist/setSpeed;
-      data += "Distance from Darwin: " + haversine_distance(mk1, markers[0]) + '\n';
+      data += "ETA to next control stop: "+ dist/setSpeed+'\n';
+      data += "Distance from Darwin: " + haversine_distance(mk1, startPos) + '\n';
       alert(data);
    }
    
