@@ -346,7 +346,6 @@
       });
       traceMarkers.push(marker);
       traceinfowindows.push(infowindow);
-      console.log("Done adding trace marker");
    }
    //**HELPER FUNCTIONS**//
    //helper function
@@ -514,7 +513,6 @@
 
    function changeNewestMarkerInfoWindow(str){
       traceinfowindows[traceMarkers.length-1].setContent("<p style='color: black'>"+str+"</p>");
-      console.log("Content changed");
    }
    
    function getClosestCPName(){
@@ -538,42 +536,34 @@
       switch(getClosestCPName()){
          case("Katherine"): 
             var sth = new google.maps.LatLng(katherinePos.lat, katherinePos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Dunmarra"):
             var sth = new google.maps.LatLng(dunmarraPos.lat, dunmarraPos.lng); 
-            console.log(sth);
             return sth; 
             break;
          case("Tennant Creek"): 
          var sth = new google.maps.LatLng(tennantCreekPos.lat, tennantCreekPos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Barrow Creek"): 
             var sth = new google.maps.LatLng(barrowCreekMarker.lat, barrowCreekPos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Alice Springs"): 
             var sth = new google.maps.LatLng(aliceSpringsPos.lat, aliceSpringsPos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Kulgera"): 
             var sth = new google.maps.LatLng(kulgeraPos.lat, kulgeraPos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Coober Pedy"): 
             var sth = new google.maps.LatLng(cooberPedyPos.lat, cooberPedyPos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Glendambo"): 
             var sth = new google.maps.LatLng(glendamboPos.lat, glendamboPos.lng); 
-            console.log(sth);
             return sth;
             break;
          case("Port Augusta"): 
