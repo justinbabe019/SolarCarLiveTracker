@@ -195,14 +195,15 @@
             const str=processTxtPara(value);
             const timeStr=processTxtParaTime(value);
             for(let i=0;i<str.length;++i){
-               if(!str[i] || ! timeStr[i])break;
-               allTraceData.push(str[i]+"; "+timeStr[i]);
-               var sth=timeStr[i].split(":");
-               sth=sth[2];
-               if(Number(sth%20==0)){
-                  if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
-                  else
-                     addTraceMarker(str[i], timeStr[i]);
+               if(str[i] && timeStr[i]){
+                  allTraceData.push(str[i]+"; "+timeStr[i]);
+                  var sth=timeStr[i].split(":");
+                  sth=sth[2];
+                  if(Number(sth%20==0)){
+                     if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
+                     else
+                        addTraceMarker(str[i], timeStr[i]);
+                  }
                }
             }
             astrumMarker.setPosition(traceMarkers[traceMarkers.length-1]);
@@ -424,10 +425,33 @@
          }
       )
    }
-
+   function doDistStr(origin, destination){
+      const service = new google.maps.DistanceMatrixService();
+      // build request
+      console.log(traceMarkers.length);
+      const request = {
+         origins: [origin],
+         destinations: [destination],
+         travelMode: google.maps.TravelMode.DRIVING,
+         unitSystem: google.maps.UnitSystem.METRIC,
+         avoidHighways: false,
+         avoidTolls: false,
+      }
+      // get distance matrix response
+      service.getDistanceMatrix(request).then((response) => {
+         if(response.rows[0].elements[0].status=='NOT_FOUND'){
+            changeNewestMarkerInfoWindow("dist not found! potentially incorrect location");
+         }
+         else{
+            var dist=processDist(response.rows[0].elements[0].distance.text);
+            data=getClosestCPName() + ", Distance left: "+dist +
+               ", ETA: "+ getNumberFromString(dist)/80 + " hours";
+            return data;
+         } 
+      });
+   }
    //updates newest loc, calculatets distance and ETA
    async function doDist(origin, destination){
-      while(traceMarkers.length==0){await sleep(100);}
       const service = new google.maps.DistanceMatrixService();
       // build request
       console.log(traceMarkers.length);
@@ -636,6 +660,7 @@
     }
    function showData(){
       alert(data);
+      
    }
    function getDistFromUser(){
       if (navigator.geolocation) {
