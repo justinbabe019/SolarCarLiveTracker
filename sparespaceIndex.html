@@ -602,23 +602,23 @@
    }
 
    function onSignIn(googleUser){
-   if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
-   alert("On sign in!");
-   var profile = googleUser.getBasicProfile();
-   alert("U are signed in"+profile.getName());
-   $("#userName").text=profile.getName();
-   $(".g-signin2").hide();
-   show("userName");
-   hide("g-signin2");
-   alert("done hiding n showing");
-   /*
-   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-   console.log('Name: ' + profile.getName());
-   console.log('Image URL: ' + profile.getImageUrl());
-   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-   */
+      if (auth2.isSignedIn.get()) alert("signed In in onSignIn");
+      alert("On sign in!");
+      var profile = googleUser.getBasicProfile();
+      alert("U are signed in"+profile.getName());
+      $("#userName").text=profile.getName();
+      $(".g-signin2").hide();
+      show("userName");
+      hide("g-signin2");
+      alert("done hiding n showing");
+      /*
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      */
    }
-   
+
    function removeTraceMarkers(num){
       traceMarkers=traceMarkers.splice(0,num);
    }
@@ -633,7 +633,7 @@
 
       var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
       return d;
-    }
+   }
    </script>
   </head>
 
