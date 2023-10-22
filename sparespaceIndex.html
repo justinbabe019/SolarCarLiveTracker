@@ -197,8 +197,7 @@
                if(str[i] && timeStr[i]){
                   allTraceData.push(str[i]+"; "+timeStr[i]);
                   var sth=timeStr[i].split(":");
-                  sth=sth[2];
-                  if(Number(sth%20==0)){
+                  if(Number(sth[2]%60==0 && sth[1]%2==0)){
                      if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
                      else
                         addTraceMarker(str[i], timeStr[i]);
