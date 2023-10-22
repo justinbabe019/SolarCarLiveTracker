@@ -439,6 +439,7 @@
       }
       // get distance matrix response
       service.getDistanceMatrix(request).then((response) => {
+         console.log(response);
          if(response.rows[0].elements[0].status=='NOT_FOUND'){
             changeNewestMarkerInfoWindow("dist not found! potentially incorrect location");
          }
