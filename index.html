@@ -428,8 +428,8 @@
    }
    function doDist2(mk1, mk2){
       var dist = haversine_distance(mk1, mk2);
-      mk2 = getClosestCPName();
-      data = "Next control stop: "+ mk2 + '\n';
+      mk2 = getClosestCPPos();
+      data = "Next control stop: "+ getClosestCPName() + '\n';
       data+=  "Distance left: " + haversine_distance(mk1, mk2) + '\n';
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);

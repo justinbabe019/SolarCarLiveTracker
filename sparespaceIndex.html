@@ -427,8 +427,8 @@
    }
    function doDist2(mk1, mk2){
       var dist = haversine_distance(mk1, mk2);
-      mk2 = getClosestCPName();
-      data = "Next control stop: "+ mk2 + '\n';
+      mk2 = getClosestCPPos();
+      data = "Next control stop: "+ getClosestCPName() + '\n';
       data+=  "Distance left: " + haversine_distance(mk1, mk2) + '\n';
       data += "ETA to next control stop: "+ dist/setSpeed+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
@@ -481,7 +481,7 @@
    }
    
    function getClosestCPName(){
-      const curLat=astrumMarker.getPosition().lat();
+      const curLat=traceMarkers[traceMarkers.length-1].getPosition().lat();
       if(curLat>startPos.lat)alert("Too North!");
       else if(curLat <= startPos.lat && curLat>katherinePos.lat){return "Katherine";}
       else if(curLat <= katherinePos.lat && curLat>dunmarraPos.lat){return "Dunmarra";}
