@@ -723,8 +723,11 @@
          };
          var infowindow = new google.maps.InfoWindow();
          infowindow.setPosition(pos);
+         var sthh = new google.maps.LatLng(position.lat, position.lng);
          infowindow.setContent("Your location is "+ pos + 
-            ';\n straight line dist to blue is: '+ haversine_distance(position, traceMarkers[traceMarkers.length-1].getPosition()));
+            ';\n straight line dist to blue is: '+ haversine_distance(
+               sth, 
+               traceMarkers[traceMarkers.length-1].getPosition()));
          infowindow.open(map);
          zoomCurrentMarker();
          var line = new google.maps.Polyline({path: [position, astrumMarker], map: map})
