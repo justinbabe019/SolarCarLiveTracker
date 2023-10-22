@@ -735,6 +735,7 @@
          var sthh = new google.maps.LatLng(pos.lat, pos.lng);
          var str= "Your location is here;"+'\n';
          str+="Dist from blue= "+haversine_distance(sthh, allTracePos[allTracePos.length-1])+'\n';
+         console.log("type = "+typeof sthh+" "+typeof allTracePos[allTracePos.length-1]);
          str+="Last updated: "+allTraceTime[allTraceTime.length-1];
          infowindow.setContent(str);
          map.setCenter(pos);
