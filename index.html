@@ -198,7 +198,7 @@
                allTraceData.push(str[i]+"; "+timeStr[i]);
                var sth=timeStr[i].split(":");
                sth=sth[2];
-               if(Number(sth%3==0)){
+               if(Number(sth%10==0)){
                   if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
                   else
                      addTraceMarker(str[i], timeStr[i]);
@@ -416,7 +416,8 @@
          });
       });
       getAstrumPos().then(
-         function(value){
+         async function(value){
+            while(traceMarkers.length<1)await sleep(1000);
             doDist(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
          }
