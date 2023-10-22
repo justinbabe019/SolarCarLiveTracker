@@ -123,7 +123,6 @@
    let map;
    let data;
    let setSpeed = 90;
-   let allTraceData=[];
    let allTracePos=[];
    let allTraceTime=[];
 
@@ -202,7 +201,6 @@
                if(str[i] && timeStr[i]){
                   allTracePos.push(str[i]);
                   allTraceTime.push(timeStr[i]);
-                  allTraceData.push(str[i]+"; "+timeStr[i]);
                   var sth=timeStr[i].split(":");
                   var hr=sth[0].split(" ");
                   var day=hr[0];
@@ -460,7 +458,7 @@
       var h=d.getHours();
       var m = d.getMinutes() + Math.floor(dist/setSpeed*60);
       if(m>60){h+=Math.floor(m/60);m%=60;}
-      data += "ETA to next control stop: "+ d.getDate() + " " +h+":"+m+'\n';
+      data += "ETA to next control stop: "+ d.getMonth()+d.getDate() + " " +h+":"+m+'\n';
       var sth = new google.maps.LatLng(startPos.lat, startPos.lng);
       data += "Distance from Darwin: " + haversine_distance(mk1, sth) + '\n';
       data += "Last updated: "+traceMarkers[traceMarkers.length-1].getLabel();
