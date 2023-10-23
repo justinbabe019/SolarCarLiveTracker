@@ -207,7 +207,10 @@
                   var hr=sth[0].split(" ");
                   var day=hr[0];
                   hr=hr[1];
-                  if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
+                  if(i==str.length-1){
+                     astrumMarker.setPosition(str[i]);
+                     astrumMarker.setLabel(timeStr[i]);
+                  }
                   if(Number(sth[2]%60==0 /*&&sth[1]%2==0*/)){
                      addTraceMarker(str[i], timeStr[i]);
                      if(getClosestCPName()=="Katherine" || getClosestCPName()=="Dunmarra"){
