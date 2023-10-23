@@ -123,6 +123,8 @@
    let map;
    let data;
    let setSpeed=80;
+   let freq=60;
+
    let allTracePos=[];
    let allTraceTime=[];
    
@@ -206,7 +208,7 @@
                   var sth=timeStr[i].split(":");
                   sth=sth[2];
                   if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
-                  if(Number(sth%20==0)){
+                  if(Number(sth%freq==0)){
                      addTraceMarker(str[i], timeStr[i]);
                      if(getClosestCPName()=="Katherine" || getClosestCPName()=="Dunmarra"){
                         changeNewestMarkerInfoWindow(document.getElementById("ins-1").innerHTML);
