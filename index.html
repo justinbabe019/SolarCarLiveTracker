@@ -214,6 +214,8 @@
                      if(getClosestCPName()=="Katherine" || getClosestCPName()=="Dunmarra"){
                         changeNewestMarkerInfoWindow(document.getElementById("ins-1").innerHTML);
                      }
+                     else if(getClosestCPName()=="Tennant Creek" || getClosestCPName()=="Barrow Creek")
+                        changeNewestMarkerInfoWindow(document.getElementById("ins-2").innerHTML);
                   }
                }
             }
@@ -321,12 +323,31 @@
       })
       markers.push(endPointMarker);
    }
-   
+
+   function toContentStr(imgLoc, insLink){
+      imgLoc="./assets/"+imgLoc;
+      return '\n'+'<a href='+'insLink><img src='+imgLoc+' style="max-height:490px; max_width:300px;"><\a>';
+   }
+
    //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
-      const insString=document.getElementById("ins").innerHTML;
+      var insString=document.getElementById("ins").innerHTML;
       let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
+         switch(contentString[i]){
+               case "Katherine":
+                  insString=toContentStr("Katherine.png", "https://www.instagram.com/stories/umsolarcarteam/3219508080396258342/?next=%2Fumsolarcarteam%2F&hl=en");
+                  break;
+               case "Dunmarra":
+                  insString=toContentStr("Dunmarra.png", "https://www.instagram.com/stories/umsolarcarteam/3218921012951588398/?next=%2Fumsolarcarteam%2F&hl=en");
+                  break;
+               case "Tennant Creek":
+                  insString("TennantCreek.png","");
+                  break;
+               case "BarrowCreek":
+                  insString=toContentStr("BarrowCreek","");
+                  break;
+         }
          const infowondow= new google.maps.InfoWindow({
             content: contentString[i]+'\n'+insString,
          });
