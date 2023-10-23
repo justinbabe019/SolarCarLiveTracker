@@ -208,7 +208,7 @@
                   var day=hr[0];
                   hr=hr[1];
                   if(i==str.length-1)astrumMarker.setPosition(str[i], timeStr[i]);
-                  if(Number(sth[2]%20==0 /*&&sth[1]%2==0*/)){
+                  if(Number(sth[2]%60==0 /*&&sth[1]%2==0*/)){
                      addTraceMarker(str[i], timeStr[i]);
                      if(getClosestCPName()=="Katherine" || getClosestCPName()=="Dunmarra"){
                         changeNewestMarkerInfoWindow(document.getElementById("ins-1").innerHTML);
