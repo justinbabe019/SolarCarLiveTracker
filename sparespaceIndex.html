@@ -325,20 +325,21 @@
       markers.push(endPointMarker);
    }
    function toContentStr(imgLoc, insLink){
-      imgLoc="https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/assets"+imgLoc;
-      return '<a href=insLink><img src=imgLoc><\a>';
+      imgLoc="https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/assets/"+imgLoc;
+      return '<a href='+'insLink><img src='+imgLoc+'><\a>';
    }
    //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
-      const insString=document.getElementById("ins").innerHTML;
+      var insString=document.getElementById("ins").innerHTML;
       let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
          switch(contentString[i]){
                case "Katherine":
-                  insString=toContentStr("./assets/Dunmarra.png", "https://www.instagram.com/stories/umsolarcarteam/3218921012951588398/?next=%2Fumsolarcarteam%2F&hl=en");
+                  insString=toContentStr("Dunmarra.png", "https://www.instagram.com/stories/umsolarcarteam/3218921012951588398/?next=%2Fumsolarcarteam%2F&hl=en");
                   break;
                case "Dunmarra":
-                  insString=toContentStr
+                  insString=toContentStr("Katherine.png", "https://www.instagram.com/stories/umsolarcarteam/3219508080396258342/?next=%2Fumsolarcarteam%2F&hl=en");
+                  break;
          }
          const infowondow= new google.maps.InfoWindow({
             content: contentString[i]+'\n'+insString,
