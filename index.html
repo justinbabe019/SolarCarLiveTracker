@@ -197,7 +197,7 @@
    //Gets position by fetching github .txt file
    async function getAstrumPos(){
       //getText("./location.txt").then(
-      getText("https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/location.txt").then(
+      getText("./location.txt").then(
          function(value){
             const str=processTxtPara(value);
             const timeStr=processTxtParaTime(value);
