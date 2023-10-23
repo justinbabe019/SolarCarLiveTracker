@@ -436,6 +436,7 @@
             }
             console.log("processed= "+allTracePos[counter] + " time= "+allTraceTime[counter]);
             addTraceMarker(allTracePos[counter], allTraceTime[counter]);
+            traceMarkers[traceMarkers.length-2].setMap(null);
             doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //await doDist(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             //animate(20);//refreshes each animated frame per 20 ms
