@@ -443,6 +443,9 @@
       });
       getAstrumPos().then(
          async function(value){
+            getText("./setSpeed.txt").then(
+               function(value){setSpeed=value;}
+            )
             while(traceMarkers.length<1){await sleep(1000);}
             hideTrace();
             var counter=allTracePos.length-1;
