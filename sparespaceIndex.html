@@ -122,7 +122,7 @@
    "use strict";
    let map;
    let data;
-   let setSpeed = 90;
+   let setSpeed = 80;
    let allTracePos=[];
    let allTraceTime=[];
 
@@ -451,6 +451,7 @@
             }
             console.log("processed= "+allTracePos[counter] + " time= "+allTraceTime[counter]);
             addTraceMarker(allTracePos[counter], allTraceTime[counter]);
+            traceMarkers[traceMarkers.length-2].setMap(null);
             doDist2(traceMarkers[traceMarkers.length-1].getPosition(), getClosestCPPos());
             
             
