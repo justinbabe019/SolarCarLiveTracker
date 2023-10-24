@@ -332,8 +332,7 @@
    }
    function toContentStr(imgLoc, insLink){
       imgLoc="https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/assets/"+imgLoc;
-      //return '<a href="'+insLink+'">;
-      return '<img src='+imgLoc+' style="max-height:490px; max_width:300px;">';
+      return '<a href="'+insLink+'">'+'<img src="'+imgLoc+'" style="max-height:490px; max_width:300px;"></a>';
    }
    //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
@@ -341,17 +340,23 @@
       let contentString=["Darwin\n","Katherine\n", "Dunmarra\n", "Tennant Creek\n","Barrow Creek\n", "Alice Springs\n", "Erldunda\n", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
          switch(contentString[i]){
-               case "Katherine":
+               case "Katherine\n":
                   insString=toContentStr("Katherine.png", "https://www.instagram.com/stories/umsolarcarteam/3219508080396258342/?next=%2Fumsolarcarteam%2F&hl=en");
                   break;
-               case "Dunmarra":
+               case "Dunmarra\n":
                   insString=toContentStr("Dunmarra.png", "https://www.instagram.com/stories/umsolarcarteam/3218921012951588398/?next=%2Fumsolarcarteam%2F&hl=en");
                   break;
-               case "Tennant Creek":
-                  insString=toContentStr("TennantCreek.png","");
+               case "Tennant Creek\n":
+                  insString=toContentStr("TennantCreek.jpg","");
                   break;
-               case "BarrowCreek":
-                  insString=toContentStr("BarrowCreek","");
+               case "BarrowCreek\n":
+                  insString=toContentStr("BarrowCreek.PNG","https://www.instagram.com/stories/umsolarcarteam/3219733012078206118/?hl=en");
+                  break;
+               case "Alice Springs\n":
+                  insString=toContentStr("","https://www.instagram.com/stories/umsolarcarteam/3220309693117745170/?hl=en");
+                  break;
+               case "Erldunda\n":
+                  insString=toContentStr("Erldunda.jpg","https://www.instagram.com/stories/umsolarcarteam/3220389287308918943/?hl=en");
                   break;
          }
          const infowondow= new google.maps.InfoWindow({
