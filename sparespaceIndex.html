@@ -332,7 +332,8 @@
    }
    function toContentStr(imgLoc, insLink){
       imgLoc="https://raw.githubusercontent.com/ncleong/AstrumLiveTracker/main/assets/"+imgLoc;
-      return '\n'+'<a href='+'insLink><img src='+imgLoc+' style="max-height:490px; max_width:300px;"><\a>';
+      //return '<a href="'+insLink+'">;
+      return '<img src='+imgLoc+' style="max-height:490px; max_width:300px;">';
    }
    //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
@@ -354,7 +355,7 @@
                   break;
          }
          const infowondow= new google.maps.InfoWindow({
-            content: contentString[i]+'\n'+insString,
+            content: '<h4 style="color:black">'+contentString[i]+'</h4>'+insString,
          });
          infowindows.push(infowondow);
       }
