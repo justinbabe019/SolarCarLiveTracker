@@ -146,6 +146,7 @@
    const tennantCreekPos={lat: -19.6495, lng: 134.1910};
    const barrowCreekPos={lat: -21.3799, lng: 133.9756};
    const aliceSpringsPos={lat: -23.6980, lng:133.8807};
+   const erldundaPos={lat: -25.1975, lng: 133.2007};
    const kulgeraPos={lat: -25.8436, lng: 133.2879};
    const cooberPedyPos={lat: -29.0135, lng: 134.7544};
    const glendamboPos={lat: -30.9677, lng: 135.7513};
@@ -337,7 +338,7 @@
    //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
       var insString=document.getElementById("ins").innerHTML;
-      let contentString=["Darwin","Katherine", "Dunmarra", "Tennant Creek","Barrow Creek", "Alice Springs", "Kulgera", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
+      let contentString=["Darwin\n","Katherine\n", "Dunmarra\n", "Tennant Creek\n","Barrow Creek\n", "Alice Springs\n", "Erldunda\n", "Kulgera\n", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
          switch(contentString[i]){
                case "Katherine":
@@ -545,6 +546,7 @@
       else if(curLat <= dunmarraPos.lat && curLat>tennantCreekPos.lat){return "Tennant Creek";}
       else if(curLat <= tennantCreekPos.lat && curLat>barrowCreekPos.lat){return "Barrow Creek";}
       else if(curLat <= barrowCreekPos.lat && curLat>aliceSpringsPos.lat){return "Alice Springs";}
+      else if(curLat <= aliceSpringsPos.lat && curLat>erldundaPos.lat){return "Erldunda";}
       else if(curLat <= aliceSpringsPos.lat && curLat>kulgeraPos.lat){return "Kulgera";}
       else if(curLat <= kulgeraPos.lat && curLat>cooberPedyPos.lat){return "Coober Pedy";}
       else if(curLat <= cooberPedyPos.lat && curLat>glendamboPos.lat){return "Glendambo";}
@@ -574,6 +576,10 @@
             break;
          case("Alice Springs"): 
             var sth = new google.maps.LatLng(aliceSpringsPos.lat, aliceSpringsPos.lng); 
+            return sth;
+            break;
+         case("Erldunda"): 
+            var sth = new google.maps.LatLng(erldundaPos.lat, erldundaPos.lng); 
             return sth;
             break;
          case("Kulgera"): 
