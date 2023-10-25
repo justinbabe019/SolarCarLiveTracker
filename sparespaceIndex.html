@@ -338,9 +338,9 @@
    }
    //creastes control stop names and instagram content string for the info windows for control stops
    function setInitInfoWindow(){
-      var insString=document.getElementById("ins").innerHTML;
       let contentString=["Darwin\n","Katherine\n", "Dunmarra\n", "Tennant Creek\n","Barrow Creek\n", "Alice Springs\n", "Erldunda\n", "Coober Pedy", "Glendambo", "Port Augusta", "Adelaide"];
       for(let i =0; i<contentString.length;++i){
+         var insString=document.getElementById("ins").innerHTML;
          switch(contentString[i]){
                case "Katherine\n":
                   insString=toContentStr("Katherine.png", "https://www.instagram.com/stories/umsolarcarteam/3219508080396258342/?next=%2Fumsolarcarteam%2F&hl=en");
@@ -358,6 +358,12 @@
                   insString=toContentStr("AliceSprings.jpg","https://www.instagram.com/stories/umsolarcarteam/3220309693117745170/?hl=en");
                   break;
                case "Erldunda\n":
+                  insString=toContentStr("Erldunda.jpg","https://www.instagram.com/stories/umsolarcarteam/3220389287308918943/?hl=en");
+                  break;
+               case "Coober Pedy":
+                  insString=toContentStr("Erldunda.jpg","https://www.instagram.com/stories/umsolarcarteam/3220389287308918943/?hl=en");
+                  break;
+               case "Glengambo":
                   insString=toContentStr("Erldunda.jpg","https://www.instagram.com/stories/umsolarcarteam/3220389287308918943/?hl=en");
                   break;
                default:
@@ -599,10 +605,12 @@
             return sth;
             break;
          case("Port Augusta"): 
-            return portAugustaPos; 
+            var sth = new google.maps.LatLng(portAugustaPos.lat, portAugustaPos.lng); 
+            return sth; 
             break;
          case("Adelaide"): 
-            return endPos; 
+            var sth = new google.maps.LatLng(endPos.lat, endPos.lng); 
+            return sth; 
             break;
          default:
             return startPos;
